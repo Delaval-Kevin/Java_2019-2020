@@ -65,10 +65,10 @@ public class Equipage
     }   
     
     //Constructeur par défaut
-    public Equipage() throws SailorWithoutIdentificationException
+    public Equipage()
     {
-         this(new Marin(), null, null);
-    }   
+         setMarins(new Vector<Marin>());
+    } 
     
     
     /***************************/

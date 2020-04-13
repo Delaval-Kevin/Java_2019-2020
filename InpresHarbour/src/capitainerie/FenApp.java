@@ -6,6 +6,12 @@
 /***********************************************************/
 
 package capitainerie;
+import humain.Equipage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import vehicules.Bateau;
+import vehicules.Combustible;
+import vehicules.ShipWithoutIdentificationException;
 
 
 public class FenApp extends javax.swing.JFrame 
@@ -18,6 +24,7 @@ public class FenApp extends javax.swing.JFrame
     /**************************/
     
     private String _utilisateur;
+    private DialogInfoBateauEntrant _infoBateauEntrant;
 
     /**************************/
     /*                        */
@@ -28,15 +35,9 @@ public class FenApp extends javax.swing.JFrame
     public FenApp() 
     {
         initComponents();
-        DialogLoginCapitainerie login = new DialogLoginCapitainerie(this, true);
-        login.setVisible(true);
+        afficheLogin();
+        setInfoBateauEntrant(new DialogInfoBateauEntrant(this, true));
         
-        setUtilisateur(login.getUtilisateur());
-        setTitre();
-        
-        this.setVisible(true);
-        
-        login.dispose();
     }
 
     @SuppressWarnings("unchecked")
@@ -409,6 +410,11 @@ public class FenApp extends javax.swing.JFrame
         }    
     }
     
+    public void setInfoBateauEntrant(DialogInfoBateauEntrant infoBateauEntrant)
+    {
+        _infoBateauEntrant = infoBateauEntrant;
+    }
+    
     /**************************/
     /*                        */
     /*         GETTERS        */
@@ -418,6 +424,11 @@ public class FenApp extends javax.swing.JFrame
     public String getUtilisateur()
     {
         return _utilisateur;
+    }
+    
+    public DialogInfoBateauEntrant getInfoBateauEntrant()
+    {
+        return _infoBateauEntrant;
     }
     
     /**************************/
@@ -434,6 +445,29 @@ public class FenApp extends javax.swing.JFrame
         }
         
         return true;
+    }
+    
+    public void afficheLogin()
+    {
+        /*Je ne garde pas une référence de la fenêtre en global, car il n'y à lieu d'avoir de connecion et déconnexion intempestives*/
+        DialogLoginCapitainerie login = new DialogLoginCapitainerie(this, true);
+        login.setVisible(true);
+        
+        setUtilisateur(login.getUtilisateur());
+        setTitre();
+        
+        this.setVisible(true);
+        
+        login.dispose();   
+    }
+    
+    public void afficheErr(String msg)
+    {
+            /*Je ne garde pas une référence de la fenêtre en global, car il n'y à beaucoup d'erreurs à gérer*/
+            DialogErreur d = new DialogErreur(this, true, msg); 
+            d.setLocationRelativeTo(null);
+            d.setVisible(true);         
+            d.dispose();    
     }
     
     /**************************/
@@ -463,7 +497,17 @@ public class FenApp extends javax.swing.JFrame
     }//GEN-LAST:event_buttonEnvConfActionPerformed
 
     private void buttonBateauAmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBateauAmarActionPerformed
-        // TODO add your handling code here:
+        try 
+        {
+            getInfoBateauEntrant().setBateau(new Bateau("Marie Hurlante", "Norwich", "UK.jpg", 32, 15, Combustible.kérosène, false, new Equipage()));
+            getInfoBateauEntrant().setEmplacemet("Q2*4");
+            getInfoBateauEntrant().setVisible(true);
+        }
+        catch (ShipWithoutIdentificationException exc) 
+        {
+            afficheErr(exc.getMessage());
+        }
+        
     }//GEN-LAST:event_buttonBateauAmarActionPerformed
 
     private void buttonArretServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonArretServeurActionPerformed
@@ -479,24 +523,11 @@ public class FenApp extends javax.swing.JFrame
     private void menuItemLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemLoginActionPerformed
         if(isConnected())
         {
-            /*Je ne garde pas une référence de la fenêtre en global, car il n'y à beaucoup d'erreurs à gérer*/
-            DialogErreur d = new DialogErreur(this, true, "Vous êtes déjà connecté !"); 
-            d.setLocationRelativeTo(null);
-            d.setVisible(true);         
-            d.dispose();
+            afficheErr("Vous êtes déjà connecté !");
         }
         else
         {
-            /*Je ne garde pas une référence de la fenêtre en global, car il n'y à lieu d'avoir de connecion et déconnexion intempestives*/
-            DialogLoginCapitainerie login = new DialogLoginCapitainerie(this, true);
-            login.setVisible(true);
-
-            setUtilisateur(login.getUtilisateur());
-            setTitre();
-
-            this.setVisible(true);
-
-            login.dispose();
+            afficheLogin();
         }
     }//GEN-LAST:event_menuItemLoginActionPerformed
 
@@ -506,7 +537,18 @@ public class FenApp extends javax.swing.JFrame
     }//GEN-LAST:event_menuItemLogoutActionPerformed
 
     private void menuItemNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemNouveauActionPerformed
-        // TODO add your handling code here:
+        if(isConnected())
+        {  
+            /*Je ne garde pas une référence de la fenêtre en global, car il n'y à beaucoup d'ajout à gérer*/
+            DialogNouvLogin d = new DialogNouvLogin(this, true); 
+            d.setLocationRelativeTo(null);
+            d.setVisible(true);         
+            d.dispose();
+        }
+        else
+        {
+            afficheErr("Vous n'êtes pas connecté !");
+        }
     }//GEN-LAST:event_menuItemNouveauActionPerformed
 
     private void menuItemPlaisanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPlaisanceActionPerformed
@@ -534,7 +576,10 @@ public class FenApp extends javax.swing.JFrame
     }//GEN-LAST:event_menuItemRechMarinActionPerformed
 
     private void menuItemFormatDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemFormatDateActionPerformed
-        // TODO add your handling code here:
+            /*Je ne garde pas une référence de la fenêtre en global*/
+            DialogFormatDate d = new DialogFormatDate(this, true); 
+            d.setVisible(true);         
+            d.dispose();
     }//GEN-LAST:event_menuItemFormatDateActionPerformed
 
     private void menuItemCheckFichLogStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_menuItemCheckFichLogStateChanged
@@ -546,11 +591,17 @@ public class FenApp extends javax.swing.JFrame
     }//GEN-LAST:event_menuItemCheckDateHeureStateChanged
 
     private void menuItemAuteurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAuteurActionPerformed
-        // TODO add your handling code here:
+            /*Je ne garde pas une référence de la fenêtre en global*/
+            DialogAuteur d = new DialogAuteur(this, true); 
+            d.setVisible(true);         
+            d.dispose();
     }//GEN-LAST:event_menuItemAuteurActionPerformed
 
     private void menuItemAideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAideActionPerformed
-        // TODO add your handling code here:
+            /*Je ne garde pas une référence de la fenêtre en global*/
+            DialogAide d = new DialogAide(this, true); 
+            d.setVisible(true);         
+            d.dispose();
     }//GEN-LAST:event_menuItemAideActionPerformed
 
 

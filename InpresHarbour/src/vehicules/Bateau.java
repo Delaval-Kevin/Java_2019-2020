@@ -50,11 +50,11 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant
         setEquipage(equipage);
     }
     
-     //Constructeur par défaut
-    public Bateau() throws ShipWithoutIdentificationException, SailorWithoutIdentificationException
+    //Constructeur par défaut
+    /*public Bateau() throws ShipWithoutIdentificationException, SailorWithoutIdentificationException
     {
         this("Belgica", "Anvers", "BE", 4, 11, Combustible.autre, false, new Equipage());
-    }   
+    }*/   
     
     /***************************/
     /*                         */

@@ -17,7 +17,6 @@ public class Ponton extends Amarrage
     /*                         */
     /***************************/
     
-    private String _nom;
     private MoyenDeTransportSurEau[][] _liste;
     
     /***************************/
@@ -49,16 +48,11 @@ public class Ponton extends Amarrage
     /*         Getters         */
     /*                         */
     /***************************/   
- 
-    public String getNom()
-    {
-        return _nom;
-    }
     
     @Override
     public String getIdentifiant()
     {
-        return _nom;
+        return getNom();
     }
     
     public MoyenDeTransportSurEau[] getListe(int cote)
@@ -79,11 +73,6 @@ public class Ponton extends Amarrage
     /*         Setters         */
     /*                         */
     /***************************/  
-    
-    public void setNom(String nom)
-    {
-        _nom = nom;
-    }  
     
     public void setListe(MoyenDeTransportSurEau[][] liste)
     {

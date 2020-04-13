@@ -35,11 +35,11 @@ public class BateauPlaisance extends Bateau
         setPermis(permis);
     }
     
-     //Constructeur par défaut
-    public BateauPlaisance() throws ShipWithoutIdentificationException, SailorWithoutIdentificationException
+    //Constructeur par défaut
+    /*public BateauPlaisance() throws ShipWithoutIdentificationException, SailorWithoutIdentificationException
     {
         this("Les Francs", "Calais", "FR", 5, 15, "plaisance option côtière", Combustible.essence, false, new Equipage());
-    }   
+    } */  
     
     /***************************/
     /*                         */

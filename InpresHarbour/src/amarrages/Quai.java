@@ -17,7 +17,6 @@ public class Quai extends Amarrage
     /*                         */
     /***************************/
     
-    private String _nom;
     private MoyenDeTransportSurEau[] _liste;
     
     
@@ -45,15 +44,10 @@ public class Quai extends Amarrage
     /*                         */
     /***************************/   
     
-    public String getNom()
-    {
-        return _nom;
-    }
-    
     @Override
     public String getIdentifiant()
     {
-        return _nom;
+        return getNom();
     }
      
     public MoyenDeTransportSurEau[] getListe()
@@ -65,12 +59,7 @@ public class Quai extends Amarrage
     /*                         */
     /*         Setters         */
     /*                         */
-    /***************************/  
-    
-    public void setNom(String nom)
-    {
-        _nom = nom;
-    }  
+    /***************************/    
     
     public void setListe(MoyenDeTransportSurEau[] liste)
     {

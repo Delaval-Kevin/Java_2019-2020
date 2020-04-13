@@ -6,11 +6,22 @@
 /***********************************************************/
 
 package capitainerie;
+import humain.Equipage;
+import humain.Marin;
+import humain.SailorWithoutIdentificationException;
+import java.awt.Frame;
 
 
 public class DialogEnregEquipage extends javax.swing.JDialog 
 {
-
+    /**************************/
+    /*                        */
+    /*   VARIABLES MEMBRES    */
+    /*                        */
+    /**************************/
+    
+    private Equipage _equipage;
+    
     /**************************/
     /*                        */
     /*      CONSTRUCTEURS     */
@@ -21,9 +32,65 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     {
         super(parent, modal);
         initComponents();
+        setLocationRelativeTo(null);
     }
 
-
+    /**************************/
+    /*                        */
+    /*         SETTERS        */
+    /*                        */
+    /**************************/
+    
+    public void setEquipage(Equipage equipage)
+    {
+        _equipage = equipage;
+    }
+    
+    /**************************/
+    /*                        */
+    /*         GETTERS        */
+    /*                        */
+    /**************************/
+ 
+    public Equipage getEquipage()
+    {
+        return _equipage;
+    }
+    
+    public String getSelection()
+    {
+        if(this.radioCapitaine.isSelected())
+        {
+            return this.radioCapitaine.getText();
+        }
+        else if(this.radioSecond.isSelected())
+        {
+            return this.radioSecond.getText();
+        }
+        else if(this.radioMatelot.isSelected())
+        {
+            return this.radioMatelot.getText();
+        }
+        else if(this.radioBosco.isSelected())
+        {
+            return this.radioBosco.getText();
+        }
+        else
+        {
+            return this.radioPassager.getText();
+        }
+    }
+    
+    /**************************/
+    /*                        */
+    /*        METHODES        */
+    /*                        */
+    /**************************/ 
+    
+    
+   
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -37,7 +104,7 @@ public class DialogEnregEquipage extends javax.swing.JDialog
         textBoxPrenom = new javax.swing.JTextField();
         textBoxNom = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        listMarins = new javax.swing.JList();
         radioBosco = new javax.swing.JRadioButton();
         radioCapitaine = new javax.swing.JRadioButton();
         radioSecond = new javax.swing.JRadioButton();
@@ -49,7 +116,8 @@ public class DialogEnregEquipage extends javax.swing.JDialog
         buttonAbandon = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Capitainerie - Enregistrement d'un équipage");
+        setTitle("Capitainerie d'Inpres-Harbour : Enregistrement d'un équipage");
+        setResizable(false);
 
         jLabel1.setText("Bateau :");
 
@@ -59,7 +127,7 @@ public class DialogEnregEquipage extends javax.swing.JDialog
 
         jLabel4.setText("Date de naissance :");
 
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(listMarins);
 
         buttonGroupFonction.add(radioBosco);
         radioBosco.setText("Bosco");
@@ -193,7 +261,49 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     /**************************/
     
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        // TODO add your handling code here:
+        try 
+        {
+            Marin marin = new Marin(this.textBoxNom.getText(), this.textBoxPrenom.getText(), this.textBoxDateNaiss.getText(), getSelection());
+
+            if(marin.getFonction().equals("Capitaine"))
+            {
+                if(getEquipage().getCapitaine() == null)
+                {
+                    getEquipage().setCapitaine(marin);
+                }
+                else
+                {
+                    DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Il y a déjà un Capitaine !");
+                    d.setVisible(true);                    
+                }
+            }
+            else if(marin.getFonction().equals("Second"))
+            {
+                if(getEquipage().getSecond()== null)
+                {
+                    getEquipage().setSecond(marin);
+                }
+                else
+                {
+                    DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Il y a déjà un Second !");
+                    d.setVisible(true);                       
+                }
+            }
+            else
+            {
+                getEquipage().AddMarins(marin);
+            }
+            
+            this.textBoxNom.setText(null);
+            this.textBoxPrenom.setText(null);
+            this.textBoxDateNaiss.setText(null);  
+        } 
+        catch (SailorWithoutIdentificationException exc) 
+        {
+            DialogErreur d = new DialogErreur((Frame)this.getParent(), true, exc.getMessage());
+            d.setVisible(true);
+        }
+        
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonValEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValEquipActionPerformed
@@ -265,9 +375,9 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JList jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JList listMarins;
     private javax.swing.JRadioButton radioBosco;
     private javax.swing.JRadioButton radioCapitaine;
     private javax.swing.JRadioButton radioMatelot;

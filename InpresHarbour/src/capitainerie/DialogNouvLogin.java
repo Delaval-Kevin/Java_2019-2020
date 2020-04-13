@@ -7,29 +7,10 @@
 
 package capitainerie;
 import java.awt.Frame;
-import java.util.Hashtable;
 
 
-public class DialogLoginCapitainerie extends javax.swing.JDialog 
+public class DialogNouvLogin extends javax.swing.JDialog 
 {
-    /**************************/
-    /*                        */
-    /*   VARIABLES MEMBRES    */
-    /*                        */
-    /**************************/
-    
-    private String _utilisateur;
-    public static Hashtable repertoire;
-    
-    static
-    {
-        repertoire = new Hashtable();
-        repertoire.put("Kevin", "test");
-        repertoire.put("Samuel", "1234");
-        repertoire.put("Loic", "ok");
-        repertoire.put("Fabian", "azerty");
-        repertoire.put("Bene", "ebene");
-    }
 
     /**************************/
     /*                        */
@@ -37,32 +18,27 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
     /*                        */
     /**************************/
     
-    public DialogLoginCapitainerie(java.awt.Frame parent, boolean modal) 
+    public DialogNouvLogin(java.awt.Frame parent, boolean modal) 
     {
         super(parent, modal);
         initComponents();
-        this.setLocationRelativeTo(null);
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelTitre = new javax.swing.JLabel();
-        labelNomUtil = new javax.swing.JLabel();
         labelMDP = new javax.swing.JLabel();
         buttonValider = new javax.swing.JButton();
         buttonAnnuler = new javax.swing.JButton();
         textBoxNomUtil = new javax.swing.JTextField();
         textBoxMDP = new javax.swing.JTextField();
+        labelTitre = new javax.swing.JLabel();
+        labelNomUtil = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Login Capitainerie");
-
-        labelTitre.setFont(new java.awt.Font("Dialog", 1, 30)); // NOI18N
-        labelTitre.setText("Bienvenue !");
-
-        labelNomUtil.setText("Nom d'utilisateur :");
+        setTitle("Capitainerie d'Inpres-Harbour : Inscription");
 
         labelMDP.setText("Mot de passe :");
 
@@ -79,6 +55,11 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
                 buttonAnnulerActionPerformed(evt);
             }
         });
+
+        labelTitre.setFont(new java.awt.Font("Dialog", 1, 30)); // NOI18N
+        labelTitre.setText("Inscription d'un nouvel utilisateur");
+
+        labelNomUtil.setText("Nom d'utilisateur :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,16 +82,16 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
                         .addGap(77, 77, 77)
                         .addComponent(buttonAnnuler))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(204, 204, 204)
+                        .addGap(67, 67, 67)
                         .addComponent(labelTitre)))
-                .addContainerGap(152, Short.MAX_VALUE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(65, 65, 65)
+                .addGap(55, 55, 55)
                 .addComponent(labelTitre)
-                .addGap(64, 64, 64)
+                .addGap(74, 74, 74)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(labelNomUtil)
                     .addComponent(textBoxNomUtil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -122,7 +103,7 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonValider)
                     .addComponent(buttonAnnuler))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         pack();
@@ -135,65 +116,24 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
     /**************************/
     
     private void buttonValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValiderActionPerformed
-
-        try
+        if(this.textBoxNomUtil.getText().length() > 0 && this.textBoxMDP.getText().length() > 0)
         {
-            if(verifCompte())
-            {
-                setUtilisateur(this.textBoxNomUtil.getText());
-                this.setVisible(false);
-            }
+            DialogLoginCapitainerie.repertoire.put(this.textBoxNomUtil.getText(), this.textBoxMDP.getText());
+            this.setVisible(false);
         }
-        catch (Exception exc)
+        else
         {
-            DialogErreur d = new DialogErreur((Frame)this.getParent(), true, exc.getMessage());
-            d.setVisible(true);
+            DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Valeur(s) incorrecte(s)"); 
+            d.setVisible(true);         
+            d.dispose();            
         }
     }//GEN-LAST:event_buttonValiderActionPerformed
 
     private void buttonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnnulerActionPerformed
-        setUtilisateur(null);
         this.setVisible(false);
     }//GEN-LAST:event_buttonAnnulerActionPerformed
 
-    /**************************/
-    /*                        */
-    /*        METHODES        */
-    /*                        */
-    /**************************/
 
-    public boolean verifCompte() throws LoginException
-    {
-        if(repertoire.containsKey(this.textBoxNomUtil.getText()) && repertoire.get(this.textBoxNomUtil.getText()).equals(this.textBoxMDP.getText()))
-        {
-            return true;
-        }
-        
-        throw new LoginException("Erreur de login !!!");
-    }
-    
-    /**************************/
-    /*                        */
-    /*         SETTERS        */
-    /*                        */
-    /**************************/
-    
-    public void setUtilisateur(String utilisateur)
-    {
-        _utilisateur = utilisateur;
-    }
-    
-    /**************************/
-    /*                        */
-    /*         GETTERS        */
-    /*                        */
-    /**************************/
-    
-    public String getUtilisateur()
-    {
-        return _utilisateur;
-    }
-    
     /**************************/
     /*                        */
     /*          MAIN          */
@@ -215,22 +155,21 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogLoginCapitainerie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogNouvLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogLoginCapitainerie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogNouvLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogLoginCapitainerie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogNouvLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogLoginCapitainerie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogNouvLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() 
         {
-            public void run() 
-            {
-                DialogLoginCapitainerie dialog = new DialogLoginCapitainerie(new javax.swing.JFrame(), true);
+            public void run() {
+                DialogNouvLogin dialog = new DialogNouvLogin(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() 
                 {
                     @Override

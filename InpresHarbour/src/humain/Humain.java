@@ -28,23 +28,18 @@ public class Humain
     /***************************/
     
     //Constructeur d'initialisation
-    public Humain(String nom, String prenom, String dateNaissance) throws SailorWithoutIdentificationException
-    {
-        if(nom.length() == 0 || prenom.length() == 0 || dateNaissance.length() == 0)
-        {
-            throw new SailorWithoutIdentificationException("Identification de la personne invalide");
-        }
-        
+    public Humain(String nom, String prenom, String dateNaissance)
+    {   
         setNom(nom);
         setPrenom(prenom);
         setDateNaissance(dateNaissance);
     }   
  
-      //Constructeur par défaut
-    public Humain() throws SailorWithoutIdentificationException
+    //Constructeur par défaut
+    /*public Humain()
     {
         this("Dupond", "Jean", "29/11/1985");
-    }   
+    }*/
     
     /***************************/
     /*                         */

@@ -30,14 +30,20 @@ public class Marin extends Humain implements AUnIdentifiant
     public Marin(String nom, String prenom, String dateNaissance, String fonction) throws SailorWithoutIdentificationException
     {
         super(nom, prenom, dateNaissance);
+        
+        if(getNom().length() < 1 || getPrenom().length() < 1 || dateNaissance.length() < 1)
+        {
+            throw new SailorWithoutIdentificationException("Identification de la personne invalide");
+        }
+        
         setFonction(fonction);
     }   
  
-      //Constructeur par défaut
-    public Marin() throws SailorWithoutIdentificationException
+    //Constructeur par défaut
+    /*public Marin() throws SailorWithoutIdentificationException
     {
         this("Presley", "Elvis", "12/03/1820", "capitaine");
-    }   
+    }*/
     
     /***************************/
     /*                         */

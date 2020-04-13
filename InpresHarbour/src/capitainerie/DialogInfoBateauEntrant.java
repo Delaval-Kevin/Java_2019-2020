@@ -6,11 +6,23 @@
 /***********************************************************/
 
 package capitainerie;
+import humain.Equipage;
+import java.awt.Frame;
+import javax.swing.ImageIcon;
+import vehicules.Bateau;
 
 
 public class DialogInfoBateauEntrant extends javax.swing.JDialog 
 {
+    /**************************/
+    /*                        */
+    /*   VARIABLES MEMBRES    */
+    /*                        */
+    /**************************/
+    
+    private Bateau _bateau;
 
+    
     /**************************/
     /*                        */
     /*      CONSTRUCTEURS     */
@@ -21,9 +33,72 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
+    
+    /**************************/
+    /*                        */
+    /*         GETTERS        */
+    /*                        */
+    /**************************/
+    
+    public Bateau getBateau()
+    {
+        return _bateau;
+    }
+    
+    public String getPortAttache()
+    {
+        return this.textBoxPortAttache.getText();
+    }
+    
+    public int getTonnage()
+    {
+        return Integer.parseInt(this.textBoxTonnage.getText());
+    }   
+    
+    
+    /**************************/
+    /*                        */
+    /*         SETTERS        */
+    /*                        */
+    /**************************/
 
+    public void setBateau(Bateau bateau)
+    {
+        _bateau = bateau;
+    }   
+    
+    public void setEmplacemet(String emp)
+    {
+        this.labelEmplacement.setText(emp);
+    }
+    
+    public void setNomBateau(String Nom)
+    {
+        this.labelBateau.setText(Nom);
+    }
+    
+    public void setPavillon(String pav)
+    {
+        this.labelImage.setIcon(new ImageIcon(getClass().getResource(pav)));
+        //this.labelImage.repaint();
+    }
+    
+    public void setPortAttache(String port)
+    {
+        this.textBoxPortAttache.setText(port);
+    }
+    
+    public void setTonnage(int ton)
+    {
+        this.textBoxTonnage.setText(Integer.toString(ton));
+    }
+    
+    
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -40,9 +115,18 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
         buttonOK = new javax.swing.JButton();
         buttonAnnuler = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
+        labelEmplacement = new javax.swing.JLabel();
+        labelBateau = new javax.swing.JLabel();
+        labelImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Capitainerie - Informations sur bateau entrant");
+        setTitle("Capitainerie d'Inpres-Harbour : Informations sur bateau entrant");
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jLabel1.setText("Emplacement :");
 
@@ -75,46 +159,63 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
             }
         });
 
+        labelEmplacement.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(47, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(buttonEquipage, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(textBoxPortAttache)
-                                    .addComponent(textBoxTonnage)
-                                    .addComponent(comboBoxEquipage, 0, 330, Short.MAX_VALUE)))
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(buttonEquipage, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(textBoxPortAttache)
+                            .addComponent(textBoxTonnage)
+                            .addComponent(comboBoxEquipage, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(158, 158, 158)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(115, 115, 115)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelBateau)
+                                    .addComponent(labelEmplacement)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(57, 57, 57)
+                                .addComponent(labelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(116, 116, 116)
                         .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(66, 66, 66)
                         .addComponent(buttonAnnuler)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(36, 36, 36))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(58, 58, 58)
-                .addComponent(jLabel1)
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(labelEmplacement))
                 .addGap(42, 42, 42)
-                .addComponent(jLabel2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(labelBateau))
                 .addGap(42, 42, 42)
-                .addComponent(jLabel3)
-                .addGap(73, 73, 73)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(labelImage, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(textBoxPortAttache, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -126,13 +227,13 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonEquipage)
                     .addComponent(comboBoxEquipage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonOK)
                     .addComponent(buttonAnnuler))
-                .addGap(51, 51, 51))
+                .addGap(29, 29, 29))
         );
 
         pack();
@@ -145,7 +246,9 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     /**************************/
     
     private void buttonEquipageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEquipageActionPerformed
-        // TODO add your handling code here:
+        DialogEnregEquipage d = new DialogEnregEquipage((Frame)this.getParent(), true);
+        d.setEquipage(getBateau().getEquipage());
+        d.setVisible(true);
     }//GEN-LAST:event_buttonEquipageActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
@@ -153,8 +256,21 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnnulerActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_buttonAnnulerActionPerformed
+
+    /**************************/
+    /*                        */
+    /*         EVENTS         */
+    /*                        */
+    /**************************/    
+    
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        setNomBateau(getBateau().getNom());
+        setPavillon(getBateau().getPavillon());
+        setPortAttache(getBateau().getPortAttache());
+        setTonnage(getBateau().getTonnage());
+    }//GEN-LAST:event_formWindowActivated
 
     
     
@@ -219,6 +335,9 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel labelBateau;
+    private javax.swing.JLabel labelEmplacement;
+    private javax.swing.JLabel labelImage;
     private javax.swing.JTextField textBoxPortAttache;
     private javax.swing.JTextField textBoxTonnage;
     // End of variables declaration//GEN-END:variables

@@ -18,7 +18,7 @@ public abstract class Amarrage implements AUnIdentifiant
     /***************************/
     
     private int _capacite;
-    
+    private String _nom;
     
     /***************************/
     /*                         */
@@ -29,6 +29,7 @@ public abstract class Amarrage implements AUnIdentifiant
     public Amarrage(int capacite)
     {
         setCapacite(capacite);
+        setNom("");
     }
             
     public Amarrage()
@@ -48,7 +49,11 @@ public abstract class Amarrage implements AUnIdentifiant
         return _capacite;
     }
      
-     
+    public String getNom()
+    {
+        return _nom;
+    }
+    
     /***************************/
     /*                         */
     /*         Setters         */
@@ -59,4 +64,9 @@ public abstract class Amarrage implements AUnIdentifiant
     {
         _capacite = capacite;
     }
+    
+    public void setNom(String nom)
+    {
+        _nom = nom;
+    }  
 }

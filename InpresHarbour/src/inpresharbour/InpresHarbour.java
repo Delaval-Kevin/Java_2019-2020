@@ -25,7 +25,7 @@ public class InpresHarbour
         Marin marin = null;
         try 
         {
-            bateau = new Bateau();
+           /* bateau = new Bateau();
             
             bateauPeche = new BateauPeche();
             
@@ -37,7 +37,7 @@ public class InpresHarbour
             
             bateau.getEquipage().setSecond(new Marin("Delaval", "Kevin", "29/01/1987", "second"));
             bateau.getEquipage().AddMarins(new Marin("refref", "frefr", "29/01/4655", "erff"));
-            bateau.getEquipage().AddMarins(new Marin("zzzz", "zzzzdddd", "22/11/1111", "aaaaaa"));
+            bateau.getEquipage().AddMarins(new Marin("zzzz", "zzzzdddd", "22/11/1111", "aaaaaa"));*/
         } 
         catch (Exception e) 
         {
