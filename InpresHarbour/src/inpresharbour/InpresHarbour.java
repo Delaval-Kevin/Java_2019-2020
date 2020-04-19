@@ -45,7 +45,7 @@ public class InpresHarbour
         }
         
         
-
+/*
         bateau.Affiche();
         System.out.println("\n------------------------------\n");
         bateauPeche.Affiche();
@@ -54,6 +54,6 @@ public class InpresHarbour
         System.out.println("\n------------------------------\n");
         humain.Affiche();
         System.out.println("\n------------------------------\n");
-        marin.Affiche();
+        marin.Affiche();*/
     }
 }

@@ -16,11 +16,19 @@ public class DialogErreur extends javax.swing.JDialog
     /*      CONSTRUCTEURS     */
     /*                        */
     /**************************/
-    
-    public DialogErreur(java.awt.Frame parent, boolean modal, String msg) 
+  
+    //Constructeur par défaut
+    public DialogErreur(java.awt.Frame parent, boolean modal) 
     {
         super(parent, modal);
         initComponents();
+
+    }
+    
+    //Constructeur d'initialisation
+    public DialogErreur(java.awt.Frame parent, boolean modal, String msg) 
+    {
+        this(parent, modal);
         this.labelErr.setText(msg);
         this.setLocationRelativeTo(null);
     }
@@ -131,7 +139,7 @@ public class DialogErreur extends javax.swing.JDialog
         {
             public void run() 
             {
-                DialogErreur dialog = new DialogErreur(new javax.swing.JFrame(), true, args[1]);
+                DialogErreur dialog = new DialogErreur(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() 
                 {
                     @Override

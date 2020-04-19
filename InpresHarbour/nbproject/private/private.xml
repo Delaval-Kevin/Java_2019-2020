@@ -3,30 +3,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/MoyenDeTransport.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/amarrages/Quai.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/MoyenDeTransportSurEau.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/BateauPeche.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/DialogErreur.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/inpresharbour/InpresHarbour.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/DialogNouvLogin.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/AUnIdentifiant.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/FenApp.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/humain/Equipage.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/ShipWithoutIdentificationException.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/LoginException.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/amarrages/Ponton.java</file>
+            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/MoyenDeTransport.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/DialogAuteur.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/DialogLoginCapitainerie.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/humain/Humain.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/Combustible.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/humain/Marin.java</file>
+            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/DialogErreur.java</file>
+            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/inpresharbour/InpresHarbour.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/DialogAide.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/Bateau.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/BateauPlaisance.java</file>
+            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/DialogNouvLogin.java</file>
+            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/FenApp.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/DialogInfoBateauEntrant.java</file>
+            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/humain/Equipage.java</file>
+            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/ShipWithoutIdentificationException.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/DialogFormatDate.java</file>
-            <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/vehicules/AvecHumains.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/amarrages/Amarrage.java</file>
             <file>file:/C:/Users/delav/Documents/NetBeansProjects/InpresHarbour/src/capitainerie/DialogEnregEquipage.java</file>
         </group>

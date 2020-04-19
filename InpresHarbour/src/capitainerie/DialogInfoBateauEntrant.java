@@ -8,6 +8,8 @@
 package capitainerie;
 import humain.Equipage;
 import java.awt.Frame;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import vehicules.Bateau;
 
@@ -29,6 +31,7 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     /*                        */
     /**************************/
     
+    //Constructeur par défaut
     public DialogInfoBateauEntrant(java.awt.Frame parent, boolean modal) 
     {
         super(parent, modal);
@@ -36,6 +39,13 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
         this.setLocationRelativeTo(null);
     }
 
+    //Constructeur d'initialisation
+    public DialogInfoBateauEntrant(java.awt.Frame parent, boolean modal, Bateau bateau) 
+    {
+        this(parent, modal);
+        setBateau(bateau);
+        InitComboBox();
+    }
     
     /**************************/
     /*                        */
@@ -57,7 +67,6 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     {
         return Integer.parseInt(this.textBoxTonnage.getText());
     }   
-    
     
     /**************************/
     /*                        */
@@ -97,6 +106,28 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     }
     
     
+    /**************************/
+    /*                        */
+    /*        METHODES        */
+    /*                        */
+    /**************************/
+    
+    private void InitComboBox()
+    {
+        DefaultComboBoxModel dcbmEquipage = (DefaultComboBoxModel) this.comboBoxEquipage.getModel();
+        dcbmEquipage.removeAllElements();
+        
+        if(getBateau().getEquipage().getCapitaine() != null)
+        {
+            dcbmEquipage.addElement(getBateau().getEquipage().getCapitaine());
+        }
+        if(getBateau().getEquipage().getSecond() != null)
+        {
+            dcbmEquipage.addElement(getBateau().getEquipage().getSecond());
+        }
+           
+        getBateau().getEquipage().getMarins().forEach(m -> dcbmEquipage.addElement(m));
+    }
     
     
     @SuppressWarnings("unchecked")
@@ -137,6 +168,10 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
         jLabel4.setText("Port d'attache :");
 
         jLabel5.setText("Tonnage :");
+
+        textBoxPortAttache.setText("??");
+
+        textBoxTonnage.setText("??");
 
         buttonEquipage.setText("Equipage");
         buttonEquipage.addActionListener(new java.awt.event.ActionListener() {
@@ -246,15 +281,43 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     /**************************/
     
     private void buttonEquipageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEquipageActionPerformed
-        DialogEnregEquipage d = new DialogEnregEquipage((Frame)this.getParent(), true);
-        d.setEquipage(getBateau().getEquipage());
-        d.setVisible(true);
+        if(textBoxPortAttache.getText().length() > 0)
+        {
+            getBateau().setPortAttache(textBoxPortAttache.getText());
+            
+            System.out.println("Creation de la boite de dialogue ENREG EQUIPAGE - dans DialogInfoBateauEntrant\n");
+            
+            DialogEnregEquipage d = new DialogEnregEquipage((Frame)this.getParent(), true, getBateau());
+            d.setVisible(true);
+            
+            InitComboBox();
+        }
+        else
+        {
+            System.out.println("Creation de la boite de dialogue ERREUR - dans DialogInfoBateauEntrant\n");
+            
+            DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Veuillez mettre le port d'attache !");
+            d.setVisible(true); 
+        }
     }//GEN-LAST:event_buttonEquipageActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        // TODO add your handling code here:
+        
+        if(textBoxPortAttache.getText().length() > 0)
+        {
+            getBateau().setPortAttache(textBoxPortAttache.getText());
+            this.setVisible(false);
+        }
+        else
+        {
+            System.out.println("Creation de la boite de dialogue ERREUR - dans DialogInfoBateauEntrant\n");
+            
+            DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Veuillez mettre le port d'attache !");
+            d.setVisible(true);            
+        }
+        
     }//GEN-LAST:event_buttonOKActionPerformed
-
+        
     private void buttonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnnulerActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_buttonAnnulerActionPerformed
@@ -265,9 +328,11 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     /*                        */
     /**************************/    
     
+    //A l'activation de la page, les données seront mise a jour
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         setNomBateau(getBateau().getNom());
         setPavillon(getBateau().getPavillon());
+
         setPortAttache(getBateau().getPortAttache());
         setTonnage(getBateau().getTonnage());
     }//GEN-LAST:event_formWindowActivated

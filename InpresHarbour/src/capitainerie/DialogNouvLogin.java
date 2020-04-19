@@ -32,10 +32,12 @@ public class DialogNouvLogin extends javax.swing.JDialog
         labelMDP = new javax.swing.JLabel();
         buttonValider = new javax.swing.JButton();
         buttonAnnuler = new javax.swing.JButton();
-        textBoxNomUtil = new javax.swing.JTextField();
+        textBoxNom = new javax.swing.JTextField();
+        textBoxPrenom = new javax.swing.JTextField();
         textBoxMDP = new javax.swing.JTextField();
         labelTitre = new javax.swing.JLabel();
-        labelNomUtil = new javax.swing.JLabel();
+        labelNom = new javax.swing.JLabel();
+        labelPrenom = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Capitainerie d'Inpres-Harbour : Inscription");
@@ -59,7 +61,9 @@ public class DialogNouvLogin extends javax.swing.JDialog
         labelTitre.setFont(new java.awt.Font("Dialog", 1, 30)); // NOI18N
         labelTitre.setText("Inscription d'un nouvel utilisateur");
 
-        labelNomUtil.setText("Nom d'utilisateur :");
+        labelNom.setText("Nom :");
+
+        labelPrenom.setText("Prenom :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,12 +74,14 @@ public class DialogNouvLogin extends javax.swing.JDialog
                     .addGroup(layout.createSequentialGroup()
                         .addGap(118, 118, 118)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelNomUtil)
-                            .addComponent(labelMDP))
+                            .addComponent(labelNom)
+                            .addComponent(labelMDP)
+                            .addComponent(labelPrenom))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(textBoxMDP, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                            .addComponent(textBoxNomUtil)))
+                            .addComponent(textBoxNom)
+                            .addComponent(textBoxPrenom)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(209, 209, 209)
                         .addComponent(buttonValider)
@@ -93,17 +99,21 @@ public class DialogNouvLogin extends javax.swing.JDialog
                 .addComponent(labelTitre)
                 .addGap(74, 74, 74)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelNomUtil)
-                    .addComponent(textBoxNomUtil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(74, 74, 74)
+                    .addComponent(labelNom)
+                    .addComponent(textBoxNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelPrenom)
+                    .addComponent(textBoxPrenom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(labelMDP)
                     .addComponent(textBoxMDP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(86, 86, 86)
+                .addGap(64, 64, 64)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonValider)
                     .addComponent(buttonAnnuler))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         pack();
@@ -116,13 +126,15 @@ public class DialogNouvLogin extends javax.swing.JDialog
     /**************************/
     
     private void buttonValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValiderActionPerformed
-        if(this.textBoxNomUtil.getText().length() > 0 && this.textBoxMDP.getText().length() > 0)
+        if(this.textBoxNom.getText().length() > 0 && this.textBoxPrenom.getText().length() > 0 && this.textBoxMDP.getText().length() > 0)
         {
-            DialogLoginCapitainerie.repertoire.put(this.textBoxNomUtil.getText(), this.textBoxMDP.getText());
+            DialogLoginCapitainerie.repertoire.put(this.textBoxNom.getText()+this.textBoxPrenom.getText(), this.textBoxMDP.getText());
             this.setVisible(false);
         }
         else
         {
+            System.out.println("Creation de la boite de dialogue ERREUR - dans DialogNouvLogin\n");
+            
             DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Valeur(s) incorrecte(s)"); 
             d.setVisible(true);         
             d.dispose();            
@@ -187,9 +199,11 @@ public class DialogNouvLogin extends javax.swing.JDialog
     private javax.swing.JButton buttonAnnuler;
     private javax.swing.JButton buttonValider;
     private javax.swing.JLabel labelMDP;
-    private javax.swing.JLabel labelNomUtil;
+    private javax.swing.JLabel labelNom;
+    private javax.swing.JLabel labelPrenom;
     private javax.swing.JLabel labelTitre;
     private javax.swing.JTextField textBoxMDP;
-    private javax.swing.JTextField textBoxNomUtil;
+    private javax.swing.JTextField textBoxNom;
+    private javax.swing.JTextField textBoxPrenom;
     // End of variables declaration//GEN-END:variables
 }

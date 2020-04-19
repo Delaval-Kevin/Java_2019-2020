@@ -7,10 +7,24 @@
 
 package capitainerie;
 
+import java.text.DateFormat;
+import java.util.Locale;
+import javax.swing.DefaultComboBoxModel;
+
 
 public class DialogFormatDate extends javax.swing.JDialog 
 {
-
+    /**************************/
+    /*                        */
+    /*   VARIABLES MEMBRES    */
+    /*                        */
+    /**************************/
+    
+    private boolean _validation;
+    private Locale _fuseauPays;
+    private int _formatDate;
+    private int _formatHeure;
+    
     /**************************/
     /*                        */
     /*      CONSTRUCTEURS     */
@@ -22,8 +36,86 @@ public class DialogFormatDate extends javax.swing.JDialog
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        setValidation(false);
+        
+        //Construction de la comboBox FuseauHoraire
+        DefaultComboBoxModel dcbmPays = (DefaultComboBoxModel) this.comboBoxFuseauHoraire.getModel();
+        dcbmPays.removeAllElements();
+        dcbmPays.addElement("France");
+        dcbmPays.addElement("Royaume Uni");
+        dcbmPays.addElement("Allemagne");
+        dcbmPays.addElement("Italie");
+        dcbmPays.addElement("U.S.A.");
+       
+        //Construction de la comboBox FormatDate
+        DefaultComboBoxModel dcbmDate = (DefaultComboBoxModel) this.comboBoxFormatDate.getModel();
+        dcbmDate.removeAllElements();
+        dcbmDate.addElement("Court");
+        dcbmDate.addElement("Moyen");
+        dcbmDate.addElement("Long");
+        dcbmDate.addElement("Complet");
+       
+        //Construction de la comboBox FormatHeure
+        DefaultComboBoxModel dcbmHeure = (DefaultComboBoxModel) this.comboBoxFormatHeure.getModel();
+        dcbmHeure.removeAllElements();
+        dcbmHeure.addElement("Court");
+        dcbmHeure.addElement("Moyen");
+        dcbmHeure.addElement("Long");
+        dcbmHeure.addElement("Complet");
     }
 
+    /**************************/
+    /*                        */
+    /*         GETTERS        */
+    /*                        */
+    /**************************/
+    
+    public boolean getValidation()
+    {
+        return _validation;
+    }
+    
+    public Locale getFuseauHoraire()
+    {
+        return _fuseauPays;
+    }
+     
+    public int getFormatDate()
+    {
+        return _formatDate;
+    }
+    
+    public int getFormatHeure()
+    {
+        return _formatHeure;
+    }   
+     
+    /**************************/
+    /*                        */
+    /*         SETTERS        */
+    /*                        */
+    /**************************/
+    
+    public void setValidation(boolean validation)
+    {
+        _validation = validation;
+    }
+    
+     public void setFuseauHoraire(Locale fuseauPays)
+    {
+        _fuseauPays = fuseauPays;
+    }
+     
+    public void setFormatDate(int formatDate)
+    {
+        _formatDate = formatDate;
+    }
+    
+    public void setFormatHeure(int formatHeure)
+    {
+        _formatHeure = formatHeure;
+    }      
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -37,18 +129,11 @@ public class DialogFormatDate extends javax.swing.JDialog
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        radioButtonFrance = new javax.swing.JRadioButton();
-        radioButtonUK = new javax.swing.JRadioButton();
-        radioButtonAllemagne = new javax.swing.JRadioButton();
-        radioButtonItalie = new javax.swing.JRadioButton();
-        radioButtonUSA = new javax.swing.JRadioButton();
-        radioButtonJJ = new javax.swing.JRadioButton();
-        radioButtonMM = new javax.swing.JRadioButton();
-        radioButtonAA = new javax.swing.JRadioButton();
-        radioButtonNorm = new javax.swing.JRadioButton();
-        radioButtonAM = new javax.swing.JRadioButton();
         buttonOK = new javax.swing.JButton();
         buttonAnnuler = new javax.swing.JButton();
+        comboBoxFormatDate = new javax.swing.JComboBox();
+        comboBoxFuseauHoraire = new javax.swing.JComboBox();
+        comboBoxFormatHeure = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Capitainerie d'Inpres-Harbour : Format date");
@@ -61,39 +146,6 @@ public class DialogFormatDate extends javax.swing.JDialog
         jLabel3.setText("Choix du format de la date :");
 
         jLabel4.setText("Choix du format du temps :");
-
-        groupFuseau.add(radioButtonFrance);
-        radioButtonFrance.setSelected(true);
-        radioButtonFrance.setText("France");
-
-        groupFuseau.add(radioButtonUK);
-        radioButtonUK.setText("Royaume Uni");
-
-        groupFuseau.add(radioButtonAllemagne);
-        radioButtonAllemagne.setText("Allemagne");
-
-        groupFuseau.add(radioButtonItalie);
-        radioButtonItalie.setText("Italie");
-
-        groupFuseau.add(radioButtonUSA);
-        radioButtonUSA.setText("U.S.A.");
-
-        groupFormDate.add(radioButtonJJ);
-        radioButtonJJ.setSelected(true);
-        radioButtonJJ.setText("jj/mm/aaaa");
-
-        groupFormDate.add(radioButtonMM);
-        radioButtonMM.setText("mm-jj-aa");
-
-        groupFormDate.add(radioButtonAA);
-        radioButtonAA.setText("aaaa-mm-jj");
-
-        groupFormTemps.add(radioButtonNorm);
-        radioButtonNorm.setSelected(true);
-        radioButtonNorm.setText("hh:mm");
-
-        groupFormTemps.add(radioButtonAM);
-        radioButtonAM.setText("hh:mm AM/PM");
 
         buttonOK.setText("OK");
         buttonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -109,56 +161,37 @@ public class DialogFormatDate extends javax.swing.JDialog
             }
         });
 
+        comboBoxFuseauHoraire.setToolTipText("");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(128, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator1))
+                .addGap(126, 126, 126))
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(radioButtonJJ)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(radioButtonMM)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(radioButtonAA))
+                        .addGap(112, 112, 112)
+                        .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(53, 53, 53)
+                        .addComponent(buttonAnnuler))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
                         .addGap(18, 18, 18)
-                        .addComponent(radioButtonFrance)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(radioButtonUK)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(radioButtonAllemagne))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(radioButtonNorm))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(112, 112, 112)
-                                .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonAnnuler)
-                            .addComponent(radioButtonAM))))
-                .addContainerGap(33, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSeparator1))
-                        .addGap(126, 126, 126))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(radioButtonItalie)
-                        .addGap(45, 45, 45)
-                        .addComponent(radioButtonUSA)
-                        .addGap(110, 110, 110))))
+                            .addComponent(comboBoxFuseauHoraire, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboBoxFormatHeure, 0, 198, Short.MAX_VALUE)
+                            .addComponent(comboBoxFormatDate, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jLabel2))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,25 +203,16 @@ public class DialogFormatDate extends javax.swing.JDialog
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(radioButtonFrance)
-                    .addComponent(radioButtonUK)
-                    .addComponent(radioButtonAllemagne))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(radioButtonItalie)
-                    .addComponent(radioButtonUSA))
-                .addGap(14, 14, 14)
+                    .addComponent(comboBoxFuseauHoraire, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(57, 57, 57)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(radioButtonJJ)
-                    .addComponent(radioButtonMM)
-                    .addComponent(radioButtonAA))
-                .addGap(48, 48, 48)
+                    .addComponent(comboBoxFormatDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(radioButtonNorm)
-                    .addComponent(radioButtonAM))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                    .addComponent(comboBoxFormatHeure, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonOK)
                     .addComponent(buttonAnnuler))
@@ -205,7 +229,61 @@ public class DialogFormatDate extends javax.swing.JDialog
     /**************************/   
     
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        // TODO add your handling code here:
+        //pour set la valeur du choix de fuseau horaire
+        switch(comboBoxFuseauHoraire.getSelectedItem().toString())
+        {
+            case "France" :
+                setFuseauHoraire(Locale.FRANCE);
+                break;
+            case "Royaume Uni" :
+                setFuseauHoraire(Locale.UK);
+                break;
+            case "Allemagne" :
+                setFuseauHoraire(Locale.GERMAN);
+                break;
+            case "Italie" :
+                setFuseauHoraire(Locale.ITALY);
+                break;
+            case "U.S.A.":
+                setFuseauHoraire(Locale.US);
+                break;
+        }
+        
+        //pour set la valeur du choix du format de date
+        switch(comboBoxFormatDate.getSelectedItem().toString())
+        {
+            case "Court" :
+                setFormatDate(DateFormat.SHORT);
+                break;
+            case "Moyen" :
+                setFormatDate(DateFormat.MEDIUM);
+                break;
+            case "Long" :
+                setFormatDate(DateFormat.LONG);
+                break;
+            case "Complet" :
+                setFormatDate(DateFormat.FULL);
+                break;
+        }
+        
+        //pour set la valeur du choix du format de l'heure
+        switch(comboBoxFormatHeure.getSelectedItem().toString())
+        {
+            case "Court" :
+                setFormatHeure(DateFormat.SHORT);
+                break;
+            case "Moyen" :
+                setFormatHeure(DateFormat.MEDIUM);
+                break;
+            case "Long" :
+                setFormatHeure(DateFormat.LONG);
+                break;
+            case "Complet" :
+                setFormatHeure(DateFormat.FULL);
+                break;  
+        }
+        setValidation(true);
+        this.setVisible(false);
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnnulerActionPerformed
@@ -266,6 +344,9 @@ public class DialogFormatDate extends javax.swing.JDialog
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAnnuler;
     private javax.swing.JButton buttonOK;
+    private javax.swing.JComboBox comboBoxFormatDate;
+    private javax.swing.JComboBox comboBoxFormatHeure;
+    private javax.swing.JComboBox comboBoxFuseauHoraire;
     private javax.swing.ButtonGroup groupFormDate;
     private javax.swing.ButtonGroup groupFormTemps;
     private javax.swing.ButtonGroup groupFuseau;
@@ -274,15 +355,5 @@ public class DialogFormatDate extends javax.swing.JDialog
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JRadioButton radioButtonAA;
-    private javax.swing.JRadioButton radioButtonAM;
-    private javax.swing.JRadioButton radioButtonAllemagne;
-    private javax.swing.JRadioButton radioButtonFrance;
-    private javax.swing.JRadioButton radioButtonItalie;
-    private javax.swing.JRadioButton radioButtonJJ;
-    private javax.swing.JRadioButton radioButtonMM;
-    private javax.swing.JRadioButton radioButtonNorm;
-    private javax.swing.JRadioButton radioButtonUK;
-    private javax.swing.JRadioButton radioButtonUSA;
     // End of variables declaration//GEN-END:variables
 }

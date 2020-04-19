@@ -29,13 +29,15 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="labelNomUtil" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelNom" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="labelMDP" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelPrenom" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="textBoxMDP" alignment="0" pref="164" max="32767" attributes="0"/>
-                          <Component id="textBoxNomUtil" alignment="0" max="32767" attributes="0"/>
+                          <Component id="textBoxNom" alignment="0" max="32767" attributes="0"/>
+                          <Component id="textBoxPrenom" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -60,20 +62,25 @@
               <Component id="labelTitre" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="labelNomUtil" alignment="1" min="-2" max="-2" attributes="0"/>
-                  <Component id="textBoxNomUtil" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelNom" alignment="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="textBoxNom" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="labelPrenom" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="textBoxPrenom" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="labelMDP" alignment="1" min="-2" max="-2" attributes="0"/>
                   <Component id="textBoxMDP" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="86" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="buttonValider" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buttonAnnuler" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="64" max="32767" attributes="0"/>
+              <EmptySpace pref="39" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -100,7 +107,9 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonAnnulerActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="textBoxNomUtil">
+    <Component class="javax.swing.JTextField" name="textBoxNom">
+    </Component>
+    <Component class="javax.swing.JTextField" name="textBoxPrenom">
     </Component>
     <Component class="javax.swing.JTextField" name="textBoxMDP">
     </Component>
@@ -112,9 +121,14 @@
         <Property name="text" type="java.lang.String" value="Inscription d&apos;un nouvel utilisateur"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="labelNomUtil">
+    <Component class="javax.swing.JLabel" name="labelNom">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Nom d&apos;utilisateur :"/>
+        <Property name="text" type="java.lang.String" value="Nom :"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelPrenom">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Prenom :"/>
       </Properties>
     </Component>
   </SubComponents>

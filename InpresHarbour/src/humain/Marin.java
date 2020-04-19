@@ -86,4 +86,10 @@ public class Marin extends Humain implements AUnIdentifiant
         super.Affiche();
         System.out.println("Fonction : " + getFonction());
     }
+    
+    @Override
+    public String toString()
+    {
+        return getFonction() + " : " + getNom();
+    }
 }

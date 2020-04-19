@@ -6,13 +6,14 @@
 /***********************************************************/
 
 package capitainerie;
-import humain.Equipage;
 import humain.Marin;
-import humain.SailorWithoutIdentificationException;
 import java.awt.Frame;
+import humain.Equipage;
+import vehicules.Bateau;
+import javax.swing.DefaultListModel;
+import humain.SailorWithoutIdentificationException;
 
-
-public class DialogEnregEquipage extends javax.swing.JDialog 
+public class DialogEnregEquipage extends javax.swing.JDialog
 {
     /**************************/
     /*                        */
@@ -20,19 +21,32 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     /*                        */
     /**************************/
     
-    private Equipage _equipage;
+    private Bateau _bateau;
+    private DefaultListModel _listeMarins;
+    private Equipage _equipageDeBase;
     
     /**************************/
     /*                        */
     /*      CONSTRUCTEURS     */
     /*                        */
     /**************************/
-    
+ 
+    //Constructeur par défaut
     public DialogEnregEquipage(java.awt.Frame parent, boolean modal) 
     {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
+    }
+    
+    //Constructeur d'initialisation
+    public DialogEnregEquipage(java.awt.Frame parent, boolean modal, Bateau bateau) 
+    {
+        this(parent, modal);
+        setBateau(bateau);
+        labelNomBateau.setText(getBateau().getNom() + " (" + getBateau().getPortAttache() + ")");
+        InitList();
+        InitEquipDeBase();
     }
 
     /**************************/
@@ -41,9 +55,19 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     /*                        */
     /**************************/
     
-    public void setEquipage(Equipage equipage)
+    public void setBateau(Bateau bateau)
     {
-        _equipage = equipage;
+        _bateau = bateau;
+    }
+    
+    public void setListeMarins(DefaultListModel listeMarins)
+    {
+        _listeMarins = listeMarins;
+    }
+    
+    public void setEquipageDeBase(Equipage equipageDeBase)
+    {
+        _equipageDeBase = equipageDeBase;
     }
     
     /**************************/
@@ -52,12 +76,22 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     /*                        */
     /**************************/
  
-    public Equipage getEquipage()
+    public Bateau getBateau()
     {
-        return _equipage;
+        return _bateau;
     }
     
-    public String getSelection()
+    public DefaultListModel getListeMarins()
+    {
+        return _listeMarins;
+    }
+    
+    public Equipage getEquipageDeBase()
+    {
+        return _equipageDeBase;
+    }   
+    
+    private String getSelection()
     {
         if(this.radioCapitaine.isSelected())
         {
@@ -87,8 +121,48 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     /*                        */
     /**************************/ 
     
-    
+    private void InitList()
+    {
+        System.out.println("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans DialogEnregEquipage\n");
+        
+        setListeMarins(new DefaultListModel());
+        
+        if(getBateau().getEquipage().getCapitaine() != null)
+        {
+            getListeMarins().addElement(getBateau().getEquipage().getCapitaine());
+        }
+        if(getBateau().getEquipage().getSecond() != null)
+        {
+            getListeMarins().addElement(getBateau().getEquipage().getSecond());
+        }
+           
+       getBateau().getEquipage().getMarins().forEach(m -> getListeMarins().addElement(m));
+       
+       listMarins.setModel(getListeMarins());
+    }
    
+    private void InitEquipDeBase()
+    {
+        System.out.println("Creation et initialisation de l'equipage de base EQUIPAGE - dans DialogEnregEquipage\n");
+ 
+        setEquipageDeBase(new Equipage());
+        
+        if(getBateau().getEquipage().getCapitaine() != null)
+        {
+            System.out.println("Creation du capitaine de l'equipe de base MARIN - dans DialogEnregEquipage\n");
+            
+            getEquipageDeBase().setCapitaine(getBateau().getEquipage().getCapitaine());
+        }
+        if(getBateau().getEquipage().getSecond() != null)
+        {
+            System.out.println("Creation du second de l'equipe de base MARIN - dans DialogEnregEquipage\n");
+            
+            getEquipageDeBase().setSecond(getBateau().getEquipage().getSecond());
+        }
+        
+        getBateau().getEquipage().getMarins().forEach(m -> getEquipageDeBase().AddMarins(m));
+        
+    }
     
     
     @SuppressWarnings("unchecked")
@@ -114,6 +188,7 @@ public class DialogEnregEquipage extends javax.swing.JDialog
         jSeparator1 = new javax.swing.JSeparator();
         buttonValEquip = new javax.swing.JButton();
         buttonAbandon = new javax.swing.JButton();
+        labelNomBateau = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Capitainerie d'Inpres-Harbour : Enregistrement d'un équipage");
@@ -190,20 +265,23 @@ public class DialogEnregEquipage extends javax.swing.JDialog
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                     .addGap(296, 296, 296)
                                     .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel1)
+                            .addComponent(jSeparator1)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel3)
-                                    .addComponent(jLabel2))
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(textBoxDateNaiss, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                                    .addComponent(textBoxPrenom)
-                                    .addComponent(textBoxNom))
-                                .addGap(49, 49, 49)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jSeparator1)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelNomBateau)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(textBoxDateNaiss, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                            .addComponent(textBoxPrenom)
+                                            .addComponent(textBoxNom))
+                                        .addGap(49, 49, 49)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(200, 200, 200)
                         .addComponent(buttonValEquip)
@@ -215,7 +293,9 @@ public class DialogEnregEquipage extends javax.swing.JDialog
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(labelNomBateau))
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -263,36 +343,38 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
         try 
         {
+            System.out.println("Creation d'un nouveau MARIN - dans DialogEnregEquipage\n");
+            
             Marin marin = new Marin(this.textBoxNom.getText(), this.textBoxPrenom.getText(), this.textBoxDateNaiss.getText(), getSelection());
 
             if(marin.getFonction().equals("Capitaine"))
             {
-                if(getEquipage().getCapitaine() == null)
+                if(getBateau().getEquipage().getCapitaine() == null)
                 {
-                    getEquipage().setCapitaine(marin);
+                    getBateau().getEquipage().setCapitaine(marin);
                 }
                 else
                 {
-                    DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Il y a déjà un Capitaine !");
-                    d.setVisible(true);                    
+                    throw new SailorWithoutIdentificationException("Il y a déjà un Capitaine !");                    
                 }
             }
             else if(marin.getFonction().equals("Second"))
             {
-                if(getEquipage().getSecond()== null)
+                if(getBateau().getEquipage().getSecond()== null)
                 {
-                    getEquipage().setSecond(marin);
+                    getBateau().getEquipage().setSecond(marin);
                 }
                 else
                 {
-                    DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Il y a déjà un Second !");
-                    d.setVisible(true);                       
+                    throw new SailorWithoutIdentificationException("Il y a déjà un Second !"); 
                 }
             }
             else
             {
-                getEquipage().AddMarins(marin);
+                getBateau().getEquipage().AddMarins(marin);
             }
+            
+            getListeMarins().addElement(marin);
             
             this.textBoxNom.setText(null);
             this.textBoxPrenom.setText(null);
@@ -300,6 +382,8 @@ public class DialogEnregEquipage extends javax.swing.JDialog
         } 
         catch (SailorWithoutIdentificationException exc) 
         {
+            System.out.println("Creation de la boite de dialogue ERREUR - dans DialogEnregEquipage\n");
+            
             DialogErreur d = new DialogErreur((Frame)this.getParent(), true, exc.getMessage());
             d.setVisible(true);
         }
@@ -307,11 +391,13 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonValEquipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValEquipActionPerformed
-        // TODO add your handling code here:
+        
+        this.setVisible(false);
     }//GEN-LAST:event_buttonValEquipActionPerformed
 
     private void buttonAbandonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAbandonActionPerformed
-        // TODO add your handling code here:
+        getBateau().setEquipage(getEquipageDeBase());
+        this.setVisible(false);
     }//GEN-LAST:event_buttonAbandonActionPerformed
 
     
@@ -377,6 +463,7 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel labelNomBateau;
     private javax.swing.JList listMarins;
     private javax.swing.JRadioButton radioBosco;
     private javax.swing.JRadioButton radioCapitaine;

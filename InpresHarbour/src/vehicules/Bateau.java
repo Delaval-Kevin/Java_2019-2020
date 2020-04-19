@@ -56,6 +56,16 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant
         this("Belgica", "Anvers", "BE", 4, 11, Combustible.autre, false, new Equipage());
     }*/   
     
+    public Bateau(String nom, String pavillon, int longueur,  Combustible combustible , boolean submersible, Equipage equipage)
+    {
+        super(combustible, submersible);
+        
+        setNom(nom);
+        setPavillon(pavillon);
+        setLongueur(longueur);
+        setEquipage(equipage);
+    }    
+    
     /***************************/
     /*                         */
     /*         Getters         */
@@ -155,5 +165,11 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant
         System.out.println("Tonnage : " + getTonnage());
         System.out.println("Longueur : " + getLongueur());
         getEquipage().Affiche();
+    }
+    
+    @Override
+    public String toString()
+    {
+        return getNom() + " : " + getPortAttache();
     }
 }

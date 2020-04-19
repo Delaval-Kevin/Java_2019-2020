@@ -18,17 +18,18 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
     /*                        */
     /**************************/
     
+    private boolean _loginValide;
     private String _utilisateur;
     public static Hashtable repertoire;
     
     static
     {
         repertoire = new Hashtable();
-        repertoire.put("Kevin", "test");
+        repertoire.put("DelavalKevin", "test");
         repertoire.put("Samuel", "1234");
-        repertoire.put("Loic", "ok");
-        repertoire.put("Fabian", "azerty");
-        repertoire.put("Bene", "ebene");
+        repertoire.put("ColetteLoic", "ok");
+        repertoire.put("BrandtFabian", "azerty");
+        repertoire.put("KamanaBene", "ebene");
     }
 
     /**************************/
@@ -42,7 +43,59 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        setLoginValide(false);
     }
+    
+    
+    /**************************/
+    /*                        */
+    /*         SETTERS        */
+    /*                        */
+    /**************************/
+    
+    public void setUtilisateur(String utilisateur)
+    {
+        _utilisateur = utilisateur;
+    }
+    
+    public void setLoginValide(boolean val)
+    {
+        _loginValide = val;
+    }
+    
+    /**************************/
+    /*                        */
+    /*         GETTERS        */
+    /*                        */
+    /**************************/
+    
+    public String getUtilisateur()
+    {
+        return _utilisateur;
+    }
+    
+    public boolean getLoginValide()
+    {
+        return _loginValide;
+    }
+    
+    /**************************/
+    /*                        */
+    /*        METHODES        */
+    /*                        */
+    /**************************/
+
+    public boolean verifCompte() throws LoginException
+    {
+        if(repertoire.containsKey(this.textBoxNomUtil.getText()) && repertoire.get(this.textBoxNomUtil.getText()).equals(this.textBoxMDP.getText()))
+        {
+            return true;
+        }
+        
+        throw new LoginException("Erreur de login !!!");
+    }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -141,58 +194,24 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
             if(verifCompte())
             {
                 setUtilisateur(this.textBoxNomUtil.getText());
+                setLoginValide(true);
                 this.setVisible(false);
             }
         }
         catch (Exception exc)
         {
+            System.out.println("Creation de la boite de dialogue ERREUR - dans DialogLoginCapitainerie\n");
+            
             DialogErreur d = new DialogErreur((Frame)this.getParent(), true, exc.getMessage());
             d.setVisible(true);
         }
     }//GEN-LAST:event_buttonValiderActionPerformed
 
     private void buttonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnnulerActionPerformed
-        setUtilisateur(null);
         this.setVisible(false);
     }//GEN-LAST:event_buttonAnnulerActionPerformed
 
-    /**************************/
-    /*                        */
-    /*        METHODES        */
-    /*                        */
-    /**************************/
 
-    public boolean verifCompte() throws LoginException
-    {
-        if(repertoire.containsKey(this.textBoxNomUtil.getText()) && repertoire.get(this.textBoxNomUtil.getText()).equals(this.textBoxMDP.getText()))
-        {
-            return true;
-        }
-        
-        throw new LoginException("Erreur de login !!!");
-    }
-    
-    /**************************/
-    /*                        */
-    /*         SETTERS        */
-    /*                        */
-    /**************************/
-    
-    public void setUtilisateur(String utilisateur)
-    {
-        _utilisateur = utilisateur;
-    }
-    
-    /**************************/
-    /*                        */
-    /*         GETTERS        */
-    /*                        */
-    /**************************/
-    
-    public String getUtilisateur()
-    {
-        return _utilisateur;
-    }
     
     /**************************/
     /*                        */

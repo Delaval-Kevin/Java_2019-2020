@@ -6,9 +6,15 @@
 /***********************************************************/
 
 package capitainerie;
+import amarrages.Amarrage;
 import humain.Equipage;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import vehicules.Bateau;
 import vehicules.Combustible;
 import vehicules.ShipWithoutIdentificationException;
@@ -24,7 +30,11 @@ public class FenApp extends javax.swing.JFrame
     /**************************/
     
     private String _utilisateur;
-    private DialogInfoBateauEntrant _infoBateauEntrant;
+    private DefaultListModel _amarrage;
+    private Bateau _infoBateauEntrant;
+    private String _infoDate;
+    
+
 
     /**************************/
     /*                        */
@@ -35,9 +45,10 @@ public class FenApp extends javax.swing.JFrame
     public FenApp() 
     {
         initComponents();
-        afficheLogin();
-        setInfoBateauEntrant(new DialogInfoBateauEntrant(this, true));
+        fctLogin();      
+        formatageDate(DateFormat.MEDIUM , DateFormat.MEDIUM ,Locale.FRANCE);
         
+        InitList();
     }
 
     @SuppressWarnings("unchecked")
@@ -59,6 +70,7 @@ public class FenApp extends javax.swing.JFrame
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        labelHeure = new javax.swing.JLabel();
         scrollPanelBateaux = new javax.swing.JScrollPane();
         listeBateaux = new javax.swing.JList();
         menuBar = new javax.swing.JMenuBar();
@@ -85,7 +97,6 @@ public class FenApp extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Capitainerie d'Inpres-Harbour");
-        setPreferredSize(new java.awt.Dimension(930, 550));
 
         buttonDemarServ.setText("Démarrer le serveur");
         buttonDemarServ.addActionListener(new java.awt.event.ActionListener() {
@@ -153,6 +164,9 @@ public class FenApp extends javax.swing.JFrame
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/capitainerie/voilier.jpeg"))); // NOI18N
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/capitainerie/peche1.jpg"))); // NOI18N
+
+        labelHeure.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        labelHeure.setToolTipText("");
 
         scrollPanelBateaux.setViewportView(listeBateaux);
 
@@ -311,18 +325,19 @@ public class FenApp extends javax.swing.JFrame
                                 .addGap(28, 28, 28)
                                 .addComponent(textBoxLecture))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(buttonDemarServ)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(buttonChoisir)
-                                        .addGap(12, 12, 12)
-                                        .addComponent(textBoxChoix, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(buttonEnvChoix)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(buttonChoisir)
+                                .addGap(12, 12, 12)
+                                .addComponent(textBoxChoix, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(buttonEnvChoix)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(buttonDemarServ)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(labelHeure, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(60, 60, 60)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -352,8 +367,13 @@ public class FenApp extends javax.swing.JFrame
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(buttonDemarServ)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(buttonDemarServ))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(labelHeure)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkRequeteEnAtt)
@@ -410,9 +430,52 @@ public class FenApp extends javax.swing.JFrame
         }    
     }
     
-    public void setInfoBateauEntrant(DialogInfoBateauEntrant infoBateauEntrant)
+    public void setAmarrages(DefaultListModel amarrage)
+    {
+        _amarrage = amarrage;
+    }
+    
+    public void setInfoBateauEntrant(Bateau infoBateauEntrant)
     {
         _infoBateauEntrant = infoBateauEntrant;
+    }
+    
+    public void setInfoDate(String infoDate)
+    {
+        _infoDate = infoDate;
+    }
+    
+    public void setEnableAll(boolean choice)
+    {
+        setEnableMenu(choice);
+        setEnableButton(choice);
+        setEnableTextBox(choice);
+    }
+    
+    public void setEnableMenu(boolean choice)
+    {
+        menuAmarrages.setEnabled(choice);
+        menuBateaux.setEnabled(choice);
+        menuPersonnel.setEnabled(choice);
+        menuParam.setEnabled(choice);
+    }
+        
+    public void setEnableButton(boolean choice)
+    {
+        buttonArretServeur.setEnabled(choice);
+        buttonBateauAmar.setEnabled(choice);
+        buttonChoisir.setEnabled(choice);
+        buttonDemarServ.setEnabled(choice);
+        buttonEnvChoix.setEnabled(choice);
+        buttonEnvConf.setEnabled(choice);
+        buttonLire.setEnabled(choice);
+    }
+        
+    public void setEnableTextBox(boolean choice)
+    {
+        textBoxChoix.setEnabled(choice);
+        textBoxConfChoix.setEnabled(choice);
+        textBoxLecture.setEnabled(choice);
     }
     
     /**************************/
@@ -426,9 +489,19 @@ public class FenApp extends javax.swing.JFrame
         return _utilisateur;
     }
     
-    public DialogInfoBateauEntrant getInfoBateauEntrant()
+    public Bateau getInfoBateauEntrant()
     {
         return _infoBateauEntrant;
+    }
+    
+    public String getInfoDate()
+    {
+        return _infoDate;
+    }
+    
+    public DefaultListModel getAmarrages()
+    {
+        return _amarrage;
     }
     
     /**************************/
@@ -447,27 +520,58 @@ public class FenApp extends javax.swing.JFrame
         return true;
     }
     
-    public void afficheLogin()
+    private void fctLogin()
     {
+        this.setVisible(false);
+        
+        System.out.println("Creation de la boite dialogue de LOGIN - dans FenApp\n");
+        
         /*Je ne garde pas une référence de la fenêtre en global, car il n'y à lieu d'avoir de connecion et déconnexion intempestives*/
         DialogLoginCapitainerie login = new DialogLoginCapitainerie(this, true);
         login.setVisible(true);
         
-        setUtilisateur(login.getUtilisateur());
-        setTitre();
+        if(login.getLoginValide())
+        {
+            setUtilisateur(login.getUtilisateur());
+            setTitre();
+            setEnableAll(true);
+        }
+        else
+        {
+            setEnableAll(false);
+        }
         
         this.setVisible(true);
-        
-        login.dispose();   
+        login.dispose();
     }
     
-    public void afficheErr(String msg)
+    private void afficheErr(String msg)
     {
-            /*Je ne garde pas une référence de la fenêtre en global, car il n'y à beaucoup d'erreurs à gérer*/
-            DialogErreur d = new DialogErreur(this, true, msg); 
-            d.setLocationRelativeTo(null);
-            d.setVisible(true);         
-            d.dispose();    
+        System.out.println("Creation de la boite de dialogue ERREUR - dans FenApp\n");
+        
+        /*Je ne garde pas une référence de la fenêtre en global, car il n'y à beaucoup d'erreurs à gérer*/
+        DialogErreur d = new DialogErreur(this, true, msg); 
+        d.setLocationRelativeTo(null);
+        d.setVisible(true);         
+        d.dispose();    
+    }
+    
+    private void formatageDate(int date, int heure, Locale fuseau)
+    {
+        System.out.println("Creation de la DATE - dans FenApp\n");
+        
+        Date maintenant = new Date();
+        setInfoDate(DateFormat.getDateTimeInstance(date, heure, fuseau).format(maintenant));
+        labelHeure.setText(getInfoDate());
+    }
+    
+    private void InitList()
+    {
+        System.out.println("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans FenApp\n");
+        
+        setAmarrages(new DefaultListModel());
+       
+       listeBateaux.setModel(getAmarrages());
     }
     
     /**************************/
@@ -497,15 +601,23 @@ public class FenApp extends javax.swing.JFrame
     }//GEN-LAST:event_buttonEnvConfActionPerformed
 
     private void buttonBateauAmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBateauAmarActionPerformed
-        try 
+        if(textBoxLecture.getText().length() > 0 && textBoxChoix.getText().length() > 0)
         {
-            getInfoBateauEntrant().setBateau(new Bateau("Marie Hurlante", "Norwich", "UK.jpg", 32, 15, Combustible.kérosène, false, new Equipage()));
-            getInfoBateauEntrant().setEmplacemet("Q2*4");
-            getInfoBateauEntrant().setVisible(true);
+            System.out.println("Creation d'un objet BATEAU + EQUIPAGE - dans FenApp\n");
+            
+            setInfoBateauEntrant(new Bateau(textBoxLecture.getText(), "UK.jpg", 15, Combustible.kérosène, false, new Equipage()));
+            
+            System.out.println("Creation de la boite de dialogue INFO BATEAU ENTRANT - dans FenApp\n");
+            
+            DialogInfoBateauEntrant d = new DialogInfoBateauEntrant(this, true, getInfoBateauEntrant());           
+            d.setEmplacemet(textBoxChoix.getText());
+            d.setVisible(true);
+            
+             getAmarrages().addElement(getInfoBateauEntrant());
         }
-        catch (ShipWithoutIdentificationException exc) 
+        else
         {
-            afficheErr(exc.getMessage());
+            afficheErr("Les champs ne sont pas remplis");
         }
         
     }//GEN-LAST:event_buttonBateauAmarActionPerformed
@@ -527,18 +639,21 @@ public class FenApp extends javax.swing.JFrame
         }
         else
         {
-            afficheLogin();
+            fctLogin();
         }
     }//GEN-LAST:event_menuItemLoginActionPerformed
 
     private void menuItemLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemLogoutActionPerformed
         setUtilisateur(null);
         setTitre();
+        setEnableAll(false);
     }//GEN-LAST:event_menuItemLogoutActionPerformed
 
     private void menuItemNouveauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemNouveauActionPerformed
         if(isConnected())
         {  
+            System.out.println("Creation de la boite de dialogue NOUV LOGIN - dans FenApp\n");
+            
             /*Je ne garde pas une référence de la fenêtre en global, car il n'y à beaucoup d'ajout à gérer*/
             DialogNouvLogin d = new DialogNouvLogin(this, true); 
             d.setLocationRelativeTo(null);
@@ -576,10 +691,19 @@ public class FenApp extends javax.swing.JFrame
     }//GEN-LAST:event_menuItemRechMarinActionPerformed
 
     private void menuItemFormatDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemFormatDateActionPerformed
-            /*Je ne garde pas une référence de la fenêtre en global*/
-            DialogFormatDate d = new DialogFormatDate(this, true); 
-            d.setVisible(true);         
-            d.dispose();
+        
+        System.out.println("Creation de la boite de dialogue FORMAT DATE - dans FenApp\n");
+        
+        /*Je ne garde pas une référence de la fenêtre en global*/
+        DialogFormatDate d = new DialogFormatDate(this, true); 
+        d.setVisible(true);  
+            
+        if(d.getValidation())
+        {
+            formatageDate(d.getFormatDate(), d.getFormatHeure(), d.getFuseauHoraire());
+        }
+
+        d.dispose();
     }//GEN-LAST:event_menuItemFormatDateActionPerformed
 
     private void menuItemCheckFichLogStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_menuItemCheckFichLogStateChanged
@@ -587,21 +711,34 @@ public class FenApp extends javax.swing.JFrame
     }//GEN-LAST:event_menuItemCheckFichLogStateChanged
 
     private void menuItemCheckDateHeureStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_menuItemCheckDateHeureStateChanged
-        // TODO add your handling code here:
+        if(menuItemCheckDateHeure.isSelected())
+        {
+            labelHeure.setVisible(true);
+        }
+        else
+        {
+            labelHeure.setVisible(false);
+        }
     }//GEN-LAST:event_menuItemCheckDateHeureStateChanged
 
     private void menuItemAuteurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAuteurActionPerformed
-            /*Je ne garde pas une référence de la fenêtre en global*/
-            DialogAuteur d = new DialogAuteur(this, true); 
-            d.setVisible(true);         
-            d.dispose();
+        
+        System.out.println("Creation de la boite de dialogue AUTEUR - dans FenApp\n");
+        
+        /*Je ne garde pas une référence de la fenêtre en global*/
+        DialogAuteur d = new DialogAuteur(this, true); 
+        d.setVisible(true);         
+        d.dispose();
     }//GEN-LAST:event_menuItemAuteurActionPerformed
 
     private void menuItemAideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAideActionPerformed
-            /*Je ne garde pas une référence de la fenêtre en global*/
-            DialogAide d = new DialogAide(this, true); 
-            d.setVisible(true);         
-            d.dispose();
+        
+        System.out.println("Creation de la boite de dialogue AIDE - dans FenApp\n");
+        
+        /*Je ne garde pas une référence de la fenêtre en global*/
+        DialogAide d = new DialogAide(this, true); 
+        d.setVisible(true);         
+        d.dispose();
     }//GEN-LAST:event_menuItemAideActionPerformed
 
 
@@ -660,6 +797,7 @@ public class FenApp extends javax.swing.JFrame
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel labelHeure;
     private javax.swing.JList listeBateaux;
     private javax.swing.JMenu menuAPropos;
     private javax.swing.JMenu menuAmarrages;
