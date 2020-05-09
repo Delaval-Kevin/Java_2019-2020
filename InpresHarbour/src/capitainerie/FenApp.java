@@ -15,6 +15,8 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import java.util.Timer;
+import java.util.TimerTask;
 import vehicules.Bateau;
 import vehicules.Combustible;
 import vehicules.ShipWithoutIdentificationException;
@@ -34,6 +36,11 @@ public class FenApp extends javax.swing.JFrame
     private Bateau _infoBateauEntrant;
     private String _infoDate;
     
+    private Timer _timer;
+    private int _formatDate;
+    private int _formatHeure;
+    private Locale _fuseau;
+    
 
 
     /**************************/
@@ -45,9 +52,10 @@ public class FenApp extends javax.swing.JFrame
     public FenApp() 
     {
         initComponents();
-        fctLogin();      
+        fctLogin();
+
         formatageDate(DateFormat.MEDIUM , DateFormat.MEDIUM ,Locale.FRANCE);
-        
+        InitTimer();
         InitList();
     }
 
@@ -445,6 +453,26 @@ public class FenApp extends javax.swing.JFrame
         _infoDate = infoDate;
     }
     
+    public void setTimer(Timer timer)
+    {
+        _timer = timer;
+    }
+    
+    public void setFuseaau(Locale fuseau)
+    {
+        _fuseau = fuseau;
+    }
+
+    public void setFormatHeure(int formatHeure)
+    {
+        _formatHeure = formatHeure;
+    }
+    
+    public void setFormatDate(int formatDate)
+    {
+        _formatDate = formatDate;
+    }
+    
     public void setEnableAll(boolean choice)
     {
         setEnableMenu(choice);
@@ -503,6 +531,26 @@ public class FenApp extends javax.swing.JFrame
     {
         return _amarrage;
     }
+  
+    public Timer getTimer()
+    {
+        return _timer;
+    }
+    
+    public Locale getFuseaau()
+    {
+        return _fuseau;
+    }
+
+    public int getFormatHeure()
+    {
+        return _formatHeure;
+    }
+    
+    public int getFormatDate()
+    {
+       return _formatDate;
+    }
     
     /**************************/
     /*                        */
@@ -518,6 +566,22 @@ public class FenApp extends javax.swing.JFrame
         }
         
         return true;
+    }
+    
+    //crée le thread qui fera l'affichage de l'heure toutes les secondes
+    private void InitTimer()
+    {
+        setTimer(new Timer());
+            TimerTask task = new TimerTask()
+            {
+                @Override
+                public
+                void run()
+                {
+                    afficheHeure();
+                }
+            };
+            getTimer().schedule(task,0, 1*1000);
     }
     
     private void fctLogin()
@@ -560,8 +624,18 @@ public class FenApp extends javax.swing.JFrame
     {
         System.out.println("Creation de la DATE - dans FenApp\n");
         
+        setFormatDate(date);
+        setFormatHeure(heure);
+        setFuseaau(fuseau);
+        afficheHeure();
+    }
+    
+    private void afficheHeure()
+    {
+//        System.out.println("Creation de la DATE - dans FenApp\n");
+        
         Date maintenant = new Date();
-        setInfoDate(DateFormat.getDateTimeInstance(date, heure, fuseau).format(maintenant));
+        setInfoDate(DateFormat.getDateTimeInstance(getFormatDate(), getFormatHeure(), getFuseaau()).format(maintenant));
         labelHeure.setText(getInfoDate());
     }
     
@@ -613,7 +687,7 @@ public class FenApp extends javax.swing.JFrame
             d.setEmplacemet(textBoxChoix.getText());
             d.setVisible(true);
             
-             getAmarrages().addElement(getInfoBateauEntrant());
+            getAmarrages().addElement(getInfoBateauEntrant());
         }
         else
         {

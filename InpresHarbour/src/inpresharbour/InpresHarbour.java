@@ -6,6 +6,7 @@
 /***********************************************************/
 
 package inpresharbour;
+import capitainerie.FenApp;
 import humain.*;
 import vehicules.*;
 
@@ -16,7 +17,12 @@ public class InpresHarbour
 
     public static void main(String[] args) 
     {
-        Bateau bateau = null;
+
+        FenApp app = new FenApp();
+        app.setVisible(true);
+        
+        
+        /*      Bateau bateau = null;
         BateauPeche bateauPeche = null;
         BateauPlaisance bateauPlaisance = null;
         
@@ -37,7 +43,7 @@ public class InpresHarbour
             
             bateau.getEquipage().setSecond(new Marin("Delaval", "Kevin", "29/01/1987", "second"));
             bateau.getEquipage().AddMarins(new Marin("refref", "frefr", "29/01/4655", "erff"));
-            bateau.getEquipage().AddMarins(new Marin("zzzz", "zzzzdddd", "22/11/1111", "aaaaaa"));*/
+            bateau.getEquipage().AddMarins(new Marin("zzzz", "zzzzdddd", "22/11/1111", "aaaaaa"));
         } 
         catch (Exception e) 
         {
@@ -45,7 +51,7 @@ public class InpresHarbour
         }
         
         
-/*
+
         bateau.Affiche();
         System.out.println("\n------------------------------\n");
         bateauPeche.Affiche();
