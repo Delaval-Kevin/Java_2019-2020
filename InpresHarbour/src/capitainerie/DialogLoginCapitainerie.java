@@ -1,5 +1,5 @@
 /***********************************************************/
-/*Auteur : DELAVAL Kevin                                   */
+/*Auteurs : DELAVAL Kevin & COLLETTE Loïc                  */
 /*Groupe : 2203                                            */
 /*Application : InpresHarbour                              */
 /*Date de la dernière mise à jour : 11/04/2020             */
