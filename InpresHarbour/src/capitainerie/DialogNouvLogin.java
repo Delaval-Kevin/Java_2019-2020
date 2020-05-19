@@ -128,7 +128,7 @@ public class DialogNouvLogin extends javax.swing.JDialog
     private void buttonValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValiderActionPerformed
         if(this.textBoxNom.getText().length() > 0 && this.textBoxPrenom.getText().length() > 0 && this.textBoxMDP.getText().length() > 0)
         {
-            DialogLoginCapitainerie.repertoire.put(this.textBoxNom.getText()+this.textBoxPrenom.getText(), this.textBoxMDP.getText());
+            DialogLoginCapitainerie.repertoire.AddUser(this.textBoxNom.getText()+this.textBoxPrenom.getText(), this.textBoxMDP.getText());
             this.setVisible(false);
         }
         else

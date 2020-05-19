@@ -7,7 +7,7 @@
 
 package capitainerie;
 import java.awt.Frame;
-import java.util.Hashtable;
+import utilisateurs.*;
 
 
 public class DialogLoginCapitainerie extends javax.swing.JDialog 
@@ -20,18 +20,8 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
     
     private boolean _loginValide;
     private String _utilisateur;
-    public static Hashtable repertoire;
+    public static Proprietes repertoire;
     
-    static
-    {
-        repertoire = new Hashtable();
-        repertoire.put("DelavalKevin", "test");
-        repertoire.put("Samuel", "1234");
-        repertoire.put("ColetteLoic", "ok");
-        repertoire.put("BrandtFabian", "azerty");
-        repertoire.put("KamanaBene", "ebene");
-    }
-
     /**************************/
     /*                        */
     /*      CONSTRUCTEURS     */
@@ -42,6 +32,9 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
     {
         super(parent, modal);
         initComponents();
+        
+        repertoire = new Proprietes();
+        
         this.setLocationRelativeTo(null);
         setLoginValide(false);
     }
@@ -84,18 +77,7 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
     /*        METHODES        */
     /*                        */
     /**************************/
-
-    public boolean verifCompte() throws LoginException
-    {
-        if(repertoire.containsKey(this.textBoxNomUtil.getText()) && repertoire.get(this.textBoxNomUtil.getText()).equals(this.textBoxMDP.getText()))
-        {
-            return true;
-        }
         
-        throw new LoginException("Erreur de login !!!");
-    }
-    
-    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -191,7 +173,7 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
 
         try
         {
-            if(verifCompte())
+            if(repertoire.TryLogin(this.textBoxNomUtil.getText(), this.textBoxMDP.getText()))
             {
                 setUtilisateur(this.textBoxNomUtil.getText());
                 setLoginValide(true);
@@ -202,7 +184,7 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
         {
             System.out.println("Creation de la boite de dialogue ERREUR - dans DialogLoginCapitainerie\n");
             
-            DialogErreur d = new DialogErreur((Frame)this.getParent(), true, exc.getMessage());
+            DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Donnees non correctes");
             d.setVisible(true);
         }
     }//GEN-LAST:event_buttonValiderActionPerformed
