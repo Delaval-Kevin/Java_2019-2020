@@ -6,6 +6,7 @@
 /***********************************************************/
 
 package capitainerie;
+import add.DialogErreur;
 import humain.Equipage;
 import java.awt.Frame;
 import javax.swing.DefaultComboBoxModel;

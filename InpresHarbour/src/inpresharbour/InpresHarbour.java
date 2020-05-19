@@ -6,7 +6,7 @@
 /***********************************************************/
 
 package inpresharbour;
-import capitainerie.FenApp;
+import capitainerie.Applic_Capitainerie;
 import humain.*;
 import vehicules.*;
 
@@ -18,7 +18,7 @@ public class InpresHarbour
     public static void main(String[] args) 
     {
 
-        FenApp app = new FenApp();
+        Applic_Capitainerie app = new Applic_Capitainerie();
         app.setVisible(true);
         
         
