@@ -7,8 +7,10 @@
 
 package humain;
 
+import java.io.Serializable;
 
-public class Humain 
+
+public class Humain implements Serializable
 {
     /***************************/
     /*                         */

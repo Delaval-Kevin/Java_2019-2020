@@ -71,4 +71,9 @@ public class Quai extends Amarrage
     /*        Méthodes         */
     /*                         */
     /***************************/ 
+    
+    public void addMoyenDeTransportSurEau(MoyenDeTransportSurEau moyenDeTransportSurEau, int indice)
+    {
+        _liste[indice] = moyenDeTransportSurEau;
+    }
 }
