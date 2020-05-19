@@ -7,6 +7,9 @@
 
 package phare;
 import add.DialogLogin;
+import beans.*;
+import java.beans.Beans;
+import java.io.IOException;
 import network.NetworkBasicClient;
 import javax.swing.DefaultListModel;
 
@@ -23,6 +26,9 @@ public class Applic_Phare extends javax.swing.JFrame
     private String _utilisateur;
     private DefaultListModel _bateauxEntrant;
     private NetworkBasicClient _client;
+    private KindOfBoatBean _beanKindOfBoat;
+    private BoatBean _beanBoat;
+    private NotifyBean _beanNotify;
 
     /**************************/
     /*                        */
@@ -35,7 +41,8 @@ public class Applic_Phare extends javax.swing.JFrame
         initComponents();
         InitList();
         fctLogin();
-        
+        InitBeans();
+
         /* Si l'utilisateur ne se log pas on ferme la fenetre dans la foulée */
         if(!isConnected())
         {
@@ -65,6 +72,21 @@ public class Applic_Phare extends javax.swing.JFrame
         return _bateauxEntrant;
     }    
     
+    public KindOfBoatBean getBeanKindOfBoat()
+    {
+        return _beanKindOfBoat;
+    }   
+    
+    public BoatBean getBeanBoat()
+    {
+        return _beanBoat;
+    }    
+    
+    public NotifyBean getBeanNotify()
+    {
+        return _beanNotify;
+    }  
+    
     /**************************/
     /*                        */
     /*         SETTERS        */
@@ -90,6 +112,21 @@ public class Applic_Phare extends javax.swing.JFrame
     {
         this.setTitle("Phare d'entrée d'Inpres-Harbour : " + getUtilisateur());  
     }
+    
+    public void setBeanKindOfBoat(KindOfBoatBean bean)
+    {
+        _beanKindOfBoat = bean;
+    } 
+    
+    public void setBeanBoat(BoatBean beanBoat)
+    {
+        _beanBoat = beanBoat;
+    }    
+    
+    public void setBeanNotify(NotifyBean beanNotify)
+    {
+        _beanNotify = beanNotify;
+    } 
     
     /**************************/
     /*                        */
@@ -134,6 +171,78 @@ public class Applic_Phare extends javax.swing.JFrame
         setBateauxEntrant(new DefaultListModel());
        
         listBatEnAttente.setModel(getBateauxEntrant());
+    }
+    
+    private void InitBeans()
+    {
+        InitKindOfBoat();
+        InitBoat();
+        InitNotify();
+        /* pour envoyer un signal au BeanBoat quand la variable "info" change dans BeanKindOfBoat*/
+        getBeanKindOfBoat().addPropertyChangeListener(getBeanBoat());
+        getBeanBoat().addBoatListener(getBeanNotify());
+    }
+    
+    private void InitKindOfBoat()
+    {
+        try 
+        {    
+            setBeanKindOfBoat((KindOfBoatBean)Beans.instantiate(null, "beans.KindOfBoatBean"));
+        } 
+        catch(ClassNotFoundException e) 
+        {
+            System.out.println("Classe KindOfBoatBean non trouvée");
+            System.exit(0);
+        }
+        catch(IOException e)
+        {
+            System.out.println("Erreur d'I/O : KindOfBoatBean !!!");
+            System.exit(0);
+        }
+        
+        //config du bean
+        getBeanKindOfBoat().init();
+        getBeanKindOfBoat().run();
+    }
+    
+    private void InitBoat()
+    {
+        try 
+        {    
+            setBeanBoat((BoatBean)Beans.instantiate(null, "beans.BoatBean"));
+        } 
+        catch(ClassNotFoundException e) 
+        {
+            System.out.println("Classe BoatBean non trouvée");
+            System.exit(0);
+        }
+        catch(IOException e)
+        {
+            System.out.println("Erreur d'I/O : BoatBean !!!");
+            System.exit(0);
+        }   
+        
+    }
+    
+    private void InitNotify()
+    {
+        try 
+        {    
+            setBeanNotify((NotifyBean)Beans.instantiate(null, "beans.NotifyBean"));
+        } 
+        catch(ClassNotFoundException e) 
+        {
+            System.out.println("Classe NotifyBean non trouvée");
+            System.exit(0);
+        }
+        catch(IOException e)
+        {
+            System.out.println("Erreur d'I/O : NotifyBean!!!");
+            System.exit(0);
+        }    
+        
+        getBeanNotify().setBateauxEntrant(getBateauxEntrant());
+
     }
 
     @SuppressWarnings("unchecked")
@@ -314,7 +423,12 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonConnexionActionPerformed
 
     private void buttonSuivantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSuivantActionPerformed
-        // TODO add your handling code here:
+        
+        System.out.println("Creation de la boite de dialogue IDENT BATEAU - dans Applic_Phare\n");
+            
+        DialogIdentBateau d = new DialogIdentBateau(this, true);           
+        //d.setLabelType();
+        d.setVisible(true);
     }//GEN-LAST:event_buttonSuivantActionPerformed
 
     private void buttonDemAutEntreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemAutEntreeActionPerformed

@@ -678,7 +678,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     }//GEN-LAST:event_buttonLireActionPerformed
 
     private void buttonChoisirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChoisirActionPerformed
-        // TODO add your handling code here:
+        System.out.println("buttonChoisirActionPerformed\n");
     }//GEN-LAST:event_buttonChoisirActionPerformed
 
     private void buttonEnvChoixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnvChoixActionPerformed

@@ -37,10 +37,10 @@ public class BateauPeche extends Bateau
     }   
  
     //Constructeur par défaut
-    /*public BateauPeche() throws ShipWithoutIdentificationException, SailorWithoutIdentificationException
+    public BateauPeche() 
     {
-        this("Adelaar", "Rotterdam", "NL", 2, 5, "morutier", Combustible.essence, false, new Equipage());
-    } */  
+        
+    }   
     
     /***************************/
     /*                         */
