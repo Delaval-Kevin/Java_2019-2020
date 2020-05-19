@@ -23,6 +23,8 @@
 hs_err_pid*
 
 InpresHarbour/nbproject/
-
+InpresHarbour/dist/
 InpresHarbour/build/
+InpresHarbour/build.xml
+InpresHarbour/manifest.mf
 
