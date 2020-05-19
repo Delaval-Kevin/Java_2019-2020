@@ -7,6 +7,7 @@
 
 package phare;
 import add.DialogLogin;
+import network.NetworkBasicClient;
 import javax.swing.DefaultListModel;
 
 
@@ -21,6 +22,7 @@ public class Applic_Phare extends javax.swing.JFrame
     
     private String _utilisateur;
     private DefaultListModel _bateauxEntrant;
+    private NetworkBasicClient _client;
 
     /**************************/
     /*                        */
@@ -53,6 +55,11 @@ public class Applic_Phare extends javax.swing.JFrame
         return _utilisateur;
     }
     
+    public NetworkBasicClient getClient()
+    {
+        return _client;
+    }
+    
     public DefaultListModel getBateauxEntrant()
     {
         return _bateauxEntrant;
@@ -67,6 +74,11 @@ public class Applic_Phare extends javax.swing.JFrame
     public void setUtilisateur(String utilisateur)
     {
         _utilisateur = utilisateur;
+    }
+    
+    public void setClient(NetworkBasicClient client)
+    {
+        _client = client;
     }
     
     public void setBateauxEntrant(DefaultListModel bateauxEntrant)
@@ -297,7 +309,8 @@ public class Applic_Phare extends javax.swing.JFrame
     /**************************/
     
     private void buttonConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConnexionActionPerformed
-        // TODO add your handling code here:
+        setClient(new NetworkBasicClient("localhost", 50005));
+        buttonConnexion.setEnabled(false);
     }//GEN-LAST:event_buttonConnexionActionPerformed
 
     private void buttonSuivantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSuivantActionPerformed
@@ -317,7 +330,8 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonRAZActionPerformed
 
     private void buttonDeconexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeconexionActionPerformed
-        // TODO add your handling code here:
+        getClient().setEndSending();
+        buttonConnexion.setEnabled(true);
     }//GEN-LAST:event_buttonDeconexionActionPerformed
 
 

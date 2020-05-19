@@ -11,6 +11,7 @@ import add.DialogErreur;
 import amarrages.Amarrage;
 import humain.Equipage;
 import java.text.DateFormat;
+import network.NetworkBasicServer;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -34,6 +35,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     /**************************/
     
     private String _utilisateur;
+    private NetworkBasicServer _serveur;
     private DefaultListModel _amarrage;
     private Bateau _infoBateauEntrant;
     private String _infoDate;
@@ -428,6 +430,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         _utilisateur = utilisateur;
     }
     
+    public void setServeur(NetworkBasicServer serveur)
+    {
+        _serveur = serveur;
+    }
+    
     public void setTitre()
     {
         if(isConnected())
@@ -517,6 +524,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     public String getUtilisateur()
     {
         return _utilisateur;
+    }
+    
+    public NetworkBasicServer getServeur()
+    {
+        return _serveur;
     }
     
     public Bateau getInfoBateauEntrant()
@@ -657,7 +669,8 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     /**************************/
     
     private void buttonDemarServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemarServActionPerformed
-        // TODO add your handling code here:
+        setServeur(new NetworkBasicServer(50005,checkRequeteEnAtt));
+        buttonDemarServ.setEnabled(false);
     }//GEN-LAST:event_buttonDemarServActionPerformed
 
     private void buttonLireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLireActionPerformed
@@ -699,7 +712,8 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     }//GEN-LAST:event_buttonBateauAmarActionPerformed
 
     private void buttonArretServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonArretServeurActionPerformed
-        // TODO add your handling code here:
+        buttonDemarServ.setEnabled(true);
+        getServeur().setEndReceiving();
     }//GEN-LAST:event_buttonArretServeurActionPerformed
 
     /**************************/

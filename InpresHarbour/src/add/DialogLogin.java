@@ -93,7 +93,7 @@ public class DialogLogin extends javax.swing.JDialog
         textBoxMDP = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Login Capitainerie");
+        setTitle("Login Utilisateur");
 
         labelTitre.setFont(new java.awt.Font("Dialog", 1, 30)); // NOI18N
         labelTitre.setText("Bienvenue !");
