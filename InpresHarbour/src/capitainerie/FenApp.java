@@ -7,16 +7,27 @@
 
 package capitainerie;
 import amarrages.Amarrage;
+import amarrages.OddPontoonException;
+import amarrages.Ponton;
+import amarrages.Quai;
 import humain.Equipage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 import vehicules.Bateau;
 import vehicules.Combustible;
 import vehicules.ShipWithoutIdentificationException;
@@ -32,7 +43,10 @@ public class FenApp extends javax.swing.JFrame
     /**************************/
     
     private String _utilisateur;
-    private DefaultListModel _amarrage;
+    
+    private DefaultListModel _bateauEntrant;
+    private Vector<Amarrage> _amarrage;
+    
     private Bateau _infoBateauEntrant;
     private String _infoDate;
     
@@ -41,7 +55,7 @@ public class FenApp extends javax.swing.JFrame
     private int _formatHeure;
     private Locale _fuseau;
     
-
+        
 
     /**************************/
     /*                        */
@@ -53,10 +67,14 @@ public class FenApp extends javax.swing.JFrame
     {
         initComponents();
         fctLogin();
-
+        
         formatageDate(DateFormat.MEDIUM , DateFormat.MEDIUM ,Locale.FRANCE);
         InitTimer();
         InitList();
+        if(LoadAmarrage() == 0)
+        {
+            InitAmarrage();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -438,7 +456,12 @@ public class FenApp extends javax.swing.JFrame
         }    
     }
     
-    public void setAmarrages(DefaultListModel amarrage)
+    public void setBateauEntrant(DefaultListModel bateauEntrant)
+    {
+        _bateauEntrant = bateauEntrant;
+    }
+    
+    public void setAmarrage(Vector<Amarrage> amarrage)
     {
         _amarrage = amarrage;
     }
@@ -527,7 +550,12 @@ public class FenApp extends javax.swing.JFrame
         return _infoDate;
     }
     
-    public DefaultListModel getAmarrages()
+    public DefaultListModel getListeAmarrages()
+    {
+        return _bateauEntrant;
+    }
+    
+    public Vector<Amarrage> getAmarrages()
     {
         return _amarrage;
     }
@@ -643,10 +671,90 @@ public class FenApp extends javax.swing.JFrame
     {
         System.out.println("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans FenApp\n");
         
-        setAmarrages(new DefaultListModel());
+        setBateauEntrant(new DefaultListModel());
        
-       listeBateaux.setModel(getAmarrages());
+       listeBateaux.setModel(getListeAmarrages());
     }
+    
+    private void InitAmarrage()
+    {
+        Vector<Amarrage> ams = new Vector<Amarrage>();
+        try
+        {
+            ams.addElement(new Ponton(12));
+            ams.addElement(new Ponton(18));
+            ams.addElement(new Ponton(12));
+            ams.addElement(new Quai(6));
+            ams.addElement(new Quai(5));
+            
+        }
+        catch(OddPontoonException e)
+        {
+            afficheErr(e.getMessage());
+        }
+        setAmarrage(ams);
+    }
+    
+    
+    private String getFileName(){
+        
+        String sep = System.getProperty("file.separator");
+        String rep = System.getProperty("user.dir");
+
+        return rep+sep+"port.dat";
+        
+    }
+    
+    
+    // permet de charger l'état du port lors du démarrage
+    private int LoadAmarrage(){
+        
+        try{
+
+            FileInputStream file = new FileInputStream(this.getFileName());
+            ObjectInputStream ois = new ObjectInputStream(file);
+            
+            this.setAmarrage((Vector <Amarrage>) ois.readObject());
+            return 1;
+            
+        }catch(FileNotFoundException fileNotFoundException){
+            
+            System.out.println("Erreur : " + fileNotFoundException.getMessage());
+        
+        }catch(IOException iOException){
+        
+            System.out.println("Erreur : " + iOException.getMessage());
+            
+        }catch(ClassNotFoundException classNotFoundException){
+        
+            System.out.println("Erreur classes non trouéve");
+        }
+        
+        return 0;
+    }
+    
+    // permet de sauvegarder l'état du port
+    private void SaveAmarrage(){
+    
+        try{
+            
+            FileOutputStream file = new FileOutputStream(this.getFileName());
+            ObjectOutputStream oos = new ObjectOutputStream(file);
+            
+            for (Object amarrage : getAmarrages()) {
+                oos.writeObject(amarrage);
+            }
+            
+            
+            
+        
+        }catch(IOException iOException){
+            
+            System.out.println("iOException : "+iOException.getMessage());
+        }
+        
+    }
+    
     
     /**************************/
     /*                        */
@@ -679,7 +787,8 @@ public class FenApp extends javax.swing.JFrame
         {
             System.out.println("Creation d'un objet BATEAU + EQUIPAGE - dans FenApp\n");
             
-            setInfoBateauEntrant(new Bateau(textBoxLecture.getText(), "UK.jpg", 15, Combustible.kérosène, false, new Equipage()));
+            Bateau tmpBateau = new Bateau(textBoxLecture.getText(), "UK.jpg", 15, Combustible.kérosène, false, new Equipage());
+            setInfoBateauEntrant(tmpBateau);
             
             System.out.println("Creation de la boite de dialogue INFO BATEAU ENTRANT - dans FenApp\n");
             
@@ -687,12 +796,46 @@ public class FenApp extends javax.swing.JFrame
             d.setEmplacemet(textBoxChoix.getText());
             d.setVisible(true);
             
-            getAmarrages().addElement(getInfoBateauEntrant());
+            getListeAmarrages().addElement(getInfoBateauEntrant());
+            
+            // if ... instanceOf()
+            
+            Enumeration enu = getAmarrages().elements();
+            
+            while(enu.hasMoreElements())
+            {
+                // pour prendre le premier element
+                // on utilise le nextElement pour en realité
+                // avoir le premier elem du vector.
+                
+                Amarrage am = (Amarrage) enu.nextElement();
+                
+                // renvoie un obj donc faut cast !
+                if(am instanceof Quai)
+                {
+                    //
+                    Quai quai = (Quai) am;
+                    quai.addMoyenDeTransportSurEau(tmpBateau, 0);
+                    
+                }
+                else if(am instanceof Ponton)
+                {
+                    //
+                }
+                else
+                {
+                    System.out.println("Instance autre (" + am + ") ???");
+                    // java.util.logging.Logger.getLogger(Capitainerie.class.getName()).log(java.util.logging.Level.SEVERE, null, excpeiton de la classe);
+                }
+            }
+            
+            SaveAmarrage();
         }
         else
         {
             afficheErr("Les champs ne sont pas remplis");
         }
+        
         
     }//GEN-LAST:event_buttonBateauAmarActionPerformed
 

@@ -8,9 +8,10 @@
 package vehicules;
 import humain.Equipage;
 import humain.SailorWithoutIdentificationException;
+import java.io.Serializable;
 
 
-public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant
+public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant, Serializable
 {
     /***************************/
     /*                         */
