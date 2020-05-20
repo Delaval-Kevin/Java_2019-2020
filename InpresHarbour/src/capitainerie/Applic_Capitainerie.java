@@ -9,17 +9,29 @@ package capitainerie;
 import add.DialogLogin;
 import add.DialogErreur;
 import amarrages.Amarrage;
+import amarrages.OddPontoonException;
+import amarrages.Ponton;
+import amarrages.Quai;
 import humain.Equipage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import network.NetworkBasicServer;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import vehicules.Bateau;
 import vehicules.BateauPeche;
 import vehicules.BateauPlaisance;
@@ -38,7 +50,10 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     
     private String _utilisateur;
     private NetworkBasicServer _serveur;
-    private DefaultListModel _amarrage;
+    
+    private DefaultListModel _bateauEntrant;
+    private Vector<Amarrage> _amarrage;
+    
     private Bateau _infoBateauEntrant;
     private String _infoDate;
     
@@ -63,6 +78,12 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         formatageDate(DateFormat.MEDIUM , DateFormat.MEDIUM ,Locale.FRANCE);
         InitTimer();
         InitList();
+        InitAmarrage();
+        /*if(LoadAmarrage() == 0)
+        {
+            InitAmarrage();
+        }*/
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -451,9 +472,14 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         }    
     }
     
-    public void setAmarrages(DefaultListModel amarrage)
+    public void setAmarrages(Vector<Amarrage> amarrage)
     {
         _amarrage = amarrage;
+    }
+    
+    public void setListeBateauEntrant(DefaultListModel bateauEntrant)
+    {
+        _bateauEntrant = bateauEntrant;
     }
     
     public void setInfoBateauEntrant(Bateau infoBateauEntrant)
@@ -545,9 +571,14 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         return _infoDate;
     }
     
-    public DefaultListModel getAmarrages()
+    public Vector<Amarrage> getAmarrages()
     {
         return _amarrage;
+    }
+    
+    public DefaultListModel getListeBateauEntrant()
+    {
+        return _bateauEntrant;
     }
   
     public Timer getTimer()
@@ -575,6 +606,93 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     /*        METHODES        */
     /*                        */
     /**************************/
+    
+    private void InitList()
+    {
+        System.out.println("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans FenApp\n");
+        
+        setListeBateauEntrant(new DefaultListModel());
+       
+       listeBateaux.setModel(getListeBateauEntrant());
+    }
+    
+    private void InitAmarrage()
+    {
+        Vector<Amarrage> ams = new Vector<Amarrage>();
+        try
+        {
+            ams.addElement(new Ponton(12));
+            ams.addElement(new Ponton(18));
+            ams.addElement(new Ponton(12));
+            ams.addElement(new Quai(6));
+            ams.addElement(new Quai(5));
+            
+        }
+        catch(OddPontoonException e)
+        {
+            afficheErr(e.getMessage());
+        }
+        setAmarrages(ams);
+    }
+    
+    
+    private String getFileName(){
+        
+        String sep = System.getProperty("file.separator");
+        String rep = System.getProperty("user.dir");
+
+        return rep+sep+"port.dat";
+        
+    }
+    
+    
+    // permet de charger l'état du port lors du démarrage
+    private int LoadAmarrage(){
+        
+        try{
+
+            FileInputStream file = new FileInputStream(this.getFileName());
+            ObjectInputStream ois = new ObjectInputStream(file);
+            
+            setAmarrages((Vector <Amarrage>) ois.readObject());
+            return 1;
+            
+        }catch(FileNotFoundException fileNotFoundException){
+            
+            System.out.println("Attention, fichier port.dat n'est pas trouvé");
+        
+        }catch(IOException iOException){
+        
+            
+            System.out.println("Erreur : " + iOException.getMessage());
+            
+        }catch(ClassNotFoundException classNotFoundException){
+        
+            System.out.println("Erreur classes non trouéve");
+        }
+        
+        return 0;
+    }
+    
+    // permet de sauvegarder l'état du port
+    private void SaveAmarrage(){
+    
+        try{
+            
+            FileOutputStream file = new FileOutputStream(this.getFileName());
+            ObjectOutputStream oos = new ObjectOutputStream(file);
+            
+            for (Object amarrage : getAmarrages()) {
+                oos.writeObject(amarrage);
+            }
+            
+        
+        }catch(IOException iOException){
+            
+            System.out.println("iOException : "+iOException.getMessage());
+        }
+        
+    }
     
     public boolean isConnected()
     {
@@ -657,15 +775,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         labelHeure.setText(getInfoDate());
     }
     
-    private void InitList()
-    {
-        System.out.println("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans Applic_Capitainerie\n");
-        
-        setAmarrages(new DefaultListModel());
-       
-        listeBateaux.setModel(getAmarrages());
-    }
-    
     /**************************/
     /*                        */
     /*         BOUTONS        */
@@ -700,7 +809,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     }//GEN-LAST:event_buttonLireActionPerformed
 
     private void buttonChoisirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChoisirActionPerformed
-        System.out.println("buttonChoisirActionPerformed\n");
+
+        // TODO add your handling code here:
+        DialogPlacesDispo pd = new DialogPlacesDispo(this, true, getAmarrages());
+        pd.setVisible(true);
+        textBoxChoix.setText(pd.getChoixFinal());
     }//GEN-LAST:event_buttonChoisirActionPerformed
 
     private void buttonEnvChoixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnvChoixActionPerformed
@@ -716,7 +829,8 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         {
             System.out.println("Creation d'un objet BATEAU + EQUIPAGE - dans Applic_Capitainerie\n");
             
-            setInfoBateauEntrant(new Bateau(textBoxLecture.getText(), "UK.jpg", 15, Combustible.kérosène, false, new Equipage()));
+            Bateau tmpBateau = new Bateau(textBoxLecture.getText(), "UK.jpg", 15, Combustible.kérosène, false, new Equipage());
+            setInfoBateauEntrant(tmpBateau);
             
             System.out.println("Creation de la boite de dialogue INFO BATEAU ENTRANT - dans Applic_Capitainerie\n");
             
@@ -724,7 +838,40 @@ public class Applic_Capitainerie extends javax.swing.JFrame
             d.setEmplacemet(textBoxChoix.getText());
             d.setVisible(true);
             
-            getAmarrages().addElement(getInfoBateauEntrant());
+            getListeBateauEntrant().addElement(getInfoBateauEntrant());
+            
+            // if ... instanceOf()
+            
+            Enumeration enu = getAmarrages().elements();
+            
+            while(enu.hasMoreElements())
+            {
+                // pour prendre le premier element
+                // on utilise le nextElement pour en realité
+                // avoir le premier elem du vector.
+                
+                Amarrage am = (Amarrage) enu.nextElement();
+                
+                // renvoie un obj donc faut cast !
+                if(am instanceof Quai)
+                {
+                    //
+                    Quai quai = (Quai) am;
+                    quai.addMoyenDeTransportSurEau(tmpBateau, 0);
+                    
+                }
+                else if(am instanceof Ponton)
+                {
+                    //
+                }
+                else
+                {
+                    System.out.println("Instance autre (" + am + ") ???");
+                    // java.util.logging.Logger.getLogger(Capitainerie.class.getName()).log(java.util.logging.Level.SEVERE, null, excpeiton de la classe);
+                }
+            }
+            
+            SaveAmarrage();
         }
         else
         {
