@@ -6,11 +6,12 @@
 /***********************************************************/
 
 package beans;
+import java.io.Serializable;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 
-public class NotifyBean implements BoatListener
+public class NotifyBean implements Serializable, BoatListener
 {
     /**************************/
     /*                        */

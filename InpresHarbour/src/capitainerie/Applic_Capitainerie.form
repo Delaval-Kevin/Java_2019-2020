@@ -117,12 +117,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemFormatDateActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="menuItemCheckFichLog">
+            <MenuItem class="javax.swing.JMenuItem" name="menuItemFichLog">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Fichier log"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="menuItemCheckFichLogStateChanged"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuItemFichLogActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="menuItemCheckDateHeure">
@@ -364,7 +364,6 @@
     <Component class="javax.swing.JCheckBox" name="checkRequeteEnAtt">
       <Properties>
         <Property name="text" type="java.lang.String" value="Requ&#xea;te en attente"/>
-        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
@@ -386,11 +385,13 @@
     </Component>
     <Component class="javax.swing.JTextField" name="textBoxChoix">
       <Properties>
+        <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="??"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="textBoxConfChoix">
       <Properties>
+        <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="???"/>
       </Properties>
     </Component>

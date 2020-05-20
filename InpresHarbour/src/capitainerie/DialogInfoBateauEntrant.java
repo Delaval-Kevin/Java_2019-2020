@@ -92,8 +92,10 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     
     public void setPavillon(String pav)
     {
-        this.labelImage.setIcon(new ImageIcon(getClass().getResource(pav)));
-        //this.labelImage.repaint();
+        String imagePath = "/add/"+pav+".jpg";
+        ImageIcon image = new ImageIcon(getClass().getResource(imagePath));
+        
+        this.labelImage.setIcon(image);
     }
     
     public void setPortAttache(String port)

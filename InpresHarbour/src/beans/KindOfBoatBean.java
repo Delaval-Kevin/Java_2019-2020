@@ -22,7 +22,6 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     /**************************/
     
     private boolean _enMarche;
-    private int _nombre;
     private String _info;
     private PropertyChangeSupport GestProp = new PropertyChangeSupport(this);
     
@@ -48,19 +47,6 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
         _enMarche = enMarche;
     }
     
-    public void setNombre(int nombre)
-    {
-        _nombre = nombre;
-        if(nombre%7 == 0)
-        {
-            setInfo("Plaisance");
-        }
-        else
-        {
-            setInfo("Peche");
-        }
-    }
-    
     public void setInfo(String info)
     {
         String ancienneValeur = _info;
@@ -80,10 +66,6 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
         return _enMarche;
     }
     
-    public int getNombre()
-    {
-        return _nombre;
-    }
     
     public String getInfo()
     {
@@ -110,7 +92,7 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     {
         if(isEnMarche())
         {
-            ThreadRandomGenerator thread = new ThreadRandomGenerator(this, 0, 1000, 7, 17, 2);  
+            ThreadRandomGenerator thread = new ThreadRandomGenerator(this, 0, 1000, 2, 2);  
             thread.start();
         }
     }
@@ -126,12 +108,27 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     }
     
     @Override
-    public String getIdentifiant() {
+    public String getIdentifiant() 
+    {
         return "KindOfBoatBean";
     }
 
     @Override
-    public void traiteNombre(int n) {
-        setNombre(n);
+    public void traiteNombre(int n) 
+    {       
+        int value;
+        Double dr;
+
+        dr = new Double(Math.random()*(1000));
+        value = dr.intValue();
+
+        if(value%7 == 0)
+        {
+            setInfo("Plaisance");
+        }
+        else if(value%17 == 0)
+        {
+            setInfo("Peche");
+        }
     }
 }

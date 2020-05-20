@@ -55,7 +55,7 @@ public class DialogErreur extends javax.swing.JDialog
         labelErr.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         labelErr.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        labelImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/capitainerie/Attention.png"))); // NOI18N
+        labelImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/add/Attention.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

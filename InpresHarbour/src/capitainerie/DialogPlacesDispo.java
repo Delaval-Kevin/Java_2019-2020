@@ -1,8 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/***********************************************************/
+/*Auteurs : DELAVAL Kevin & COLLETTE Loïc                  */
+/*Groupe : 2203                                            */
+/*Application : InpresHarbour                              */
+/*Date de la dernière mise à jour : 18/05/2020             */
+/***********************************************************/
+
 package capitainerie;
 
 import amarrages.Amarrage;
@@ -17,22 +19,15 @@ import javax.swing.table.TableModel;
 import vehicules.Bateau;
 import vehicules.MoyenDeTransportSurEau;
 
-/**
- *
- * @author collloi
- */
-public class DialogPlacesDispo extends javax.swing.JDialog {
+public class DialogPlacesDispo extends javax.swing.JDialog 
+{
 
-    /**
-     * Creates new form DialogPlacesDispo
-     */
     
-    /**********************/
-    /*                    */
-    /*   VARS MEMBRES     */
-    /*                    */
-    /**********************/
-    
+    /**************************/
+    /*                        */
+    /*   VARIABLES MEMBRES    */
+    /*                        */
+    /**************************/ 
     
     private String _choixEmp;
     private String _choixAmarrage;
@@ -40,57 +35,66 @@ public class DialogPlacesDispo extends javax.swing.JDialog {
     
     private Vector<Amarrage> _amarrage;
     
-    /***********************/
-    /*                     */
-    /*     CONSTRUCTEURS   */
-    /*                     */
-    /***********************/
+    /**************************/
+    /*                        */
+    /*      CONSTRUCTEURS     */
+    /*                        */
+    /**************************/
     
-    public DialogPlacesDispo(Frame parent, boolean modal) {
+    public DialogPlacesDispo(Frame parent, boolean modal) 
+    {
         super(parent, modal);
         initComponents();
     }
     
-    public DialogPlacesDispo(Frame parent, boolean modal, Vector<Amarrage> amarrage){
+    public DialogPlacesDispo(Frame parent, boolean modal, Vector<Amarrage> amarrage)
+    {
         this(parent, modal);
         setAmarrage(amarrage);
         InitTable();
     }
-
+   
     
+    /**************************/
+    /*                        */
+    /*         GETTERS        */
+    /*                        */
+    /**************************/
     
-    /***********************/
-    /*                     */
-    /*     GETTERS         */
-    /*                     */
-    /***********************/
-    
-    public Vector<Amarrage> getAmarrage() {
+    public Vector<Amarrage> getAmarrage() 
+    {
         return _amarrage;
     }
-
     
+    public String getChoixFinal() 
+    {
+        return _choixFinal;
+    }
     
+    /**************************/
+    /*                        */
+    /*         SETTERS        */
+    /*                        */
+    /**************************/
     
-    /***********************/
-    /*                     */
-    /*     SETTERS         */
-    /*                     */
-    /***********************/
-    
-    private void setAmarrage(Vector<Amarrage> _amarrage) {
+    private void setAmarrage(Vector<Amarrage> _amarrage) 
+    {
         this._amarrage = _amarrage;
     }
     
-    /***********************/
-    /*                     */
-    /*     METHODES        */
-    /*                     */
-    /***********************/
+    public void setChoixFinal(String _choixFinal) 
+    {
+        this._choixFinal = _choixFinal;
+    }
+    
+    /**************************/
+    /*                        */
+    /*        METHODES        */
+    /*                        */
+    /**************************/
     
     private void InitTable()
-    {
-        
+    {       
         String type = "PLAISANCE";
         
         if(type.compareTo("PLAISANCE") == 0){
@@ -110,15 +114,12 @@ public class DialogPlacesDispo extends javax.swing.JDialog {
                 AddPonton((Ponton) am, iAm);
             }else if(type.compareTo("PECHE") == 0 && am instanceof Quai){
                 AddQuai((Quai) am, iAm);
-            }
-            
+            }    
         }
-        
-        
-        
     }
     
-    public void AddPonton(Ponton ponton, int iAm){
+    public void AddPonton(Ponton ponton, int iAm)
+    {
         Vector ligne;
         DefaultTableModel dtm = (DefaultTableModel) this.ListAmarrageTable.getModel();
         
@@ -145,15 +146,13 @@ public class DialogPlacesDispo extends javax.swing.JDialog {
                     ligne.add("");
                     ligne.add("");
                 }
-                dtm.addRow(ligne);
-                
-            }
-            
+                dtm.addRow(ligne);               
+            } 
         }
-        
     }
     
-    public void AddQuai(Quai quai, int iAm){
+    public void AddQuai(Quai quai, int iAm)
+    {
         Vector ligne;
         DefaultTableModel dtm = (DefaultTableModel) this.ListAmarrageTable.getModel();
         
@@ -179,18 +178,11 @@ public class DialogPlacesDispo extends javax.swing.JDialog {
                 ligne.add("");
             }
             dtm.addRow(ligne);
-
-        }
-
-        
+        } 
     }
     
     
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -298,6 +290,8 @@ public class DialogPlacesDispo extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void ListAmarrageTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ListAmarrageTableMouseClicked
         // TODO add your handling code here:
         int ligne = ListAmarrageTable.getSelectedRow();
@@ -315,14 +309,14 @@ public class DialogPlacesDispo extends javax.swing.JDialog {
         
         EmplacementContentLabel.setText(amLocal);
         
-        if(nomBateau.compareTo("") == 0){
-            ButtonChoisir.setEnabled(true);
-        }else{
+        if(nomBateau.compareTo("") == 0)
+        {
             ButtonChoisir.setEnabled(true);
         }
-        
-        
-        
+        else
+        {
+            ButtonChoisir.setEnabled(true);
+        }
     }//GEN-LAST:event_ListAmarrageTableMouseClicked
 
     private void ButtonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonCancelActionPerformed
@@ -335,9 +329,13 @@ public class DialogPlacesDispo extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_ButtonChoisirActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+
+    /**************************/
+    /*                        */
+    /*          MAIN          */
+    /*                        */
+    /**************************/
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -363,12 +361,16 @@ public class DialogPlacesDispo extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+        java.awt.EventQueue.invokeLater(new Runnable() 
+        {
+            public void run() 
+            {
                 DialogPlacesDispo dialog = new DialogPlacesDispo(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() 
+                {
                     @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
+                    public void windowClosing(java.awt.event.WindowEvent e) 
+                    {
                         System.exit(0);
                     }
                 });
@@ -386,20 +388,5 @@ public class DialogPlacesDispo extends javax.swing.JDialog {
     private javax.swing.JTable ListAmarrageTable;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-
-    /**
-     * @return the _choixFinal
-     */
-    public String getChoixFinal() {
-        return _choixFinal;
-    }
-
-    /**
-     * @param _choixFinal the _choixFinal to set
-     */
-    public void setChoixFinal(String _choixFinal) {
-        this._choixFinal = _choixFinal;
-    }
-
-    
+  
 }

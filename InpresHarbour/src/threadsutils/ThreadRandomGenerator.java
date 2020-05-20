@@ -11,16 +11,15 @@ package threadsutils;
 public class ThreadRandomGenerator extends java.lang.Thread
 {
     private UtilisateurNombre utilisateurThread;
-    private int borneInferieure, borneSuperieure, multipleDeclenchement1, multipleDeclenchement2, tempsPause;
+    private int borneInferieure, borneSuperieure, multipleDeclenchement, tempsPause;
     private int nombreProduit;
     
-    public ThreadRandomGenerator(UtilisateurNombre un, int bi, int bs, int md1, int md2, int tp)
+    public ThreadRandomGenerator(UtilisateurNombre un, int bi, int bs, int md, int tp)
     {         
         utilisateurThread = un;
         borneInferieure=bi;
         borneSuperieure=bs;
-        multipleDeclenchement1 = md1;
-        multipleDeclenchement2 = md2;
+        multipleDeclenchement = md;
         tempsPause = tp;
         nombreProduit = -1;
     }
@@ -34,7 +33,7 @@ public class ThreadRandomGenerator extends java.lang.Thread
             nombreProduit = dr.intValue(); 
             //System.out.println(utilisateurThread.getIdentifiant() + "> nombreProduit = " + nombreProduit);
             
-            if (nombreProduit % multipleDeclenchement1 == 0 || nombreProduit % multipleDeclenchement2 == 0)
+            if (nombreProduit % multipleDeclenchement == 0)
             {     
                 //System.out.println(utilisateurThread.getIdentifiant() +  "> -------------- !!!!!!! " + nombreProduit + "!!!!");
                 utilisateurThread.traiteNombre(nombreProduit); 
