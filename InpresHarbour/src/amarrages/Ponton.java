@@ -84,4 +84,16 @@ public class Ponton extends Amarrage
     /*        Méthodes         */
     /*                         */
     /***************************/     
+    
+    public void addMoyenDeTransportSurEau(MoyenDeTransportSurEau moyenDeTransportSurEau, int cote, int indice)
+    {
+        if(cote == 1)
+        {
+            _liste[0][indice] = moyenDeTransportSurEau;
+        }
+        else if(cote == 2)
+        {
+            _liste[1][indice] = moyenDeTransportSurEau;
+        }
+    }
 }

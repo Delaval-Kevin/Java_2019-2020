@@ -6,10 +6,11 @@
 /***********************************************************/
 
 package humain;
+import java.io.Serializable;
 import vehicules.AUnIdentifiant;
 
 
-public class Marin extends Humain implements AUnIdentifiant
+public class Marin extends Humain implements AUnIdentifiant, Serializable
 {
     /***************************/
     /*                         */

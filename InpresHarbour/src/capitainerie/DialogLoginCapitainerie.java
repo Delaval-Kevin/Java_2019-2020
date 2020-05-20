@@ -115,6 +115,10 @@ public class DialogLoginCapitainerie extends javax.swing.JDialog
             }
         });
 
+        textBoxNomUtil.setText("testtest");
+
+        textBoxMDP.setText("test");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(

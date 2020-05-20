@@ -525,6 +525,7 @@ public class Applic_Phare extends javax.swing.JFrame
         setTmpLongueur("");
         setTmpNom("");
         setTmpType("");
+        buttonSuivant.setEnabled(true);
     }//GEN-LAST:event_buttonRAZActionPerformed
 
     private void buttonDeconexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeconexionActionPerformed

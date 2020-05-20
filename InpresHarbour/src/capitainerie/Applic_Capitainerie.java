@@ -77,11 +77,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         formatageDate(DateFormat.MEDIUM , DateFormat.MEDIUM ,Locale.FRANCE);
         InitTimer();
         InitList();
-        InitAmarrage();
-        /*if(LoadAmarrage() == 0)
+        
+        if(LoadAmarrage() == 0)
         {
             InitAmarrage();
-        }*/
+        }
         
     }
 
@@ -692,14 +692,12 @@ public class Applic_Capitainerie extends javax.swing.JFrame
             FileOutputStream file = new FileOutputStream(this.getFileName());
             ObjectOutputStream oos = new ObjectOutputStream(file);
             
-            for (Object amarrage : getAmarrages()) 
-            {
-                oos.writeObject(amarrage);
-            }
-        }
-        catch(IOException iOException)
-        {
-            getLog().ecritLigne("iOException : "+iOException.getMessage());
+            oos.writeObject(getAmarrages());
+            
+        
+        }catch(IOException iOException){
+            
+            System.out.println("iOException : "+iOException.getMessage());
         }
         
     }
@@ -808,15 +806,18 @@ public class Applic_Capitainerie extends javax.swing.JFrame
             switch (infos[0])
             {
                 case "1":
-                    if(infos[1] == "Peche")
+                    if(infos[1].compareTo("Peche") == 0)
                     {
                         setInfoBateauEntrant(new BateauPeche());
                     }
-                    else
+                    else if(infos[1].compareTo("Plaisance") == 0)
                     {
                         setInfoBateauEntrant(new BateauPlaisance());
+                    }else
+                    {
+                        System.out.println("Erreur, bateau de type '"+infos[1]+"' reçu !?");
                     }
-
+                    System.out.println("type '"+ getInfoBateauEntrant().getClass());
                     getInfoBateauEntrant().setPavillon(infos[2]);
                     getInfoBateauEntrant().setNom(infos[3]);
                     getInfoBateauEntrant().setLongueur(Integer.parseInt(infos[4]));
@@ -834,7 +835,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     private void buttonChoisirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChoisirActionPerformed
         getLog().ecritLigne("Creation de DIALOGPLACESDISPO - dans Applic_Capitainerie");
         // TODO add your handling code here:
-        DialogPlacesDispo pd = new DialogPlacesDispo(this, true, getAmarrages());
+        DialogPlacesDispo pd = new DialogPlacesDispo(this, true, getAmarrages(), getInfoBateauEntrant());
         pd.setVisible(true);
         textBoxChoix.setText(pd.getChoixFinal());
     }//GEN-LAST:event_buttonChoisirActionPerformed
@@ -851,47 +852,32 @@ public class Applic_Capitainerie extends javax.swing.JFrame
 
     private void buttonBateauAmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBateauAmarActionPerformed
         if(textBoxLecture.getText().length() > 0 && textBoxChoix.getText().length() > 0)
-        {
+        {            
+            
             getLog().ecritLigne("Creation de la boite de dialogue INFO BATEAU ENTRANT - dans Applic_Capitainerie");
-            
-            Bateau tmpBateau = new Bateau(textBoxLecture.getText(), "UK.jpg", 15, Combustible.kérosène, false, new Equipage());
-            setInfoBateauEntrant(tmpBateau);
-            
             DialogInfoBateauEntrant d = new DialogInfoBateauEntrant(this, true, getInfoBateauEntrant());           
             d.setEmplacemet(textBoxChoix.getText());
             d.setVisible(true);
             
             getListeBateauEntrant().addElement(getInfoBateauEntrant());
             
-            // if ... instanceOf()
+            String emplacement = textBoxChoix.getText();
             
-            Enumeration enu = getAmarrages().elements();
+            int index = Integer.parseInt(String.valueOf(emplacement.charAt(1)));
+            int slot_in = Integer.parseInt(String.valueOf(emplacement.charAt(4)));
             
-            while(enu.hasMoreElements())
-            {
-                // pour prendre le premier element
-                // on utilise le nextElement pour en realité
-                // avoir le premier elem du vector.
+            if(getInfoBateauEntrant() instanceof BateauPlaisance){
                 
-                Amarrage am = (Amarrage) enu.nextElement();
+                int slot = Integer.parseInt(String.valueOf(emplacement.charAt(2)));
+            
+                Ponton ponton = (Ponton) getAmarrages().elementAt(index-1);
+                ponton.addMoyenDeTransportSurEau(getInfoBateauEntrant(), slot, slot_in-1);
+                  
+            }else if(getInfoBateauEntrant() instanceof BateauPeche){
                 
-                // renvoie un obj donc faut cast !
-                if(am instanceof Quai)
-                {
-                    //
-                    Quai quai = (Quai) am;
-                    quai.addMoyenDeTransportSurEau(tmpBateau, 0);
-                    
-                }
-                else if(am instanceof Ponton)
-                {
-                    //
-                }
-                else
-                {
-                    System.out.println("Instance autre (" + am + ") ???");
-                    // java.util.logging.Logger.getLogger(Capitainerie.class.getName()).log(java.util.logging.Level.SEVERE, null, excpeiton de la classe);
-                }
+                Quai quai = (Quai) getAmarrages().elementAt(index-1);
+                quai.addMoyenDeTransportSurEau(getInfoBateauEntrant(), slot_in-1);
+                
             }
             
             SaveAmarrage();

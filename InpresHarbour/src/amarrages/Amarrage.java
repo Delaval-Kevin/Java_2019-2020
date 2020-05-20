@@ -6,10 +6,11 @@
 /***********************************************************/
 
 package amarrages;
+import java.io.Serializable;
 import vehicules.AUnIdentifiant;
 
 
-public abstract class Amarrage implements AUnIdentifiant
+public abstract class Amarrage implements AUnIdentifiant, Serializable
 {
     /***************************/
     /*                         */

@@ -17,6 +17,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import vehicules.Bateau;
+import vehicules.BateauPeche;
+import vehicules.BateauPlaisance;
 import vehicules.MoyenDeTransportSurEau;
 
 public class DialogPlacesDispo extends javax.swing.JDialog 
@@ -32,6 +34,7 @@ public class DialogPlacesDispo extends javax.swing.JDialog
     private String _choixEmp;
     private String _choixAmarrage;
     private String _choixFinal;
+    private String _type;
     
     private Vector<Amarrage> _amarrage;
     
@@ -47,10 +50,20 @@ public class DialogPlacesDispo extends javax.swing.JDialog
         initComponents();
     }
     
-    public DialogPlacesDispo(Frame parent, boolean modal, Vector<Amarrage> amarrage)
-    {
+    public DialogPlacesDispo(Frame parent, boolean modal, Vector<Amarrage> amarrage, Bateau bateau){
         this(parent, modal);
         setAmarrage(amarrage);
+        
+        System.out.println(bateau.getClass());
+        
+        if(bateau instanceof BateauPlaisance){
+            _type = "PLAISANCE";
+        }else if(bateau instanceof BateauPeche){
+            _type = "PECHE";
+        }else{
+            System.out.println("Erreur autre type de bateau dans DialogPlaceDispo !? ");
+        }
+        
         InitTable();
     }
    
@@ -94,13 +107,15 @@ public class DialogPlacesDispo extends javax.swing.JDialog
     /**************************/
     
     private void InitTable()
-    {       
-        String type = "PLAISANCE";
+    {
         
-        if(type.compareTo("PLAISANCE") == 0){
+        
+        if(_type.compareTo("PLAISANCE") == 0){
             ListAmarrageTable.getColumnModel().getColumn(0).setHeaderValue("Pontons");
-        }else if(type.compareTo("PECHE") == 0){
+        }else if(_type.compareTo("PECHE") == 0){
             ListAmarrageTable.getColumnModel().getColumn(0).setHeaderValue("Quais");
+        }else{
+            ListAmarrageTable.getColumnModel().getColumn(0).setHeaderValue("Err. très grave");
         }
         
         Enumeration enu = _amarrage.elements();
@@ -110,9 +125,9 @@ public class DialogPlacesDispo extends javax.swing.JDialog
             Amarrage am = (Amarrage) enu.nextElement();
             iAm++;
             
-            if(type.compareTo("PLAISANCE") == 0 && am instanceof Ponton){
+            if(_type.compareTo("PLAISANCE") == 0 && am instanceof Ponton){
                 AddPonton((Ponton) am, iAm);
-            }else if(type.compareTo("PECHE") == 0 && am instanceof Quai){
+            }else if(_type.compareTo("PECHE") == 0 && am instanceof Quai){
                 AddQuai((Quai) am, iAm);
             }    
         }

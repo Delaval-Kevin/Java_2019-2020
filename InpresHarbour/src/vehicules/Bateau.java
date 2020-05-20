@@ -54,7 +54,8 @@ public class Bateau extends MoyenDeTransportSurEau implements AUnIdentifiant, Se
     //Constructeur par défaut
     public Bateau()
     {
-        
+        setEquipage(new Equipage());
+        setPavillon("");
     }  
     
     public Bateau(String nom, String pavillon, int longueur,  Combustible combustible , boolean submersible, Equipage equipage)

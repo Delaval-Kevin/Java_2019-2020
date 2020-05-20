@@ -65,8 +65,8 @@ public class NotifyBean implements Serializable, BoatListener
     @Override
     public void BoatDetected(BoatEvent e) 
     {
-        JOptionPane.showMessageDialog(null,
-             "Bateau en approche", "Arrivage bateau", JOptionPane.INFORMATION_MESSAGE);
+        //JOptionPane.showMessageDialog(null,
+        //     "Bateau en approche", "Arrivage bateau", JOptionPane.INFORMATION_MESSAGE);
 
         String indent = e.getType()+"/"+e.getPavillon();
         getBateauxEntrant().addElement(indent);       

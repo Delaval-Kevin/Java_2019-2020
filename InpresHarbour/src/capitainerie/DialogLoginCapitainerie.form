@@ -114,8 +114,14 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="textBoxNomUtil">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="testtest"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="textBoxMDP">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="test"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
