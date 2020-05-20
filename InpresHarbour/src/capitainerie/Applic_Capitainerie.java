@@ -21,6 +21,8 @@ import javax.swing.DefaultListModel;
 import java.util.Timer;
 import java.util.TimerTask;
 import vehicules.Bateau;
+import vehicules.BateauPeche;
+import vehicules.BateauPlaisance;
 import vehicules.Combustible;
 import vehicules.ShipWithoutIdentificationException;
 
@@ -648,7 +650,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     
     private void afficheHeure()
     {
-//        System.out.println("Creation de la DATE - dans Applic_Capitainerie\n");
+        //System.out.println("Creation de la DATE - dans Applic_Capitainerie\n");
         
         Date maintenant = new Date();
         setInfoDate(DateFormat.getDateTimeInstance(getFormatDate(), getFormatHeure(), getFuseaau()).format(maintenant));
@@ -679,7 +681,22 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         
         if(checkRequeteEnAtt.isSelected())
         {
-            textBoxLecture.setText(getServeur().getMessage());
+            String[] infos = getServeur().getMessage().split("/");
+            
+            if(infos[0] == "Peche")
+            {
+                setInfoBateauEntrant(new BateauPeche());
+            }
+            else
+            {
+                setInfoBateauEntrant(new BateauPlaisance());
+            }
+            
+            getInfoBateauEntrant().setPavillon(infos[1]);
+            getInfoBateauEntrant().setNom(infos[2]);
+            getInfoBateauEntrant().setLongueur(Integer.parseInt(infos[3]));
+            textBoxLecture.setText(getInfoBateauEntrant().getNom()+" / "+getInfoBateauEntrant().getLongueur()+" m");
+        System.out.println(getInfoBateauEntrant());
         }
     }//GEN-LAST:event_buttonLireActionPerformed
 

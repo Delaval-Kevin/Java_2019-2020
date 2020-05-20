@@ -490,14 +490,13 @@ public class Applic_Phare extends javax.swing.JFrame
         {
             setTmpLongueur(d.getTextLongueur());
             setTmpNom(d.getTextBoxNomBateau());
-            textBoxBatIdent.setText(getTmpNom()+"/"+getTmpLongueur());
+            textBoxBatIdent.setText(getTmpNom()+" / "+getTmpLongueur()+" m");
             buttonSuivant.setEnabled(false);
         }    
     }//GEN-LAST:event_buttonSuivantActionPerformed
 
     private void buttonDemAutEntreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemAutEntreeActionPerformed
-        //disableAll();
-        getClient().sendString(getTmpNom()+"/"+getTmpLongueur());
+        getClient().sendString(getTmpType()+"/"+getTmpPavillon()+"/"+getTmpNom()+"/"+getTmpLongueur());
         
     }//GEN-LAST:event_buttonDemAutEntreeActionPerformed
 
