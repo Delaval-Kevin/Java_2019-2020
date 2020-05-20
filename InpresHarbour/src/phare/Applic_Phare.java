@@ -180,7 +180,7 @@ public class Applic_Phare extends javax.swing.JFrame
     
     private void setReponse(String reponse)
     {
-        _tmpNom = reponse;
+        _reponse = reponse;
     }
     
     /**************************/
@@ -320,6 +320,7 @@ public class Applic_Phare extends javax.swing.JFrame
         buttonDeconexion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         labelImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/phare/phare.jpg"))); // NOI18N
 
@@ -502,13 +503,13 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonSuivantActionPerformed
 
     private void buttonDemAutEntreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemAutEntreeActionPerformed
-        setReponse(getClient().sendString(getTmpType()+"/"+getTmpPavillon()+"/"+getTmpNom()+"/"+getTmpLongueur())); 
+        setReponse(getClient().sendString("1/"+getTmpType()+"/"+getTmpPavillon()+"/"+getTmpNom()+"/"+getTmpLongueur())); 
         
         labelRepCap.setText(getReponse());
     }//GEN-LAST:event_buttonDemAutEntreeActionPerformed
 
     private void buttonBatEntreRadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBatEntreRadeActionPerformed
-        setReponse(getClient().sendString("Bateau "+getTmpNom()+" est bien entre dans la rade"));
+        setReponse(getClient().sendString("2/Bateau "+getTmpNom()+" est bien entre dans la rade"));
         
         getBateauxEntrant().remove(0);
         

@@ -132,6 +132,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Capitainerie d'Inpres-Harbour");
+        setResizable(false);
 
         buttonDemarServ.setText("Démarrer le serveur");
         buttonDemarServ.addActionListener(new java.awt.event.ActionListener() {
@@ -792,19 +793,29 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         {
             String[] infos = getServeur().getMessage().split("/");
             
-            if(infos[0] == "Peche")
+            switch (infos[0])
             {
-                setInfoBateauEntrant(new BateauPeche());
+                case "1":
+                    if(infos[1] == "Peche")
+                    {
+                        setInfoBateauEntrant(new BateauPeche());
+                    }
+                    else
+                    {
+                        setInfoBateauEntrant(new BateauPlaisance());
+                    }
+
+                    getInfoBateauEntrant().setPavillon(infos[2]);
+                    getInfoBateauEntrant().setNom(infos[3]);
+                    getInfoBateauEntrant().setLongueur(Integer.parseInt(infos[4]));
+                    textBoxLecture.setText(getInfoBateauEntrant().getNom()+" / "+getInfoBateauEntrant().getLongueur()+" m");
+                    break;
+                    
+                case "2":
+                    textBoxLecture.setText(infos[1]);
+                    textBoxConfChoix.setText(getInfoBateauEntrant().getNom()+" --> "+textBoxChoix.getText());
+                    break;
             }
-            else
-            {
-                setInfoBateauEntrant(new BateauPlaisance());
-            }
-            
-            getInfoBateauEntrant().setPavillon(infos[1]);
-            getInfoBateauEntrant().setNom(infos[2]);
-            getInfoBateauEntrant().setLongueur(Integer.parseInt(infos[3]));
-            textBoxLecture.setText(getInfoBateauEntrant().getNom()+" / "+getInfoBateauEntrant().getLongueur()+" m");
         }
     }//GEN-LAST:event_buttonLireActionPerformed
 
@@ -817,11 +828,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     }//GEN-LAST:event_buttonChoisirActionPerformed
 
     private void buttonEnvChoixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnvChoixActionPerformed
-        // TODO add your handling code here:
+        getServeur().sendMessage(textBoxChoix.getText());
     }//GEN-LAST:event_buttonEnvChoixActionPerformed
 
     private void buttonEnvConfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnvConfActionPerformed
-        // TODO add your handling code here:
+        getServeur().sendMessage(textBoxConfChoix.getText());
     }//GEN-LAST:event_buttonEnvConfActionPerformed
 
     private void buttonBateauAmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBateauAmarActionPerformed
