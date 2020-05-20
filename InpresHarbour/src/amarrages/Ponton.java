@@ -59,11 +59,11 @@ public class Ponton extends Amarrage
     {
         if(cote == 1)
         {
-            return _liste[1];
+            return _liste[0];
         }
         else if(cote == 2)
         {
-            return _liste[2];
+            return _liste[1];
         }
         return null;
     }
