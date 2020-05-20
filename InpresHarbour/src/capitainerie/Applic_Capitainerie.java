@@ -160,9 +160,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         });
 
         checkRequeteEnAtt.setText("Requête en attente");
+        checkRequeteEnAtt.setEnabled(false);
 
         jLabel1.setText("Amarrage possible :");
 
+        textBoxLecture.setEditable(false);
         textBoxLecture.setBackground(new java.awt.Color(0, 255, 102));
         textBoxLecture.setForeground(new java.awt.Color(0, 0, 0));
         textBoxLecture.setText("??");
@@ -674,7 +676,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     }//GEN-LAST:event_buttonDemarServActionPerformed
 
     private void buttonLireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLireActionPerformed
-        // TODO add your handling code here:
+        
+        if(checkRequeteEnAtt.isSelected())
+        {
+            textBoxLecture.setText(getServeur().getMessage());
+        }
     }//GEN-LAST:event_buttonLireActionPerformed
 
     private void buttonChoisirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChoisirActionPerformed

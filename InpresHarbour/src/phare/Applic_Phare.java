@@ -29,6 +29,10 @@ public class Applic_Phare extends javax.swing.JFrame
     private KindOfBoatBean _beanKindOfBoat;
     private BoatBean _beanBoat;
     private NotifyBean _beanNotify;
+    private String _tmpType;
+    private String _tmpPavillon;
+    private String _tmpLongueur;
+    private String _tmpNom;
 
     /**************************/
     /*                        */
@@ -87,6 +91,25 @@ public class Applic_Phare extends javax.swing.JFrame
         return _beanNotify;
     }  
     
+    private String getTmpType()
+    {
+        return _tmpType;
+    }
+    
+    private String getTmpPavillon()
+    {
+        return _tmpPavillon;
+    }
+    
+    private String getTmpLongueur()
+    {
+        return _tmpLongueur;
+    }
+    private String getTmpNom()
+    {
+        return _tmpNom;
+    }
+    
     /**************************/
     /*                        */
     /*         SETTERS        */
@@ -128,6 +151,24 @@ public class Applic_Phare extends javax.swing.JFrame
         _beanNotify = beanNotify;
     } 
     
+    private void setTmpType(String tmpType)
+    {
+        _tmpType = tmpType;
+    }
+    
+    private void setTmpPavillon(String tmpPavillon)
+    {
+        _tmpPavillon = tmpPavillon;
+    }
+    
+    private void setTmpLongueur(String tmpLongueur)
+    {
+        _tmpLongueur = tmpLongueur;
+    }
+    private void setTmpNom(String tmpNom)
+    {
+        _tmpNom = tmpNom;
+    }
     /**************************/
     /*                        */
     /*        METHODES        */
@@ -242,7 +283,16 @@ public class Applic_Phare extends javax.swing.JFrame
         }    
         
         getBeanNotify().setBateauxEntrant(getBateauxEntrant());
-
+    }
+    
+    private void disableAll()
+    {
+        buttonSuivant.setEnabled(false);
+        buttonBatEntreRade.setEnabled(false);
+        buttonConnexion.setEnabled(false);
+        buttonDeconexion.setEnabled(false);
+        buttonDemAutEntree.setEnabled(false);
+        buttonRAZ.setEnabled(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -277,6 +327,8 @@ public class Applic_Phare extends javax.swing.JFrame
 
         labelBatEntre.setText("??");
 
+        textBoxBatIdent.setEditable(false);
+        textBoxBatIdent.setBackground(new java.awt.Color(0, 255, 102));
         textBoxBatIdent.setText("??");
 
         jScrollPane1.setViewportView(listBatEnAttente);
@@ -423,16 +475,30 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonConnexionActionPerformed
 
     private void buttonSuivantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSuivantActionPerformed
+        String[] parties = getBateauxEntrant().elementAt(0).toString().split("/");
+        setTmpType(parties[0]);
+        setTmpPavillon(parties[1]);
         
         System.out.println("Creation de la boite de dialogue IDENT BATEAU - dans Applic_Phare\n");
-            
-        DialogIdentBateau d = new DialogIdentBateau(this, true);           
-        //d.setLabelType();
+        DialogIdentBateau d = new DialogIdentBateau(this, true);
+        
+        d.setLabelType(getTmpType());
+        d.setLabelPavillon(getTmpPavillon());
         d.setVisible(true);
+        
+        if(d.isFormValide())
+        {
+            setTmpLongueur(d.getTextLongueur());
+            setTmpNom(d.getTextBoxNomBateau());
+            textBoxBatIdent.setText(getTmpNom()+"/"+getTmpLongueur());
+            buttonSuivant.setEnabled(false);
+        }    
     }//GEN-LAST:event_buttonSuivantActionPerformed
 
     private void buttonDemAutEntreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemAutEntreeActionPerformed
-        // TODO add your handling code here:
+        //disableAll();
+        getClient().sendString(getTmpNom()+"/"+getTmpLongueur());
+        
     }//GEN-LAST:event_buttonDemAutEntreeActionPerformed
 
     private void buttonBatEntreRadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBatEntreRadeActionPerformed

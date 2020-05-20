@@ -6,6 +6,9 @@
 /***********************************************************/
 
 package phare;
+import add.DialogErreur;
+import java.awt.Frame;
+import javax.swing.ImageIcon;
 
 
 public class DialogIdentBateau extends javax.swing.JDialog 
@@ -17,7 +20,7 @@ public class DialogIdentBateau extends javax.swing.JDialog
     /*                        */
     /**************************/
     
-    
+    private boolean _ok;
     
     /**************************/
     /*                        */
@@ -29,6 +32,7 @@ public class DialogIdentBateau extends javax.swing.JDialog
     {
         super(parent, modal);
         initComponents();
+        setFormValide(false);
     }
 
     /**************************/
@@ -42,12 +46,41 @@ public class DialogIdentBateau extends javax.swing.JDialog
         labelType.setText(type);
     }
     
+    public void setLabelPavillon(String pavillon)
+    {
+        labelPavillon.setText(pavillon);
+        
+        String imagePath = "/add/"+pavillon+".jpg";
+        ImageIcon image = new ImageIcon(getClass().getResource(imagePath));
+        
+        imagePavillon.setIcon(image);
+    }
+    
+    public void setFormValide(boolean ok)
+    {
+        _ok = ok;
+    }
+    
     /**************************/
     /*                        */
     /*         GETTERS        */
     /*                        */
     /**************************/
     
+    public String getTextBoxNomBateau()
+    {
+        return textBoxNomBateau.getText();
+    }
+    
+    public String getTextLongueur()
+    {
+        return textBoxLongueur.getText();
+    }
+    
+    public boolean isFormValide()
+    {
+        return _ok;
+    }
     
     /**************************/
     /*                        */
@@ -101,21 +134,22 @@ public class DialogIdentBateau extends javax.swing.JDialog
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(imagePavillon)
-                .addGap(197, 197, 197))
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(labelPavillon, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelType, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelPavillon, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 376, Short.MAX_VALUE)
+                                .addComponent(imagePavillon))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
@@ -129,7 +163,7 @@ public class DialogIdentBateau extends javax.swing.JDialog
                                     .addComponent(textBoxLongueur, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(64, 64, 64)
                                 .addComponent(buttonAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addGap(34, 34, 34))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,13 +172,16 @@ public class DialogIdentBateau extends javax.swing.JDialog
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(labelType))
-                .addGap(30, 30, 30)
-                .addComponent(imagePavillon)
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(labelPavillon))
-                .addGap(41, 41, 41)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labelPavillon)
+                            .addComponent(jLabel2)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(imagePavillon)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(textBoxNomBateau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -152,7 +189,7 @@ public class DialogIdentBateau extends javax.swing.JDialog
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(textBoxLongueur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonOK)
                     .addComponent(buttonAnnuler))
@@ -170,11 +207,23 @@ public class DialogIdentBateau extends javax.swing.JDialog
     /**************************/
     
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        // TODO add your handling code here:
+        
+        if(textBoxLongueur.getText().length() > 0 && textBoxNomBateau.getText().length() > 0)
+        {
+            setFormValide(true);
+            this.setVisible(false);
+        }
+        else
+        {
+            System.out.println("Creation de la boite de dialogue ERREUR - dans DialogInfoBateauEntrant\n");
+            
+            DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Veuillez remplir les champs !");
+            d.setVisible(true);            
+        }
     }//GEN-LAST:event_buttonOKActionPerformed
 
     private void buttonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnnulerActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_buttonAnnulerActionPerformed
 
 
