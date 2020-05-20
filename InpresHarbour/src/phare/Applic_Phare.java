@@ -33,6 +33,7 @@ public class Applic_Phare extends javax.swing.JFrame
     private String _tmpPavillon;
     private String _tmpLongueur;
     private String _tmpNom;
+    private String _reponse;
 
     /**************************/
     /*                        */
@@ -105,9 +106,15 @@ public class Applic_Phare extends javax.swing.JFrame
     {
         return _tmpLongueur;
     }
+    
     private String getTmpNom()
     {
         return _tmpNom;
+    }
+
+    private String getReponse()
+    {
+        return _reponse;
     }
     
     /**************************/
@@ -165,10 +172,17 @@ public class Applic_Phare extends javax.swing.JFrame
     {
         _tmpLongueur = tmpLongueur;
     }
+    
     private void setTmpNom(String tmpNom)
     {
         _tmpNom = tmpNom;
     }
+    
+    private void setReponse(String reponse)
+    {
+        _tmpNom = reponse;
+    }
+    
     /**************************/
     /*                        */
     /*        METHODES        */
@@ -285,16 +299,6 @@ public class Applic_Phare extends javax.swing.JFrame
         getBeanNotify().setBateauxEntrant(getBateauxEntrant());
     }
     
-    private void disableAll()
-    {
-        buttonSuivant.setEnabled(false);
-        buttonBatEntreRade.setEnabled(false);
-        buttonConnexion.setEnabled(false);
-        buttonDeconexion.setEnabled(false);
-        buttonDemAutEntree.setEnabled(false);
-        buttonRAZ.setEnabled(false);
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -324,6 +328,8 @@ public class Applic_Phare extends javax.swing.JFrame
         labelBatIdentif.setText("Bateau identifié :");
 
         labelCap.setText("Réponse de la capitainerie :");
+
+        labelRepCap.setText("??");
 
         labelBatEntre.setText("??");
 
@@ -496,16 +502,28 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonSuivantActionPerformed
 
     private void buttonDemAutEntreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemAutEntreeActionPerformed
-        getClient().sendString(getTmpType()+"/"+getTmpPavillon()+"/"+getTmpNom()+"/"+getTmpLongueur());
+        setReponse(getClient().sendString(getTmpType()+"/"+getTmpPavillon()+"/"+getTmpNom()+"/"+getTmpLongueur())); 
         
+        labelRepCap.setText(getReponse());
     }//GEN-LAST:event_buttonDemAutEntreeActionPerformed
 
     private void buttonBatEntreRadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBatEntreRadeActionPerformed
-        // TODO add your handling code here:
+        setReponse(getClient().sendString("Bateau "+getTmpNom()+" est bien entre dans la rade"));
+        
+        getBateauxEntrant().remove(0);
+        
+        labelBatEntre.setText(getReponse());
     }//GEN-LAST:event_buttonBatEntreRadeActionPerformed
 
     private void buttonRAZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRAZActionPerformed
-        // TODO add your handling code here:
+        labelBatEntre.setText("??");
+        labelRepCap.setText("??");
+        textBoxBatIdent.setText("??");
+        setReponse("");
+        setTmpPavillon("");
+        setTmpLongueur("");
+        setTmpNom("");
+        setTmpType("");
     }//GEN-LAST:event_buttonRAZActionPerformed
 
     private void buttonDeconexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeconexionActionPerformed

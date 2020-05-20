@@ -696,7 +696,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame
             getInfoBateauEntrant().setNom(infos[2]);
             getInfoBateauEntrant().setLongueur(Integer.parseInt(infos[3]));
             textBoxLecture.setText(getInfoBateauEntrant().getNom()+" / "+getInfoBateauEntrant().getLongueur()+" m");
-        System.out.println(getInfoBateauEntrant());
         }
     }//GEN-LAST:event_buttonLireActionPerformed
 
