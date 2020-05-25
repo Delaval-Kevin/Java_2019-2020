@@ -6,11 +6,14 @@
 /***********************************************************/
 
 package beans;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+
+import add.Parametres;
 import java.io.Serializable;
-import threadsutils.ThreadRandomGenerator;
 import threadsutils.UtilisateurNombre;
+import java.beans.PropertyChangeSupport;
+import java.beans.PropertyChangeListener;
+import java.rmi.activation.ActivationSystem;
+import threadsutils.ThreadRandomGenerator;
 
 
 public class KindOfBoatBean implements UtilisateurNombre, Serializable
@@ -21,8 +24,11 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     /*                        */
     /**************************/
     
-    private boolean _enMarche;
+    private int _bornInf;
+    private int _bornSup;
     private String _info;
+    private boolean _enMarche;
+    private Parametres _parametres;
     private PropertyChangeSupport GestProp = new PropertyChangeSupport(this);
     
     /**************************/
@@ -34,6 +40,13 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     public KindOfBoatBean()
     {
         //System.out.println("Création du bean KindOfBoat");
+        setParametres(new Parametres());
+        setBornInf(Integer.parseInt(getParametres().searchParam("nombreRef1")));
+        setBornSup(Integer.parseInt(getParametres().searchParam("nombreRef2")));
+        
+        
+        System.out.println("bonrne inf : "+getBornInf());
+        System.out.println("bonrne sup : "+getBornSup());
     }
     
     /**************************/
@@ -55,6 +68,21 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
         GestProp.firePropertyChange("Info", ancienneValeur, info);
     }
     
+    public void setParametres(Parametres parametres)
+    {
+        _parametres = parametres;
+    }
+    
+    public void setBornInf(int bornInf)
+    {
+        _bornInf = bornInf;
+    }
+    
+    public void setBornSup(int bornSup)
+    {
+        _bornSup = bornSup;
+    }
+    
     /**************************/
     /*                        */
     /*         GETTERS        */
@@ -70,6 +98,21 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     public String getInfo()
     {
         return _info;
+    }
+        
+    public Parametres getParametres()
+    {
+        return _parametres;
+    }
+    
+    public int getBornInf()
+    {
+        return _bornInf;
+    }
+    
+    public int getBornSup()
+    {
+        return _bornSup;
     }
     
     /**************************/
@@ -92,7 +135,11 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     {
         if(isEnMarche())
         {
-            ThreadRandomGenerator thread = new ThreadRandomGenerator(this, 0, 1000, 2, 2);  
+            int tempsPause = Integer.parseInt(getParametres().searchParam("tempsSommeil"));
+            
+            System.out.println("sommeil : "+tempsPause);
+            
+            ThreadRandomGenerator thread = new ThreadRandomGenerator(this, 0, tempsPause, 2, 2);  
             thread.start();
         }
     }

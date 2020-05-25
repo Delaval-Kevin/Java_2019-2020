@@ -5,9 +5,11 @@
 /*Date de la dernière mise à jour : 18/05/2020             */
 /***********************************************************/
 
-package utilisateurs;
-import java.util.*;
+package add;
+
 import java.io.*;
+import java.util.*;
+
 
 
 public class Proprietes 
@@ -19,6 +21,7 @@ public class Proprietes
     /**************************/
     
     private Properties _login;
+    private String _fileName;
     
     /**************************/
     /*                        */
@@ -29,11 +32,15 @@ public class Proprietes
     public Proprietes()
     {
         setLogin(new Properties());
+        setFileName("logins.properties");
         Load();
-        
-        Save();
-        //AddUser("DelavalKevin", "1234");
-        //AddUser("ColletteLoic", "1234");
+    }
+    
+    public Proprietes(String fileName)
+    {
+        setLogin(new Properties());
+        setFileName(fileName);
+        Load();
     }
     
     /**************************/
@@ -47,6 +54,11 @@ public class Proprietes
         _login = login;
     }
     
+    public void setFileName(String fileName)
+    {
+        _fileName = fileName;
+    }
+    
     /**************************/
     /*                        */
     /*         GETTERS        */
@@ -57,13 +69,18 @@ public class Proprietes
     {
         return _login;
     }
-     
+    
     public String getFileName()
+    {
+        return _fileName;
+    }
+     
+    public String getFilePath()
     {
         String sep = System.getProperty("file.separator");
         String rep = System.getProperty("user.dir");
         
-        return rep+sep+"logins.properties";
+        return rep+sep;
     }
     
     /**************************/
@@ -74,7 +91,7 @@ public class Proprietes
     
     public void Save()
     {
-        try(OutputStream output = new FileOutputStream(getFileName())) 
+        try(OutputStream output = new FileOutputStream(getFilePath()+getFileName())) 
         {            
             getLogin().store(output,null);
         } 
@@ -86,13 +103,16 @@ public class Proprietes
     
     public void Load()
     {
-        try(InputStream input = new FileInputStream(getFileName())) 
+        try(InputStream input = new FileInputStream(getFilePath()+getFileName())) 
         {            
             getLogin().load(input);
         } 
         catch(IOException io) 
         {
-            System.out.println("chargement de fichier problematique "+io.getMessage());
+            AddUser("DelavalKevin", "1234"); //pour nous inclure
+            AddUser("ColletteLoic", "1234"); //dans le fichier
+            Save();
+            System.out.println("Un probleme est survenu lors du chargement du fichier : "+io.getMessage());
         }
     }
     

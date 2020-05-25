@@ -6,33 +6,32 @@
 /***********************************************************/
 
 package capitainerie;
-import add.DialogLogin;
-import add.DialogErreur;
-import add.FichierLog;
-import amarrages.Amarrage;
-import amarrages.OddPontoonException;
-import amarrages.Ponton;
+
+import add.*;
 import amarrages.Quai;
-import humain.Equipage;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.text.DateFormat;
-import network.NetworkBasicServer;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.Locale;
-import javax.swing.DefaultListModel;
+import add.DialogLogin;
 import java.util.Timer;
-import java.util.TimerTask;
+import add.DialogErreur;
+import java.util.Locale;
 import java.util.Vector;
+import amarrages.Ponton;
 import vehicules.Bateau;
+import amarrages.Amarrage;
+import java.io.IOException;
+import java.util.TimerTask;
+import java.text.DateFormat;
 import vehicules.BateauPeche;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import vehicules.BateauPlaisance;
-import vehicules.Combustible;
+import java.io.ObjectOutputStream;
+import network.NetworkBasicServer;
+import javax.swing.DefaultListModel;
+import java.io.FileNotFoundException;
+import amarrages.OddPontoonException;
+
 
 
 public class Applic_Capitainerie extends javax.swing.JFrame 
@@ -44,20 +43,21 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     /*                        */
     /**************************/
     
-    private String _utilisateur;
     private FichierLog _log;
+    private String _utilisateur;
+    private Parametres _parametres;
     private NetworkBasicServer _serveur;
     
-    private DefaultListModel _bateauEntrant;
     private Vector<Amarrage> _amarrage;
+    private DefaultListModel _bateauEntrant;
     
-    private Bateau _infoBateauEntrant;
     private String _infoDate;
+    private Bateau _infoBateauEntrant;
     
     private Timer _timer;
+    private Locale _fuseau;
     private int _formatDate;
     private int _formatHeure;
-    private Locale _fuseau;
     
 
 
@@ -70,7 +70,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     public Applic_Capitainerie() 
     {
         initComponents();
-        setLog(new FichierLog(System.getProperty("user.dir")+System.getProperty("file.separator")+"capitainerie.log"));
+        /* récupère le fichier des paramètres */
+        setParam(new Parametres());
+        
+        /* récupère le fichier log */
+        setLog(new FichierLog(getParam().searchParam("capitainerieLog")));
         
         fctLogin();
         
@@ -517,6 +521,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     {
         _log = log;
     }
+
+    public void setParam(Parametres param)
+    {
+        _parametres = param;
+    }
     
     public void setEnableAll(boolean choice)
     {
@@ -612,6 +621,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         return _log;
     }
     
+    public Parametres getParam()
+    {
+        return _parametres;
+    }
+    
     /**************************/
     /*                        */
     /*        METHODES        */
@@ -646,22 +660,15 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         setAmarrages(ams);
     }
     
-    
-    private String getFileName(){
-        
-        String sep = System.getProperty("file.separator");
-        String rep = System.getProperty("user.dir");
-
-        return rep+sep+"port.dat"; 
-    }
-    
-    
     // permet de charger l'état du port lors du démarrage
-    private int LoadAmarrage(){
+    private int LoadAmarrage()
+    {
+        String rep = System.getProperty("user.dir");
+        String sep = System.getProperty("file.separator");
         
         try
         {
-            FileInputStream file = new FileInputStream(this.getFileName());
+            FileInputStream file = new FileInputStream(rep+sep+getParam().searchParam("fichierAmarrage"));
             ObjectInputStream ois = new ObjectInputStream(file);
             
             setAmarrages((Vector <Amarrage>) ois.readObject());
@@ -685,11 +692,14 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     }
     
     // permet de sauvegarder l'état du port
-    private void SaveAmarrage(){
-    
+    public void SaveAmarrage()
+    {
+        String rep = System.getProperty("user.dir");
+        String sep = System.getProperty("file.separator");
+        
         try
         {     
-            FileOutputStream file = new FileOutputStream(this.getFileName());
+            FileOutputStream file = new FileOutputStream(rep+sep+getParam().searchParam("fichierAmarrage"));
             ObjectOutputStream oos = new ObjectOutputStream(file);
             
             oos.writeObject(getAmarrages());
@@ -792,7 +802,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     
     private void buttonDemarServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemarServActionPerformed
         getLog().ecritLigne("Démarrage du serveur - dans Applic_Capitainerie");
-        setServeur(new NetworkBasicServer(50005,checkRequeteEnAtt));
+        setServeur(new NetworkBasicServer(Integer.parseInt(getParam().searchParam("portEcoute")),checkRequeteEnAtt));
         buttonDemarServ.setEnabled(false);
     }//GEN-LAST:event_buttonDemarServActionPerformed
 
@@ -1015,7 +1025,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         getLog().ecritLigne("Creation de la boite de dialogue FICHIER LOG - dans Applic_Capitainerie");
           
         /*Je ne garde pas une référence de la fenêtre en global, car il n'y à beaucoup d'ajout à gérer*/
-        DialogFichierLog d = new DialogFichierLog(this, true); 
+        DialogFichierLog d = new DialogFichierLog(this, true, getParam()); 
         d.setLocationRelativeTo(null);
         d.setVisible(true);      
         d.dispose();    

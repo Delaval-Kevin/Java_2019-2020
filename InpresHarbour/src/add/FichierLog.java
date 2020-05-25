@@ -32,9 +32,10 @@ public class FichierLog
     /*                        */
     /**************************/
     
-    public FichierLog (String n)
+    public FichierLog(String n)
     {
-        setNomFichier(n);
+        String file = System.getProperty("user.dir")+System.getProperty("file.separator")+n;
+        setNomFichier(file);
     }
     
     /**************************/

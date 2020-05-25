@@ -6,7 +6,8 @@
 /***********************************************************/
 
 package phare;
-import add.DialogLogin;
+
+import add.*;
 import beans.*;
 import java.beans.Beans;
 import java.io.IOException;
@@ -23,17 +24,19 @@ public class Applic_Phare extends javax.swing.JFrame
     /*                        */
     /**************************/
     
-    private String _utilisateur;
-    private DefaultListModel _bateauxEntrant;
-    private NetworkBasicClient _client;
-    private KindOfBoatBean _beanKindOfBoat;
-    private BoatBean _beanBoat;
-    private NotifyBean _beanNotify;
+    private String _tmpNom;
+    private FichierLog _log;
+    private String _reponse;
     private String _tmpType;
+    private BoatBean _beanBoat;
+    private String _utilisateur;
     private String _tmpPavillon;
     private String _tmpLongueur;
-    private String _tmpNom;
-    private String _reponse;
+    private Parametres _parametres;
+    private NotifyBean _beanNotify;
+    private NetworkBasicClient _client;
+    private KindOfBoatBean _beanKindOfBoat;
+    private DefaultListModel _bateauxEntrant;
 
     /**************************/
     /*                        */
@@ -44,6 +47,13 @@ public class Applic_Phare extends javax.swing.JFrame
     public Applic_Phare() 
     {
         initComponents();
+        
+        /* récupère le fichier des paramètres */
+        setParam(new Parametres());
+        
+        /* récupère le fichier log */
+        setLog(new FichierLog(getParam().searchParam("phareLog")));
+        
         InitList();
         fctLogin();
         InitBeans();
@@ -117,6 +127,16 @@ public class Applic_Phare extends javax.swing.JFrame
         return _reponse;
     }
     
+    public FichierLog getLog()
+    {
+        return _log;
+    }
+    
+    public Parametres getParam()
+    {
+        return _parametres;
+    }
+    
     /**************************/
     /*                        */
     /*         SETTERS        */
@@ -183,6 +203,16 @@ public class Applic_Phare extends javax.swing.JFrame
         _reponse = reponse;
     }
     
+    public void setLog(FichierLog log)
+    {
+        _log = log;
+    }
+
+    public void setParam(Parametres param)
+    {
+        _parametres = param;
+    }
+    
     /**************************/
     /*                        */
     /*        METHODES        */
@@ -203,7 +233,7 @@ public class Applic_Phare extends javax.swing.JFrame
     {
         this.setVisible(false);
         
-        System.out.println("Creation de la boite dialogue de LOGIN - dans Applic_Phare\n");
+        getLog().ecritLigne("Creation de la boite dialogue de LOGIN - dans Applic_Phare");
         
         /*Je ne garde pas une référence de la fenêtre en global, car il n'y à lieu d'avoir de connecion et déconnexion intempestives*/
         DialogLogin login = new DialogLogin(this, true);
@@ -213,6 +243,7 @@ public class Applic_Phare extends javax.swing.JFrame
         {
             setUtilisateur(login.getUtilisateur());
             setTitre();
+            getLog().ecritLigne("LOGIN de "+getUtilisateur()+" - dans Applic_Phare");
         }
         
         this.setVisible(true);
@@ -221,7 +252,7 @@ public class Applic_Phare extends javax.swing.JFrame
     
     private void InitList()
     {
-        System.out.println("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans Applic_Phare\n");
+        getLog().ecritLigne("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans Applic_Phare");
         
         setBateauxEntrant(new DefaultListModel());
        
@@ -233,9 +264,13 @@ public class Applic_Phare extends javax.swing.JFrame
         InitKindOfBoat();
         InitBoat();
         InitNotify();
+        
         /* pour envoyer un signal au BeanBoat quand la variable "info" change dans BeanKindOfBoat*/
         getBeanKindOfBoat().addPropertyChangeListener(getBeanBoat());
         getBeanBoat().addBoatListener(getBeanNotify());
+        
+        /* maintenant que tout est en place on demarre KindOfBoatBean*/
+        getBeanKindOfBoat().run();
     }
     
     private void InitKindOfBoat()
@@ -246,18 +281,17 @@ public class Applic_Phare extends javax.swing.JFrame
         } 
         catch(ClassNotFoundException e) 
         {
-            System.out.println("Classe KindOfBoatBean non trouvée");
+            getLog().ecritLigne("Classe KindOfBoatBean non trouvée - dans Applic_Phare");
             System.exit(0);
         }
         catch(IOException e)
         {
-            System.out.println("Erreur d'I/O : KindOfBoatBean !!!");
+            getLog().ecritLigne("Erreur d'I/O : KindOfBoatBean !!! - dans Applic_Phare");
             System.exit(0);
         }
         
         //config du bean
         getBeanKindOfBoat().init();
-        getBeanKindOfBoat().run();
     }
     
     private void InitBoat()
@@ -268,12 +302,12 @@ public class Applic_Phare extends javax.swing.JFrame
         } 
         catch(ClassNotFoundException e) 
         {
-            System.out.println("Classe BoatBean non trouvée");
+            getLog().ecritLigne("Classe BoatBean non trouvée - dans Applic_Phare");
             System.exit(0);
         }
         catch(IOException e)
         {
-            System.out.println("Erreur d'I/O : BoatBean !!!");
+            getLog().ecritLigne("Erreur d'I/O : KindOfBoatBean !!! - dans Applic_Phare");
             System.exit(0);
         }   
         
@@ -287,12 +321,12 @@ public class Applic_Phare extends javax.swing.JFrame
         } 
         catch(ClassNotFoundException e) 
         {
-            System.out.println("Classe NotifyBean non trouvée");
+            getLog().ecritLigne("Classe NotifyBean non trouvée - dans Applic_Phare");
             System.exit(0);
         }
         catch(IOException e)
         {
-            System.out.println("Erreur d'I/O : NotifyBean!!!");
+            getLog().ecritLigne("Erreur d'I/O : KindOfBoatBean !!! - dans Applic_Phare");
             System.exit(0);
         }    
         
@@ -477,7 +511,9 @@ public class Applic_Phare extends javax.swing.JFrame
     /**************************/
     
     private void buttonConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConnexionActionPerformed
-        setClient(new NetworkBasicClient("localhost", 50005));
+        getLog().ecritLigne("Connexion au serveur - dans Applic_Phare");
+        
+        setClient(new NetworkBasicClient("localhost", Integer.parseInt(getParam().searchParam("portEcoute"))));
         buttonConnexion.setEnabled(false);
     }//GEN-LAST:event_buttonConnexionActionPerformed
 
@@ -486,7 +522,7 @@ public class Applic_Phare extends javax.swing.JFrame
         setTmpType(parties[0]);
         setTmpPavillon(parties[1]);
         
-        System.out.println("Creation de la boite de dialogue IDENT BATEAU - dans Applic_Phare\n");
+        getLog().ecritLigne("Creation de la boite de dialogue IDENT BATEAU - dans Applic_Phare");
         DialogIdentBateau d = new DialogIdentBateau(this, true);
         
         d.setLabelType(getTmpType());
@@ -566,8 +602,10 @@ public class Applic_Phare extends javax.swing.JFrame
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+        java.awt.EventQueue.invokeLater(new Runnable() 
+        {
+            public void run() 
+            {
                 new Applic_Phare().setVisible(true);
             }
         });

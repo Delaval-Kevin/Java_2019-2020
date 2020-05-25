@@ -6,11 +6,12 @@
 /***********************************************************/
 
 package beans;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.Serializable;
+
 import java.util.Date;
 import java.util.Vector;
+import java.io.Serializable;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 
 
@@ -22,8 +23,8 @@ public class BoatBean implements Serializable, PropertyChangeListener
     /*                        */
     /**************************/
     
-    private Vector _boatListeners;
     private String _type;
+    private Vector _boatListeners;
     
     /**************************/
     /*                        */
@@ -53,7 +54,7 @@ public class BoatBean implements Serializable, PropertyChangeListener
     {
         _type = type;
     }
-    
+
     /**************************/
     /*                        */
     /*         GETTERS        */
@@ -69,7 +70,7 @@ public class BoatBean implements Serializable, PropertyChangeListener
     {
         return _type;
     }
-    
+
     /**************************/
     /*                        */
     /*        METHODES        */

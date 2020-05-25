@@ -6,9 +6,10 @@
 /***********************************************************/
 
 package add;
-import add.DialogErreur;
+
 import java.awt.Frame;
-import utilisateurs.*;
+import add.DialogErreur;
+
 
 
 public class DialogLogin extends javax.swing.JDialog 

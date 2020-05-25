@@ -6,7 +6,8 @@
 /***********************************************************/
 
 package capitainerie;
-import add.FichierLog;
+
+import add.*;
 import java.util.ArrayList;
 
 
@@ -19,7 +20,9 @@ public class DialogFichierLog extends javax.swing.JDialog
     /*                        */
     /**************************/
     
-    private FichierLog _log;
+    private Parametres _parametres;
+    private FichierLog _logCap;
+    private FichierLog _logPhare;
     private ArrayList<String> _text;
     
     /**************************/
@@ -31,26 +34,52 @@ public class DialogFichierLog extends javax.swing.JDialog
     public DialogFichierLog(java.awt.Frame parent, boolean modal) 
     {
         super(parent, modal);
-        initComponents();
-        setLog(new FichierLog(System.getProperty("user.dir")+System.getProperty("file.separator")+"capitainerie.log"));
-        
-        CompletArea();
-    }
 
+        setParam(new Parametres());
+        
+        setLogCap(new FichierLog(getParam().searchParam("capitainerieLog")));
+        setLogPhare(new FichierLog(getParam().searchParam("phareLog")));
+        
+        initComponents();
+    }
+    
+    public DialogFichierLog(java.awt.Frame parent, boolean modal, Parametres param) 
+    {
+        super(parent, modal);
+        initComponents();
+        
+        setParam(param);
+        
+        setLogCap(new FichierLog(getParam().searchParam("capitainerieLog")));
+        setLogPhare(new FichierLog(getParam().searchParam("phareLog")));
+        
+        CompletArea(getLogCap());
+    }
+    
     /**************************/
     /*                        */
     /*         SETTERS        */
     /*                        */
     /**************************/
     
-    public void setLog(FichierLog log)
+    public void setLogCap(FichierLog log)
     {
-        _log = log;
+        _logCap = log;
+    }
+    
+    public void setLogPhare(FichierLog log)
+    {
+        _logPhare = log;
     }
     
     public void setText(ArrayList<String> text)
     {
         _text = text;
+    }
+    
+    public void setParam(Parametres param)
+    {
+        _parametres = param;
     }
     
     /**************************/
@@ -59,14 +88,24 @@ public class DialogFichierLog extends javax.swing.JDialog
     /*                        */
     /**************************/
  
-    public FichierLog getLog()
+    public FichierLog getLogCap()
     {
-        return _log;
+        return _logCap;
+    }
+    
+    public FichierLog getLogPhare()
+    {
+        return _logPhare;
     }
     
     public ArrayList<String> getText()
     {
         return _text;
+    }
+ 
+    public Parametres getParam()
+    {
+        return _parametres;
     }
     
     /**************************/
@@ -75,10 +114,12 @@ public class DialogFichierLog extends javax.swing.JDialog
     /*                        */
     /**************************/ 
 
-    public void CompletArea()
+    public void CompletArea(FichierLog log)
     {
-
-        setText(getLog().lireFichier());
+        //On vide la zone de texte
+        TextArea.setText("");
+        
+        setText(log.lireFichier());
         
         for(String line : getText())
         {
@@ -91,16 +132,37 @@ public class DialogFichierLog extends javax.swing.JDialog
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         TextArea = new javax.swing.JTextArea();
+        radioCapitainerie = new javax.swing.JRadioButton();
+        radioPhare = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Capitainerie d'Inpres-Harbour :  Fichier log");
+        setPreferredSize(new java.awt.Dimension(800, 450));
 
         TextArea.setEditable(false);
         TextArea.setColumns(20);
         TextArea.setRows(5);
         jScrollPane1.setViewportView(TextArea);
+
+        buttonGroup1.add(radioCapitainerie);
+        radioCapitainerie.setSelected(true);
+        radioCapitainerie.setText("Capitainerie");
+        radioCapitainerie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioCapitainerieActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(radioPhare);
+        radioPhare.setText("Phare");
+        radioPhare.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioPhareActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,19 +170,39 @@ public class DialogFichierLog extends javax.swing.JDialog
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 654, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(radioCapitainerie)
+                        .addGap(18, 18, 18)
+                        .addComponent(radioPhare)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioCapitainerie)
+                    .addComponent(radioPhare))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 404, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    
+    
+    private void radioCapitainerieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCapitainerieActionPerformed
+        CompletArea(getLogCap());
+    }//GEN-LAST:event_radioCapitainerieActionPerformed
+
+    private void radioPhareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioPhareActionPerformed
+        CompletArea(getLogPhare());
+    }//GEN-LAST:event_radioPhareActionPerformed
 
 
     /**************************/
@@ -170,6 +252,9 @@ public class DialogFichierLog extends javax.swing.JDialog
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea TextArea;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton radioCapitainerie;
+    private javax.swing.JRadioButton radioPhare;
     // End of variables declaration//GEN-END:variables
 }

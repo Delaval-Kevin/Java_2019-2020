@@ -7,7 +7,6 @@
 
 package threadsutils;
 
-
 public class ThreadRandomGenerator extends java.lang.Thread
 {
     private UtilisateurNombre utilisateurThread;
