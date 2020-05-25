@@ -31,8 +31,6 @@ public class DialogPlacesDispo extends javax.swing.JDialog
     /*                        */
     /**************************/ 
     
-    private String _choixEmp;
-    private String _choixAmarrage;
     private String _choixFinal;
     private String _type;
     
@@ -315,10 +313,6 @@ public class DialogPlacesDispo extends javax.swing.JDialog
         
         String amarrage = (String) ListAmarrageTable.getValueAt(ligne - (indexEmp-1), 0);
         String amLocal = amarrage + "*" + indexEmp;
-        
-        _choixEmp = Integer.toString(indexEmp);
-        
-        _choixAmarrage = amarrage;
         
         setChoixFinal(amLocal);
         

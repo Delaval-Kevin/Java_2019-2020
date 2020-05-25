@@ -946,14 +946,21 @@ public class Applic_Capitainerie extends javax.swing.JFrame
 
     private void menuItemListeCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemListeCompActionPerformed
         // TODO add your handling code here:
+        DialogListeCompleteBateaux d = new DialogListeCompleteBateaux(this, true, getAmarrages(), false);
+        d.setVisible(true);
+        
     }//GEN-LAST:event_menuItemListeCompActionPerformed
 
     private void menuItemRechBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRechBateauActionPerformed
         // TODO add your handling code here:
+        DialogListeCompleteBateaux d = new DialogListeCompleteBateaux(this, true, getAmarrages(), true);
+        d.setVisible(true);
     }//GEN-LAST:event_menuItemRechBateauActionPerformed
 
     private void menuItemEquipBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemEquipBateauActionPerformed
         // TODO add your handling code here:
+        DialogPersonnelBateau dpb = new DialogPersonnelBateau(this, true);
+        dpb.setVisible(true);
     }//GEN-LAST:event_menuItemEquipBateauActionPerformed
 
     private void menuItemRechMarinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRechMarinActionPerformed
