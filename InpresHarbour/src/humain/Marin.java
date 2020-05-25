@@ -91,6 +91,6 @@ public class Marin extends Humain implements AUnIdentifiant, Serializable
     @Override
     public String toString()
     {
-        return getFonction() + " : " + getNom();
+        return getFonction() + " : " + getNom() + " " + getPrenom();
     }
 }

@@ -972,8 +972,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
 
     private void menuItemEquipBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemEquipBateauActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue EQUIPAGE BATEAU - dans Applic_Capitainerie");
-        
-        DialogPersonnelBateau dpb = new DialogPersonnelBateau(this, true);
+        DialogPersonnelBateau dpb = new DialogPersonnelBateau(this, true, getAmarrages());
         dpb.setVisible(true);
     }//GEN-LAST:event_menuItemEquipBateauActionPerformed
 

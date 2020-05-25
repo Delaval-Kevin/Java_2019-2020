@@ -5,6 +5,16 @@
  */
 package capitainerie;
 
+import amarrages.Amarrage;
+import amarrages.Ponton;
+import amarrages.Quai;
+import humain.Marin;
+import java.awt.Frame;
+import java.util.Enumeration;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+import vehicules.Bateau;
+
 
 /**
  *
@@ -16,6 +26,7 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
      * Creates new form DialogPersonnelBateau
      */
     
+    public Vector<Amarrage> _amarrages;
     
     public DialogPersonnelBateau(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -23,7 +34,180 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
         
         
     }
+    
+    public DialogPersonnelBateau(Frame parent, boolean modal, Vector<Amarrage> amarrage){
+        this(parent, modal);
+        setAmarrage(amarrage);
+        InitTable();
+    }
 
+    private void InitTable()
+    {
+        
+        Enumeration enu = getAmarrages().elements();
+        
+        int iAm = 0;
+        while(enu.hasMoreElements()){
+            Amarrage am = (Amarrage) enu.nextElement();
+            iAm++;
+            
+            if(am instanceof Ponton){
+                AddPersonnelPonton((Ponton) am, iAm);
+            }else if( am instanceof Quai){
+                AddPersonnelQuai((Quai) am, iAm);
+            }    
+        }
+    }
+    
+    public void AddPersonnelPonton(Ponton ponton, int iAm)
+    {
+    
+        DefaultTableModel dtm = (DefaultTableModel) this.TableListeMarin.getModel();
+        Marin capitaine;
+        Marin second;
+        Marin marin;
+        Bateau b;
+        Vector ligne;
+        
+        for(int i = 0; i < 2; i++){
+        
+            for(int j = 0; j < ponton.getListe(i).length; j++){
+            
+                b = (Bateau) ponton.getListe(i)[j];
+                ligne = new Vector();
+                
+                // capitaine
+                if(b.getEquipage().getCapitaine() == null){
+                    capitaine = b.getEquipage().getCapitaine();
+                    ligne.addElement("P" + iAm +ponton.getIdentifiant()+"*"+i);
+                    ligne.addElement(b.getNom());
+                    ligne.addElement(capitaine);
+                    dtm.addRow(ligne);
+                }
+                
+                
+                // second
+                ligne = new Vector();
+                if(b.getEquipage().getSecond()== null){
+                    second = b.getEquipage().getSecond();
+                    if(b.getEquipage().getCapitaine() == null){
+                        ligne.addElement("P" + iAm +ponton.getIdentifiant()+"*"+i);
+                        ligne.addElement(b.getNom());
+                    }else{
+                        ligne.addElement("");
+                        ligne.addElement("");
+                    }
+                    
+                    ligne.addElement(second);
+                    dtm.addRow(ligne);
+                }
+                
+                
+                int taille  = b.getEquipage().getMarins().size();
+                
+                for(int k = 0; k < taille; k++){
+                
+                    
+                    ligne = new Vector();
+                    // marin
+                    marin = b.getEquipage().getMarins().elementAt(k);
+
+                    if(b.getEquipage().getCapitaine() == null && b.getEquipage().getCapitaine() == null){
+                        ligne.addElement("P" + iAm +ponton.getIdentifiant()+"*"+i);
+                        ligne.addElement(b.getNom());
+                    }else{
+                        ligne.addElement("");
+                        ligne.addElement("");
+                    }
+
+                    ligne.addElement(marin);
+                    dtm.addRow(ligne);
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+    public void AddPersonnelQuai(Quai quai, int iAm){
+    
+        DefaultTableModel dtm = (DefaultTableModel) TableListeMarin.getModel();
+        Marin capitaine;
+        Marin second;
+        Marin marin;
+        Bateau b;
+        Vector ligne;
+        
+
+        for(int j = 0; j < quai.getListe().length; j++){
+
+            b = (Bateau) quai.getListe()[j];
+            ligne = new Vector();
+
+            // capitaine
+            if(b.getEquipage().getCapitaine() == null){
+                capitaine = b.getEquipage().getCapitaine();
+                ligne.addElement("Q" + iAm +quai.getIdentifiant()+"*"+j);
+                ligne.addElement(b.getNom());
+                ligne.addElement(capitaine);
+                dtm.addRow(ligne);
+            }
+
+
+            ligne = new Vector();
+            // second
+            if(b.getEquipage().getSecond()== null){
+                second = b.getEquipage().getSecond();
+
+                if(b.getEquipage().getCapitaine() == null){
+                    ligne.addElement("Q" + iAm +quai.getIdentifiant()+"*"+j);
+                    ligne.addElement(b.getNom());
+                }else{
+                    ligne.addElement("");
+                    ligne.addElement("");
+                }
+
+                ligne.addElement(second);
+                dtm.addRow(ligne);
+            }
+
+
+            int taille  = b.getEquipage().getMarins().size();
+
+            for(int k = 0; k < taille; k++){
+
+
+                ligne = new Vector();
+                // marin
+                marin = b.getEquipage().getMarins().elementAt(k);
+
+                if(b.getEquipage().getCapitaine() == null && b.getEquipage().getCapitaine() == null){
+                    ligne.addElement("Q" + iAm +quai.getIdentifiant()+"*"+j);
+                    ligne.addElement(b.getNom());
+                }else{
+                    ligne.addElement("");
+                    ligne.addElement("");
+                }
+
+                ligne.addElement(marin);
+                dtm.addRow(ligne);
+
+            }
+
+        }
+
+        
+    }
+    
+    public void setAmarrage(Vector<Amarrage> amarrages){
+        _amarrages = amarrages;
+    }
+    
+    public Vector getAmarrages(){
+        return _amarrages;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,23 +219,28 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        TableListeMarin = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        TableListeMarin.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Amarrage", "Nom bateau", "Marin"
             }
-        ));
-        jTable1.setToolTipText("");
-        jScrollPane2.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        TableListeMarin.setToolTipText("");
+        jScrollPane2.setViewportView(TableListeMarin);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -116,7 +305,7 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TableListeMarin;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

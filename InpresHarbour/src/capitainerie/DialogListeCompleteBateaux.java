@@ -313,7 +313,6 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
         }
         Enumeration enu = _amarrage.elements();
         
-        String stringToSearch = SearchTextBox.getText();
         
         int iAm = 0;
         while(enu.hasMoreElements())

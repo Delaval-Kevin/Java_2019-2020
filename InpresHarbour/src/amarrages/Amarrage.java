@@ -70,4 +70,6 @@ public abstract class Amarrage implements AUnIdentifiant, Serializable
     {
         _nom = nom;
     }  
+    
+    
 }
