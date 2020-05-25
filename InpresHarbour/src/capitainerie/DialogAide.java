@@ -41,9 +41,10 @@ public class DialogAide extends javax.swing.JDialog
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setText("Aide");
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("\t/*Explication globale a venir*/\n\nUtilisateurs\n     Login\t: connexion\n     Logout\t: déconnection\n     Nouveau\t: inscription d'un nouvel utilisateur\n\nAmarrages\n     Plaisance\t:\n     Pêche\t:\n\nBateaux\n     Liste complète\t:\n     Rechercher un bateau\t:\n\nPersonnel\n     Equipage d'un bateu\t:\n     Rechercher un marin\t: \n\nParamètres\n     Format date\t\t  : réglage du format de la date\n     Fichier log\t\t  : si selectionné garde une trace dans un fichier\n     Affichage date-heure courante : si selectionné affiche la date et l'heure\n\nA propos\n     Auteur\t: description de l'auteur\n     Aide\t: manuel d'aide");
+        jTextArea1.setText("Utilisateurs\n     Login\t: connexion\n     Logout\t: déconnexion\n     Nouveau\t: inscription d'un nouvel utilisateur\n\nAmarrages\n     Plaisance\t: liste des bateaux de plaisance\n     Pêche\t: liste des bateaux de pêche\n\nBateaux\n     Liste complète\t: liste de tous les bateaux\n     Rechercher un bateau\t: liste des bateaux avec recherche par nom\n\nPersonnel\n     Equipage d'un bateau\t: recherche d'un equipage pour un bateau donné\n     Rechercher un marin\t: recherche d'un marin\n\nParamètres\n     Format date\t\t  : réglage du format de la date\n     Fichier log\t\t  : fichier log de la capitainerie et du phare\n     Affichage date-heure courante : si selectionné affiche la date et l'heure\n\nA propos\n     Auteurs\t: description des auteurs\n     Aide\t: manuel d'aide");
         jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

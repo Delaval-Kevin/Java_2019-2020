@@ -77,9 +77,10 @@
       <SubComponents>
         <Component class="javax.swing.JTextArea" name="jTextArea1">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="&#x9;/*Explication globale a venir*/&#xa;&#xa;Utilisateurs&#xa;     Login&#x9;: connexion&#xa;     Logout&#x9;: d&#xe9;connection&#xa;     Nouveau&#x9;: inscription d&apos;un nouvel utilisateur&#xa;&#xa;Amarrages&#xa;     Plaisance&#x9;:&#xa;     P&#xea;che&#x9;:&#xa;&#xa;Bateaux&#xa;     Liste compl&#xe8;te&#x9;:&#xa;     Rechercher un bateau&#x9;:&#xa;&#xa;Personnel&#xa;     Equipage d&apos;un bateu&#x9;:&#xa;     Rechercher un marin&#x9;: &#xa;&#xa;Param&#xe8;tres&#xa;     Format date&#x9;&#x9;  : r&#xe9;glage du format de la date&#xa;     Fichier log&#x9;&#x9;  : si selectionn&#xe9; garde une trace dans un fichier&#xa;     Affichage date-heure courante : si selectionn&#xe9; affiche la date et l&apos;heure&#xa;&#xa;A propos&#xa;     Auteur&#x9;: description de l&apos;auteur&#xa;     Aide&#x9;: manuel d&apos;aide"/>
+            <Property name="text" type="java.lang.String" value="Utilisateurs&#xa;     Login&#x9;: connexion&#xa;     Logout&#x9;: d&#xe9;connexion&#xa;     Nouveau&#x9;: inscription d&apos;un nouvel utilisateur&#xa;&#xa;Amarrages&#xa;     Plaisance&#x9;: liste des bateaux de plaisance&#xa;     P&#xea;che&#x9;: liste des bateaux de p&#xea;che&#xa;&#xa;Bateaux&#xa;     Liste compl&#xe8;te&#x9;: liste de tous les bateaux&#xa;     Rechercher un bateau&#x9;: liste des bateaux avec recherche par nom&#xa;&#xa;Personnel&#xa;     Equipage d&apos;un bateau&#x9;: recherche d&apos;un equipage pour un bateau donn&#xe9;&#xa;     Rechercher un marin&#x9;: recherche d&apos;un marin&#xa;&#xa;Param&#xe8;tres&#xa;     Format date&#x9;&#x9;  : r&#xe9;glage du format de la date&#xa;     Fichier log&#x9;&#x9;  : fichier log de la capitainerie et du phare&#xa;     Affichage date-heure courante : si selectionn&#xe9; affiche la date et l&apos;heure&#xa;&#xa;A propos&#xa;     Auteurs&#x9;: description des auteurs&#xa;     Aide&#x9;: manuel d&apos;aide"/>
           </Properties>
         </Component>
       </SubComponents>

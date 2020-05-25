@@ -331,7 +331,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
 
         menuAPropos.setText("A propos");
 
-        menuItemAuteur.setText("Auteur");
+        menuItemAuteur.setText("Auteurs");
         menuItemAuteur.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuItemAuteurActionPerformed(evt);
@@ -637,8 +637,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         getLog().ecritLigne("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans Applic_Capitainerie");
         
         setListeBateauEntrant(new DefaultListModel());
-       
-       listeBateaux.setModel(getListeBateauEntrant());
+        listeBateaux.setModel(getListeBateauEntrant());
     }
     
     private void InitAmarrage()
@@ -650,8 +649,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
             ams.addElement(new Ponton(18));
             ams.addElement(new Ponton(12));
             ams.addElement(new Quai(6));
-            ams.addElement(new Quai(5));
-            
+            ams.addElement(new Quai(5));   
         }
         catch(OddPontoonException e)
         {
@@ -672,8 +670,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
             ObjectInputStream ois = new ObjectInputStream(file);
             
             setAmarrages((Vector <Amarrage>) ois.readObject());
-            return 1;
-            
+            return 1; 
         }
         catch(FileNotFoundException fileNotFoundException)
         {
@@ -703,10 +700,9 @@ public class Applic_Capitainerie extends javax.swing.JFrame
             ObjectOutputStream oos = new ObjectOutputStream(file);
             
             oos.writeObject(getAmarrages());
-            
-        
-        }catch(IOException iOException){
-            
+        }
+        catch(IOException iOException)
+        {
             System.out.println("iOException : "+iOException.getMessage());
         }
         
@@ -726,25 +722,24 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     private void InitTimer()
     {
         setTimer(new Timer());
-            TimerTask task = new TimerTask()
+        TimerTask task = new TimerTask()
+        {
+            @Override
+            public
+            void run()
             {
-                @Override
-                public
-                void run()
-                {
-                    afficheHeure();
-                }
-            };
-            getTimer().schedule(task,0, 1*1000);
+                afficheHeure();
+            }
+        };
+        getTimer().schedule(task,0, 1*1000);
     }
     
     private void fctLogin()
     {
         this.setVisible(false);
         
-         getLog().ecritLigne("Creation de la boite dialogue de LOGIN - dans Applic_Capitainerie");
+        getLog().ecritLigne("Creation de la boite dialogue de LOGIN - dans Applic_Capitainerie");
 
-        
         /*Je ne garde pas une référence de la fenêtre en global, car il n'y à lieu d'avoir de connecion et déconnexion intempestives*/
         DialogLogin login = new DialogLogin(this, true);
         login.setVisible(true);
@@ -780,7 +775,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     {
         getLog().ecritLigne("Formatage de la DATE - dans Applic_Capitainerie");
 
-        
         setFormatDate(date);
         setFormatHeure(heure);
         setFuseaau(fuseau);
@@ -802,6 +796,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     
     private void buttonDemarServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemarServActionPerformed
         getLog().ecritLigne("Démarrage du serveur - dans Applic_Capitainerie");
+        
         setServeur(new NetworkBasicServer(Integer.parseInt(getParam().searchParam("portEcoute")),checkRequeteEnAtt));
         buttonDemarServ.setEnabled(false);
     }//GEN-LAST:event_buttonDemarServActionPerformed
@@ -811,6 +806,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         if(checkRequeteEnAtt.isSelected())
         {
             getLog().ecritLigne("Lecture d'un message - dans Applic_Capitainerie");
+            
             String[] infos = getServeur().getMessage().split("/");
             
             switch (infos[0])
@@ -823,7 +819,8 @@ public class Applic_Capitainerie extends javax.swing.JFrame
                     else if(infos[1].compareTo("Plaisance") == 0)
                     {
                         setInfoBateauEntrant(new BateauPlaisance());
-                    }else
+                    }
+                    else
                     {
                         System.out.println("Erreur, bateau de type '"+infos[1]+"' reçu !?");
                     }
@@ -844,7 +841,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
 
     private void buttonChoisirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChoisirActionPerformed
         getLog().ecritLigne("Creation de DIALOGPLACESDISPO - dans Applic_Capitainerie");
-        // TODO add your handling code here:
+        
         DialogPlacesDispo pd = new DialogPlacesDispo(this, true, getAmarrages(), getInfoBateauEntrant());
         pd.setVisible(true);
         textBoxChoix.setText(pd.getChoixFinal());
@@ -852,18 +849,19 @@ public class Applic_Capitainerie extends javax.swing.JFrame
 
     private void buttonEnvChoixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnvChoixActionPerformed
         getLog().ecritLigne("Envoie du choix d'amarrage - dans Applic_Capitainerie");
+        
         getServeur().sendMessage(textBoxChoix.getText());
     }//GEN-LAST:event_buttonEnvChoixActionPerformed
 
     private void buttonEnvConfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnvConfActionPerformed
         getLog().ecritLigne("Envoie confirmation du choix d'amarrage - dans Applic_Capitainerie");
+        
         getServeur().sendMessage(textBoxConfChoix.getText());
     }//GEN-LAST:event_buttonEnvConfActionPerformed
 
     private void buttonBateauAmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBateauAmarActionPerformed
         if(textBoxLecture.getText().length() > 0 && textBoxChoix.getText().length() > 0)
-        {            
-            
+        {                        
             getLog().ecritLigne("Creation de la boite de dialogue INFO BATEAU ENTRANT - dans Applic_Capitainerie");
             DialogInfoBateauEntrant d = new DialogInfoBateauEntrant(this, true, getInfoBateauEntrant());           
             d.setEmplacemet(textBoxChoix.getText());
@@ -876,20 +874,19 @@ public class Applic_Capitainerie extends javax.swing.JFrame
             int index = Integer.parseInt(String.valueOf(emplacement.charAt(1)));
             int slot_in = Integer.parseInt(String.valueOf(emplacement.charAt(4)));
             
-            if(getInfoBateauEntrant() instanceof BateauPlaisance){
-                
+            if(getInfoBateauEntrant() instanceof BateauPlaisance)
+            {
                 int slot = Integer.parseInt(String.valueOf(emplacement.charAt(2)));
             
                 Ponton ponton = (Ponton) getAmarrages().elementAt(index-1);
                 ponton.addMoyenDeTransportSurEau(getInfoBateauEntrant(), slot, slot_in-1);
                   
-            }else if(getInfoBateauEntrant() instanceof BateauPeche){
-                
-                Quai quai = (Quai) getAmarrages().elementAt(index-1);
-                quai.addMoyenDeTransportSurEau(getInfoBateauEntrant(), slot_in-1);
-                
             }
-            
+            else if(getInfoBateauEntrant() instanceof BateauPeche)
+            {  
+                Quai quai = (Quai) getAmarrages().elementAt(index-1);
+                quai.addMoyenDeTransportSurEau(getInfoBateauEntrant(), slot_in-1);      
+            }
             SaveAmarrage();
         }
         else
@@ -900,7 +897,8 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     }//GEN-LAST:event_buttonBateauAmarActionPerformed
 
     private void buttonArretServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonArretServeurActionPerformed
-       getLog().ecritLigne("Arret du serveur - dans Applic_Capitainerie");
+        getLog().ecritLigne("Arret du serveur - dans Applic_Capitainerie");
+       
         buttonDemarServ.setEnabled(true);
         getServeur().setEndReceiving();
     }//GEN-LAST:event_buttonArretServeurActionPerformed
@@ -932,7 +930,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         if(isConnected())
         {  
             getLog().ecritLigne("Creation de la boite de dialogue NOUV LOGIN - dans Applic_Capitainerie");
-
             
             /*Je ne garde pas une référence de la fenêtre en global, car il n'y à beaucoup d'ajout à gérer*/
             DialogNouvLogin d = new DialogNouvLogin(this, true); 
@@ -947,34 +944,43 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     }//GEN-LAST:event_menuItemNouveauActionPerformed
 
     private void menuItemPlaisanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPlaisanceActionPerformed
-        // TODO add your handling code here:
+        getLog().ecritLigne("Creation de la boite de dialogue BATEAUX DE PLAISANCE - dans Applic_Capitainerie");
+        
+        
     }//GEN-LAST:event_menuItemPlaisanceActionPerformed
 
     private void menuItemPecheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPecheActionPerformed
-        // TODO add your handling code here:
+        getLog().ecritLigne("Creation de la boite de dialogue BATEAUX DE PECHE - dans Applic_Capitainerie");
+        
+        
     }//GEN-LAST:event_menuItemPecheActionPerformed
 
     private void menuItemListeCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemListeCompActionPerformed
-        // TODO add your handling code here:
+        getLog().ecritLigne("Creation de la boite de dialogue LISTE BATEAUX - dans Applic_Capitainerie");
+        
         DialogListeCompleteBateaux d = new DialogListeCompleteBateaux(this, true, getAmarrages(), false);
         d.setVisible(true);
         
     }//GEN-LAST:event_menuItemListeCompActionPerformed
 
     private void menuItemRechBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRechBateauActionPerformed
-        // TODO add your handling code here:
+        getLog().ecritLigne("Creation de la boite de dialogue RECHERCHE BATEAUX - dans Applic_Capitainerie");
+        
         DialogListeCompleteBateaux d = new DialogListeCompleteBateaux(this, true, getAmarrages(), true);
         d.setVisible(true);
     }//GEN-LAST:event_menuItemRechBateauActionPerformed
 
     private void menuItemEquipBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemEquipBateauActionPerformed
-        // TODO add your handling code here:
+        getLog().ecritLigne("Creation de la boite de dialogue EQUIPAGE BATEAU - dans Applic_Capitainerie");
+        
         DialogPersonnelBateau dpb = new DialogPersonnelBateau(this, true);
         dpb.setVisible(true);
     }//GEN-LAST:event_menuItemEquipBateauActionPerformed
 
     private void menuItemRechMarinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRechMarinActionPerformed
-        // TODO add your handling code here:
+        getLog().ecritLigne("Creation de la boite de dialogue RECHERCHE MARIN - dans Applic_Capitainerie");
+        
+        
     }//GEN-LAST:event_menuItemRechMarinActionPerformed
 
     private void menuItemFormatDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemFormatDateActionPerformed
@@ -1004,7 +1010,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     }//GEN-LAST:event_menuItemCheckDateHeureStateChanged
 
     private void menuItemAuteurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemAuteurActionPerformed
-        getLog().ecritLigne("Creation de la boite de dialogue AUTEUR - dans Applic_Capitainerie");
+        getLog().ecritLigne("Creation de la boite de dialogue AUTEURS - dans Applic_Capitainerie");
         
         /*Je ne garde pas une référence de la fenêtre en global*/
         DialogAuteur d = new DialogAuteur(this, true); 

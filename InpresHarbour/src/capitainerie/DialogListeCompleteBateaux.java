@@ -1,37 +1,47 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/***********************************************************/
+/*Auteurs : DELAVAL Kevin & COLLETTE Loïc                  */
+/*Groupe : 2203                                            */
+/*Application : InpresHarbour                              */
+/*Date de la dernière mise à jour : 20/05/2020             */
+/***********************************************************/
+
 package capitainerie;
 
-import amarrages.Amarrage;
-import amarrages.Ponton;
 import amarrages.Quai;
-import java.util.Enumeration;
+import amarrages.Ponton;
 import java.util.Vector;
-import javax.swing.table.DefaultTableModel;
 import vehicules.Bateau;
+import amarrages.Amarrage;
+import java.util.Enumeration;
 import vehicules.MoyenDeTransportSurEau;
+import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author collloi
- */
-public class DialogListeCompleteBateaux extends javax.swing.JDialog {
 
-    /**
-     * Creates new form DialogListeCompleteBateaux
-     */
+public class DialogListeCompleteBateaux extends javax.swing.JDialog 
+{
+    /**************************/
+    /*                        */
+    /*   VARIABLES MEMBRES    */
+    /*                        */
+    /**************************/
+
     private Vector _amarrage;
     
     
-    public DialogListeCompleteBateaux(java.awt.Frame parent, boolean modal) {
+    /**************************/
+    /*                        */
+    /*      CONSTRUCTEURS     */
+    /*                        */
+    /**************************/
+    
+    public DialogListeCompleteBateaux(java.awt.Frame parent, boolean modal) 
+    {
         super(parent, modal);
         initComponents();
     }
     
-    public DialogListeCompleteBateaux(java.awt.Frame parent, boolean modal, Vector amarrages, boolean recherche) {
+    public DialogListeCompleteBateaux(java.awt.Frame parent, boolean modal, Vector amarrages, boolean recherche) 
+    {
         this(parent, modal);
         _amarrage = amarrages;
         InitTable();
@@ -40,19 +50,29 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog {
         }
     }
     
+    
+    /**************************/
+    /*                        */
+    /*        METHODES        */
+    /*                        */
+    /**************************/
+    
     private void InitTable()
-    {
-        
+    {   
         Enumeration enu = _amarrage.elements();
         
         int iAm = 0;
-        while(enu.hasMoreElements()){
+        while(enu.hasMoreElements())
+        {
             Amarrage am = (Amarrage) enu.nextElement();
             iAm++;
             
-            if(am instanceof Ponton){
+            if(am instanceof Ponton)
+            {
                 AddPonton((Ponton) am, iAm);
-            }else if( am instanceof Quai){
+            }
+            else if( am instanceof Quai)
+            {
                 AddQuai((Quai) am, iAm);
             }    
         }
@@ -63,16 +83,14 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog {
         Vector ligne;
         DefaultTableModel dtm = (DefaultTableModel) this.TableListeBateaux.getModel();
         
-        
-        
-        for(int i = 1; i <= 2; i++){
-            
+        for(int i = 1; i <= 2; i++)
+        { 
             MoyenDeTransportSurEau[] mte = ponton.getListe(i);
-            for(int j = 0; j < mte.length; j++){
-                
+            for(int j = 0; j < mte.length; j++)
+            {
                 Bateau bp = (Bateau) mte[j];
-                if(bp != null){
-                    
+                if(bp != null)
+                {
                     ligne = new Vector();
 
                     ligne.add(bp.getNom());
@@ -83,8 +101,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog {
                     ligne.add("P" + iAm +ponton.getIdentifiant()+"*"+i);
                     
                     dtm.addRow(ligne);     
-                }
-                          
+                }                
             } 
         }
     }
@@ -93,16 +110,15 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog {
     {
         Vector ligne;
         DefaultTableModel dtm = (DefaultTableModel) this.TableListeBateaux.getModel();
-        
-        
-        for(int i = 1; i <= 2; i++){
-            
+              
+        for(int i = 1; i <= 2; i++)
+        {
             MoyenDeTransportSurEau[] mte = ponton.getListe(i);
-            for(int j = 0; j < mte.length; j++){
-                
+            for(int j = 0; j < mte.length; j++)
+            {
                 Bateau bp = (Bateau) mte[j];
-                if(bp != null && bp.getNom().contains(SearchTextBox.getText())){
-                    
+                if(bp != null && bp.getNom().contains(SearchTextBox.getText()))
+                {
                     ligne = new Vector();
 
                     ligne.add(bp.getNom());
@@ -113,8 +129,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog {
                     ligne.add("P" + iAm +ponton.getIdentifiant()+"*"+i);
                     
                     dtm.addRow(ligne);     
-                }
-                          
+                }             
             } 
         }
     }
@@ -124,26 +139,24 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog {
         Vector ligne;
         DefaultTableModel dtm = (DefaultTableModel) this.TableListeBateaux.getModel();
         
-
         MoyenDeTransportSurEau[] mte = quai.getListe();
-        for(int j = 0; j < mte.length; j++){
-                
-                Bateau bp = (Bateau) mte[j];
-                if(bp != null){
-                    
-                    ligne = new Vector();
+        for(int j = 0; j < mte.length; j++)
+        {        
+            Bateau bp = (Bateau) mte[j];
+            if(bp != null)
+            {
+                ligne = new Vector();
 
-                    ligne.add(bp.getNom());
-                    ligne.add(bp.getPortAttache());
-                    ligne.add(bp.getTonnage());
-                    ligne.add(bp.getPavillon());
-                    ligne.add(bp.getLongueur() + "m");
-                    ligne.add("Q" + iAm +quai.getIdentifiant()+"*"+j);
-                    
-                    dtm.addRow(ligne);     
-                }
-                          
-            }
+                ligne.add(bp.getNom());
+                ligne.add(bp.getPortAttache());
+                ligne.add(bp.getTonnage());
+                ligne.add(bp.getPavillon());
+                ligne.add(bp.getLongueur() + "m");
+                ligne.add("Q" + iAm +quai.getIdentifiant()+"*"+j);
+
+                dtm.addRow(ligne);     
+            }            
+        }
     }
 
     
@@ -154,31 +167,27 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog {
         
 
         MoyenDeTransportSurEau[] mte = quai.getListe();
-        for(int j = 0; j < mte.length; j++){
-                
-                Bateau bp = (Bateau) mte[j];
-                if(bp != null && bp.getNom().contains(SearchTextBox.getText())){
-                    
-                    ligne = new Vector();
+        for(int j = 0; j < mte.length; j++)
+        {
+            Bateau bp = (Bateau) mte[j];
+            if(bp != null && bp.getNom().contains(SearchTextBox.getText()))
+            {
+                ligne = new Vector();
 
-                    ligne.add(bp.getNom());
-                    ligne.add(bp.getPortAttache());
-                    ligne.add(bp.getTonnage());
-                    ligne.add(bp.getPavillon());
-                    ligne.add(bp.getLongueur() + "m");
-                    ligne.add("Q" + iAm +quai.getIdentifiant()+"*"+j);
-                    
-                    dtm.addRow(ligne);     
-                }
-                          
-            }
+                ligne.add(bp.getNom());
+                ligne.add(bp.getPortAttache());
+                ligne.add(bp.getTonnage());
+                ligne.add(bp.getPavillon());
+                ligne.add(bp.getLongueur() + "m");
+                ligne.add("Q" + iAm +quai.getIdentifiant()+"*"+j);
+
+                dtm.addRow(ligne);     
+            }          
+        }
     }
     
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -207,8 +216,9 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Capitainerie d'Inpres-Harbour :  Liste des bateaux");
 
-        SearchButton.setText("jButton1");
+        SearchButton.setText("Chercher");
         SearchButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SearchButtonActionPerformed(evt);
@@ -295,10 +305,10 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
-        // TODO add your handling code here:
-        
+
         DefaultTableModel dtm = (DefaultTableModel) this.TableListeBateaux.getModel();
-        while(dtm.getRowCount() > 0){
+        while(dtm.getRowCount() > 0)
+        {
             dtm.removeRow(0);
         }
         Enumeration enu = _amarrage.elements();
@@ -306,23 +316,24 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog {
         String stringToSearch = SearchTextBox.getText();
         
         int iAm = 0;
-        while(enu.hasMoreElements()){
+        while(enu.hasMoreElements())
+        {
             Amarrage am = (Amarrage) enu.nextElement();
             iAm++;
             
-            
-            if(am instanceof Ponton){
+            if(am instanceof Ponton)
+            {
                 AddPonton((Ponton) am, iAm, true);
-            }else if( am instanceof Quai){
+            }
+            else if( am instanceof Quai)
+            {
                 AddQuai((Quai) am, iAm, true);
             }    
         }
-        
     }//GEN-LAST:event_SearchButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

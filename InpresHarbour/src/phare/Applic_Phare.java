@@ -255,7 +255,6 @@ public class Applic_Phare extends javax.swing.JFrame
         getLog().ecritLigne("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans Applic_Phare");
         
         setBateauxEntrant(new DefaultListModel());
-       
         listBatEnAttente.setModel(getBateauxEntrant());
     }
     
@@ -330,6 +329,7 @@ public class Applic_Phare extends javax.swing.JFrame
             System.exit(0);
         }    
         
+        //config du bean
         getBeanNotify().setBateauxEntrant(getBateauxEntrant());
     }
     
@@ -539,20 +539,23 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonSuivantActionPerformed
 
     private void buttonDemAutEntreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemAutEntreeActionPerformed
-        setReponse(getClient().sendString("1/"+getTmpType()+"/"+getTmpPavillon()+"/"+getTmpNom()+"/"+getTmpLongueur())); 
+        getLog().ecritLigne("Demande autorisation d'entree a la capitainerie - dans Applic_Phare");
         
+        setReponse(getClient().sendString("1/"+getTmpType()+"/"+getTmpPavillon()+"/"+getTmpNom()+"/"+getTmpLongueur())); 
         labelRepCap.setText(getReponse());
     }//GEN-LAST:event_buttonDemAutEntreeActionPerformed
 
     private void buttonBatEntreRadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBatEntreRadeActionPerformed
+        getLog().ecritLigne("Validation d'entree dans la rade - dans Applic_Phare");
+        
         setReponse(getClient().sendString("2/Bateau "+getTmpNom()+" est bien entre dans la rade"));
-        
-        getBateauxEntrant().remove(0);
-        
+        getBateauxEntrant().remove(0); 
         labelBatEntre.setText(getReponse());
     }//GEN-LAST:event_buttonBatEntreRadeActionPerformed
 
     private void buttonRAZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRAZActionPerformed
+        getLog().ecritLigne("Remise a zero des champs - dans Applic_Phare");
+        
         labelBatEntre.setText("??");
         labelRepCap.setText("??");
         textBoxBatIdent.setText("??");
@@ -565,6 +568,8 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonRAZActionPerformed
 
     private void buttonDeconexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeconexionActionPerformed
+        getLog().ecritLigne("Deconnexion du serveur - dans Applic_Phare");
+        
         getClient().setEndSending();
         buttonConnexion.setEnabled(true);
     }//GEN-LAST:event_buttonDeconexionActionPerformed
