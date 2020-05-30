@@ -945,12 +945,16 @@ public class Applic_Capitainerie extends javax.swing.JFrame
 
     private void menuItemPlaisanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPlaisanceActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue BATEAUX DE PLAISANCE - dans Applic_Capitainerie");
+        DialogPlacesDispo dpd = new DialogPlacesDispo(this, true, getAmarrages(), new BateauPlaisance());
+        dpd.setVisible(true);
         
         
     }//GEN-LAST:event_menuItemPlaisanceActionPerformed
 
     private void menuItemPecheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPecheActionPerformed
-        getLog().ecritLigne("Creation de la boite de dialogue BATEAUX DE PECHE - dans Applic_Capitainerie");
+        getLog().ecritLigne("Creation de la boite de dialogue BATEAUX DE PECHE - dans Applic_Capitainerie");         
+        DialogPlacesDispo dpd = new DialogPlacesDispo(this, true, getAmarrages(), new BateauPeche());
+        dpd.setVisible(true);
         
         
     }//GEN-LAST:event_menuItemPecheActionPerformed
@@ -972,13 +976,14 @@ public class Applic_Capitainerie extends javax.swing.JFrame
 
     private void menuItemEquipBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemEquipBateauActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue EQUIPAGE BATEAU - dans Applic_Capitainerie");
-        DialogPersonnelBateau dpb = new DialogPersonnelBateau(this, true, getAmarrages());
+        DialogPersonnelBateau dpb = new DialogPersonnelBateau(this, true, getAmarrages(), false);
         dpb.setVisible(true);
     }//GEN-LAST:event_menuItemEquipBateauActionPerformed
 
     private void menuItemRechMarinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRechMarinActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue RECHERCHE MARIN - dans Applic_Capitainerie");
-        
+        DialogPersonnelBateau dpb = new DialogPersonnelBateau(this, true, getAmarrages(), true);
+        dpb.setVisible(true);
         
     }//GEN-LAST:event_menuItemRechMarinActionPerformed
 
