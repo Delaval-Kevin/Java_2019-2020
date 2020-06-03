@@ -45,6 +45,9 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
     {
         this(parent, modal);
         _amarrage = amarrages;
+        TableListeBateaux.getColumnModel().getColumn(6).setMinWidth(0);
+        TableListeBateaux.getColumnModel().getColumn(6).setMaxWidth(0);
+        TableListeBateaux.getColumnModel().getColumn(6).setWidth(0);
         InitTable();
         if(action == 1) // 1 = mode recherche
         {
@@ -131,6 +134,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                     ligne.add(bp.getPavillon());
                     ligne.add(bp.getLongueur() + "m");
                     ligne.add("P" + iAm +ponton.getIdentifiant()+"*"+i);
+                    ligne.add(bp);
                     
                     dtm.addRow(ligne);     
                 }                
@@ -159,6 +163,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                     ligne.add(bp.getPavillon());
                     ligne.add(bp.getLongueur() + "m");
                     ligne.add("P" + iAm +ponton.getIdentifiant()+"*"+i);
+                    ligne.add(bp);
                     
                     dtm.addRow(ligne);     
                 }             
@@ -185,6 +190,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                 ligne.add(bp.getPavillon());
                 ligne.add(bp.getLongueur() + "m");
                 ligne.add("Q" + iAm +quai.getIdentifiant()+"*"+j);
+                ligne.add(bp);
 
                 dtm.addRow(ligne);     
             }            
@@ -212,6 +218,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                 ligne.add(bp.getPavillon());
                 ligne.add(bp.getLongueur() + "m");
                 ligne.add("Q" + iAm +quai.getIdentifiant()+"*"+j);
+                ligne.add(bp);
 
                 dtm.addRow(ligne);     
             }          
@@ -305,11 +312,11 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
 
             },
             new String [] {
-                "Nom", "Port d'attache", "Tonnage", "Pavillion", "Longueur", "Amarrage"
+                "Nom", "Port d'attache", "Tonnage", "Pavillion", "Longueur", "Amarrage", ""
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {

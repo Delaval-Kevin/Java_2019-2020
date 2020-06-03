@@ -24,7 +24,7 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     /**************************/
     
     private Bateau _bateau;
-
+    public boolean _confirme = false;
     
     /**************************/
     /*                        */
@@ -309,6 +309,7 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
         if(textBoxPortAttache.getText().length() > 0)
         {
             getBateau().setPortAttache(textBoxPortAttache.getText());
+            _confirme = true;
             this.setVisible(false);
         }
         else

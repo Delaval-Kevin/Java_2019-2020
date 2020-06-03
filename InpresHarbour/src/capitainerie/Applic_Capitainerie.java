@@ -36,6 +36,9 @@ import javax.swing.DefaultListModel;
 import java.io.FileNotFoundException;
 import amarrages.OddPontoonException;
 import beans.ReponseEvent;
+import java.io.EOFException;
+import java.util.Enumeration;
+import vehicules.MoyenDeTransportSurEau;
 
 
 
@@ -97,6 +100,8 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         {
             InitAmarrage();
         }
+        
+        LoadEntree();
         
     }
 
@@ -806,6 +811,8 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         setAmarrages(ams);
     }
     
+    
+    
     // permet de charger l'état du port lors du démarrage
     private int LoadAmarrage()
     {
@@ -837,6 +844,8 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
     }
     
     // permet de sauvegarder l'état du port
+    
+    
     public void SaveAmarrage()
     {
         String rep = System.getProperty("user.dir");
@@ -854,6 +863,81 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
             System.out.println("iOException : "+iOException.getMessage());
         }
         
+    }
+    
+    public void SaveEntree(){
+    
+        String rep = System.getProperty("user.dir");
+        String sep = System.getProperty("file.separator");
+        
+        DefaultListModel dlm = (DefaultListModel) listeBateaux.getModel();
+        
+        try
+        {     
+            FileOutputStream file = new FileOutputStream(rep+sep+getParam().searchParam("fichierEntreeAmarrage"));
+            ObjectOutputStream oos = new ObjectOutputStream(file);
+            
+            DefaultListModel elems = (DefaultListModel) listeBateaux.getModel();
+            
+            
+            Enumeration enu = elems.elements();
+                
+            while(enu.hasMoreElements()){
+                oos.writeObject(enu.nextElement());
+            }
+            
+            
+        }
+        catch(IOException iOException)
+        {
+            System.out.println("iOException : "+iOException.getMessage());
+        }
+    
+    }
+    
+    private int LoadEntree()
+    {
+        String rep = System.getProperty("user.dir");
+        String sep = System.getProperty("file.separator");
+        
+        try
+        {
+            FileInputStream file = new FileInputStream(rep+sep+getParam().searchParam("fichierEntreeAmarrage"));
+            ObjectInputStream ois = new ObjectInputStream(file);
+            
+            DefaultListModel elems = new DefaultListModel();
+                
+            try{
+            
+                while(true)
+                {
+                    elems.addElement(ois.readObject());
+                }
+            
+            }
+            catch(EOFException e)
+            {
+            
+                listeBateaux.setModel(elems);
+            
+            }
+            
+            return 1; 
+        }
+        catch(FileNotFoundException fileNotFoundException)
+        {
+            getLog().ecritLigne("Attention, fichier port.dat n'est pas trouvé - dans Applic_Capitainerie");      
+        }
+        catch(IOException iOException)
+        {    
+            getLog().ecritLigne("Erreur : " + iOException.getMessage());
+        }
+        catch(ClassNotFoundException classNotFoundException)
+        {
+           getLog().ecritLigne("Erreur classes non trouvée");
+        }
+        
+        return 0;
     }
     
     public boolean isConnected()
@@ -934,6 +1018,51 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         Date maintenant = new Date();
         setInfoDate(DateFormat.getDateTimeInstance(getFormatDate(), getFormatHeure(), getFuseaau()).format(maintenant));
         labelHeure.setText(getInfoDate());
+    }
+    
+    private String getAmarrageBateau(Bateau bateau){
+    
+        Enumeration enu = _amarrage.elements();
+        
+        int iAm = 0;
+        while(enu.hasMoreElements()){
+            Amarrage am = (Amarrage) enu.nextElement();
+            iAm++;
+            
+            if(am instanceof Ponton){
+                
+                for(int i = 1; i <= 2; i++){
+                
+                    
+                    MoyenDeTransportSurEau[] mte = ((Ponton) am).getListe(i);
+                    
+                    for(int j = 0; j < mte.length; j++){
+                    
+                        if(bateau == mte[j]){
+                            return "P" + iAm + i + "*" + j;
+                        }
+                        
+                    }
+                    
+                    
+                }
+                
+            }else if(am instanceof Quai){
+                
+                MoyenDeTransportSurEau[] mte = ((Quai) am).getListe();
+
+                for(int j = 0; j < mte.length; j++){
+
+                    if(bateau == mte[j]){
+                        return "Q" + iAm + "0" + "*" + j;
+                    }
+
+                }
+                
+            }    
+        }
+        
+        return "???*?";
     }
     
     public void notifyDepartDetected()
@@ -1043,39 +1172,49 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
 
     private void buttonEnvConfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonEnvConfActionPerformed
         getLog().ecritLigne("Envoie confirmation du choix d'amarrage - dans Applic_Capitainerie");
-        
+        getListeBateauEntrant().addElement(getInfoBateauEntrant());
         getServeur().sendMessage(textBoxConfChoix.getText());
+        
+        String emplacement = textBoxChoix.getText();
+        int index = Integer.parseInt(String.valueOf(emplacement.charAt(1)));
+        int slot_in = Integer.parseInt(String.valueOf(emplacement.charAt(4)));
+
+        if(getInfoBateauEntrant() instanceof BateauPlaisance)
+        {
+            int slot = Integer.parseInt(String.valueOf(emplacement.charAt(2)));
+
+            Ponton ponton = (Ponton) getAmarrages().elementAt(index-1);
+            ponton.addMoyenDeTransportSurEau(getInfoBateauEntrant(), slot, slot_in-1);
+
+        }
+        else if(getInfoBateauEntrant() instanceof BateauPeche)
+        {  
+            Quai quai = (Quai) getAmarrages().elementAt(index-1);
+            quai.addMoyenDeTransportSurEau(getInfoBateauEntrant(), slot_in-1);      
+        }
+        SaveAmarrage();
+        SaveEntree();
+        
     }//GEN-LAST:event_buttonEnvConfActionPerformed
 
     private void buttonBateauAmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBateauAmarActionPerformed
         if(textBoxLecture.getText().length() > 0 && textBoxChoix.getText().length() > 0)
         {                        
             getLog().ecritLigne("Creation de la boite de dialogue INFO BATEAU ENTRANT - dans Applic_Capitainerie");
-            DialogInfoBateauEntrant d = new DialogInfoBateauEntrant(this, true, getInfoBateauEntrant());           
-            d.setEmplacemet(textBoxChoix.getText());
+            setInfoBateauEntrant((Bateau) ((DefaultListModel) listeBateaux.getModel()).getElementAt(0));
+            DialogInfoBateauEntrant d = new DialogInfoBateauEntrant(this, true, getInfoBateauEntrant());
+            
+            d.setEmplacemet(getAmarrageBateau(getInfoBateauEntrant()));
             d.setVisible(true);
             
-            getListeBateauEntrant().addElement(getInfoBateauEntrant());
+            if(d._confirme){
+                
+                ((DefaultListModel) listeBateaux.getModel()).removeElementAt(0);
             
-            String emplacement = textBoxChoix.getText();
-            
-            int index = Integer.parseInt(String.valueOf(emplacement.charAt(1)));
-            int slot_in = Integer.parseInt(String.valueOf(emplacement.charAt(4)));
-            
-            if(getInfoBateauEntrant() instanceof BateauPlaisance)
-            {
-                int slot = Integer.parseInt(String.valueOf(emplacement.charAt(2)));
-            
-                Ponton ponton = (Ponton) getAmarrages().elementAt(index-1);
-                ponton.addMoyenDeTransportSurEau(getInfoBateauEntrant(), slot, slot_in-1);
-                  
+                
             }
-            else if(getInfoBateauEntrant() instanceof BateauPeche)
-            {  
-                Quai quai = (Quai) getAmarrages().elementAt(index-1);
-                quai.addMoyenDeTransportSurEau(getInfoBateauEntrant(), slot_in-1);      
-            }
-            SaveAmarrage();
+            
+            
         }
         else
         {
