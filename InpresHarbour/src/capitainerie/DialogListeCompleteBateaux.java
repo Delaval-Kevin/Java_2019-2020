@@ -26,6 +26,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
     /**************************/
 
     private Vector _amarrage;
+    private Bateau _bateau;
     
     
     /**************************/
@@ -40,16 +41,47 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
         initComponents();
     }
     
-    public DialogListeCompleteBateaux(java.awt.Frame parent, boolean modal, Vector amarrages, boolean recherche) 
+    public DialogListeCompleteBateaux(java.awt.Frame parent, boolean modal, Vector amarrages, int action) 
     {
         this(parent, modal);
         _amarrage = amarrages;
         InitTable();
-        if(!recherche){
+        if(action == 1) // 1 = mode recherche
+        {
+            PanelSelect.setVisible(false);
+        }
+        else if(action == 2) // 2 = mode selection
+        {
             PanelSearch.setVisible(false);
+        }
+        else // autre = mode visuel
+        {
+            PanelSearch.setVisible(false);
+            PanelSelect.setVisible(false);
         }
     }
     
+    /**************************/
+    /*                        */
+    /*         SETTERS        */
+    /*                        */
+    /**************************/
+    
+    public void setBateau(Bateau bateau)
+    {
+        _bateau = bateau;
+    }
+    
+    /**************************/
+    /*                        */
+    /*         GETTERS        */
+    /*                        */
+    /**************************/
+    
+    public Bateau getBateau()
+    {
+        return _bateau;
+    }
     
     /**************************/
     /*                        */
@@ -194,6 +226,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
         PanelSearch = new javax.swing.JPanel();
         SearchButton = new javax.swing.JButton();
         SearchTextBox = new javax.swing.JTextField();
@@ -201,6 +234,8 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
         jScrollPane2 = new javax.swing.JScrollPane();
         TableListeBateaux = new javax.swing.JTable();
         LabelTitle = new javax.swing.JLabel();
+        PanelSelect = new javax.swing.JPanel();
+        buttonOK = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -214,6 +249,17 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Capitainerie d'Inpres-Harbour :  Liste des bateaux");
@@ -244,7 +290,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
         PanelSearchLayout.setVerticalGroup(
             PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelSearchLayout.createSequentialGroup()
-                .addContainerGap(21, Short.MAX_VALUE)
+                .addContainerGap(38, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -253,6 +299,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                 .addGap(43, 43, 43))
         );
 
+        TableListeBateaux.setAutoCreateColumnsFromModel(false);
         TableListeBateaux.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -274,20 +321,47 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
         LabelTitle.setFont(new java.awt.Font("Dialog", 3, 18)); // NOI18N
         LabelTitle.setText("Liste des bateaux");
 
+        buttonOK.setText("OK");
+        buttonOK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonOKActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PanelSelectLayout = new javax.swing.GroupLayout(PanelSelect);
+        PanelSelect.setLayout(PanelSelectLayout);
+        PanelSelectLayout.setHorizontalGroup(
+            PanelSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelSelectLayout.createSequentialGroup()
+                .addGap(258, 258, 258)
+                .addComponent(buttonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        PanelSelectLayout.setVerticalGroup(
+            PanelSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelSelectLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(buttonOK)
+                .addContainerGap(20, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LabelTitle)
+                .addGap(246, 246, 246))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane2)
-                    .addComponent(PanelSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(PanelSelect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(PanelSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(319, 319, 319)
-                .addComponent(LabelTitle)
-                .addContainerGap(348, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,15 +369,24 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                 .addGap(13, 13, 13)
                 .addComponent(LabelTitle)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(PanelSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /**************************/
+    /*                        */
+    /*         BOUTONS        */
+    /*                        */
+    /**************************/
+    
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
 
         DefaultTableModel dtm = (DefaultTableModel) this.TableListeBateaux.getModel();
@@ -330,6 +413,12 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
             }    
         }
     }//GEN-LAST:event_SearchButtonActionPerformed
+
+    private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
+        //setBateau(TableListeBateaux.getSelectedRow());
+        
+        this.setVisible(false);
+    }//GEN-LAST:event_buttonOKActionPerformed
 
     
     
@@ -375,10 +464,13 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LabelTitle;
     private javax.swing.JPanel PanelSearch;
+    private javax.swing.JPanel PanelSelect;
     private javax.swing.JButton SearchButton;
     private javax.swing.JTextField SearchTextBox;
     private javax.swing.JTable TableListeBateaux;
+    private javax.swing.JButton buttonOK;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;

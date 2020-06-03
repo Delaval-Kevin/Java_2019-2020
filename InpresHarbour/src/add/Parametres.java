@@ -8,6 +8,7 @@
 package add;
 
 import java.io.*;
+import java.text.DateFormat;
 import java.util.*;
 
 
@@ -115,6 +116,36 @@ public class Parametres
         else
             return false;
     } 
+    
+    public boolean ChangeProperty(String param, String value)
+    {
+        if(DoesParamExist(param))
+        {
+            getParametres().setProperty(param, value);
+            Save();
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    public String localeToString(Locale l) 
+    {
+        return l.getLanguage() + "_" + l.getCountry();
+    }
+
+    public Locale stringToLocale(String s) 
+    {
+        StringTokenizer tempStringTokenizer = new StringTokenizer(s,",");
+        String l = "FR";
+        String c = "fr";
+        if(tempStringTokenizer.hasMoreTokens())
+            l = tempStringTokenizer.nextElement().toString();
+        if(tempStringTokenizer.hasMoreTokens())
+            c = tempStringTokenizer.nextElement().toString();
+
+        return new Locale(l,c);
+    }
 
     public void ConfigDeBase()
     {
@@ -123,10 +154,14 @@ public class Parametres
             AddProperty("capitainerieLog", "capitainerie.log");
             AddProperty("phareLog", "phare.log");
             AddProperty("fichierEntreeAmarrage", "entree.dat");
-            AddProperty("portEcoute", "50005");
+            AddProperty("portEcoute1", "50000");
+            AddProperty("portEcoute2", "50005");
             AddProperty("nombreRef1", "7");
             AddProperty("nombreRef2", "17");
             AddProperty("tempsSommeil", "1000");
+            AddProperty("formatHeure", Integer.toString(DateFormat.MEDIUM));
+            AddProperty("formatDate", Integer.toString(DateFormat.MEDIUM));
+            AddProperty("fuseauHoraire", localeToString(Locale.FRANCE));
             
             Save();
     }

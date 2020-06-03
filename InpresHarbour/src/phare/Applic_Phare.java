@@ -9,10 +9,16 @@ package phare;
 
 import add.*;
 import beans.*;
+import java.util.Timer;
 import java.beans.Beans;
+import java.util.Locale;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.TimerTask;
 import network.NetworkBasicClient;
 import javax.swing.DefaultListModel;
+import network.NetworkBasicServer;
 
 
 public class Applic_Phare extends javax.swing.JFrame 
@@ -24,10 +30,14 @@ public class Applic_Phare extends javax.swing.JFrame
     /*                        */
     /**************************/
     
+    private Timer _timer;
+    private Locale _fuseau;
     private String _tmpNom;
     private FichierLog _log;
     private String _reponse;
     private String _tmpType;
+    private int _formatDate;
+    private int _formatHeure;
     private BoatBean _beanBoat;
     private String _utilisateur;
     private String _tmpPavillon;
@@ -35,8 +45,10 @@ public class Applic_Phare extends javax.swing.JFrame
     private Parametres _parametres;
     private NotifyBean _beanNotify;
     private NetworkBasicClient _client;
+    private NetworkBasicServer _serveur;
     private KindOfBoatBean _beanKindOfBoat;
     private DefaultListModel _bateauxEntrant;
+    
 
     /**************************/
     /*                        */
@@ -56,6 +68,10 @@ public class Applic_Phare extends javax.swing.JFrame
         
         InitList();
         fctLogin();
+        
+        formatageDate(Integer.parseInt(getParam().searchParam("formatDate")) , Integer.parseInt(getParam().searchParam("formatHeure")) ,getParam().stringToLocale(getParam().searchParam("fuseauHoraire")));
+        InitTimer();
+        
         InitBeans();
 
         /* Si l'utilisateur ne se log pas on ferme la fenetre dans la foulée */
@@ -137,6 +153,31 @@ public class Applic_Phare extends javax.swing.JFrame
         return _parametres;
     }
     
+    public Timer getTimer()
+    {
+        return _timer;
+    }
+    
+    public Locale getFuseaau()
+    {
+        return _fuseau;
+    }
+
+    public int getFormatHeure()
+    {
+        return _formatHeure;
+    }
+    
+    public int getFormatDate()
+    {
+       return _formatDate;
+    }
+    
+    public NetworkBasicServer getServeur()
+    {
+        return _serveur;
+    }
+    
     /**************************/
     /*                        */
     /*         SETTERS        */
@@ -211,6 +252,31 @@ public class Applic_Phare extends javax.swing.JFrame
     public void setParam(Parametres param)
     {
         _parametres = param;
+    }
+    
+    public void setTimer(Timer timer)
+    {
+        _timer = timer;
+    }
+    
+    public void setFuseaau(Locale fuseau)
+    {
+        _fuseau = fuseau;
+    }
+
+    public void setFormatHeure(int formatHeure)
+    {
+        _formatHeure = formatHeure;
+    }
+    
+    public void setFormatDate(int formatDate)
+    {
+        _formatDate = formatDate;
+    }
+    
+    public void setServeur(NetworkBasicServer serveur)
+    {
+        _serveur = serveur;
     }
     
     /**************************/
@@ -333,6 +399,36 @@ public class Applic_Phare extends javax.swing.JFrame
         getBeanNotify().setBateauxEntrant(getBateauxEntrant());
     }
     
+    //crée le thread qui fera l'affichage de l'heure toutes les secondes
+    private void InitTimer()
+    {
+        setTimer(new Timer());
+        TimerTask task = new TimerTask()
+        {
+            @Override
+            public
+            void run()
+            {
+                afficheHeure();
+            }
+        };
+        getTimer().schedule(task,0, 1*1000);
+    }
+    
+    private void formatageDate(int date, int heure, Locale fuseau)
+    {
+        setFormatDate(date);
+        setFormatHeure(heure);
+        setFuseaau(fuseau);
+        afficheHeure();
+    }
+    
+    private void afficheHeure()
+    {           
+        Date maintenant = new Date();
+        labelHeure.setText(DateFormat.getDateTimeInstance(getFormatDate(), getFormatHeure(), getFuseaau()).format(maintenant));
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -352,6 +448,15 @@ public class Applic_Phare extends javax.swing.JFrame
         buttonBatEntreRade = new javax.swing.JButton();
         buttonRAZ = new javax.swing.JButton();
         buttonDeconexion = new javax.swing.JButton();
+        labelHeure = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel5 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        buttonDemarServeur = new javax.swing.JButton();
+        checkMessAtt = new javax.swing.JCheckBox();
+        buttonLire = new javax.swing.JButton();
+        textBoxDepart = new javax.swing.JTextField();
+        buttonValidDep = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -416,6 +521,38 @@ public class Applic_Phare extends javax.swing.JFrame
             }
         });
 
+        labelHeure.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel5.setText("Départ des bateaux");
+
+        buttonDemarServeur.setText("Démarrer le serveur");
+        buttonDemarServeur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDemarServeurActionPerformed(evt);
+            }
+        });
+
+        checkMessAtt.setText("Message en attente :");
+
+        buttonLire.setText("Lire");
+        buttonLire.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLireActionPerformed(evt);
+            }
+        });
+
+        textBoxDepart.setEditable(false);
+
+        buttonValidDep.setText("Valider départ");
+        buttonValidDep.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonValidDepActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -424,12 +561,7 @@ public class Applic_Phare extends javax.swing.JFrame
                 .addGap(20, 20, 20)
                 .addComponent(labelImage)
                 .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(buttonConnexion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
-                        .addComponent(labelBatEnAttente, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(115, 115, 115))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -439,48 +571,95 @@ public class Applic_Phare extends javax.swing.JFrame
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(buttonDeconexion)
-                                    .addComponent(buttonRAZ))))
-                        .addGap(35, 35, 35))))
+                                    .addComponent(buttonRAZ)
+                                    .addComponent(labelHeure, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(buttonDeconexion))))
+                        .addGap(26, 26, 26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buttonConnexion)
+                        .addGap(307, 307, 307))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(labelBatEnAttente, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSeparator2)
+                            .addComponent(jLabel5)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(checkMessAtt)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonLire, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textBoxDepart, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonValidDep, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(80, 80, 80))
             .addGroup(layout.createSequentialGroup()
                 .addGap(66, 66, 66)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelCap)
-                        .addGap(18, 18, 18)
-                        .addComponent(labelRepCap, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(labelBatIdentif)
-                        .addGap(36, 36, 36)
-                        .addComponent(textBoxBatIdent, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(buttonDemAutEntree)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelCap)
+                                .addGap(18, 18, 18)
+                                .addComponent(labelRepCap, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelBatIdentif)
+                                .addGap(36, 36, 36)
+                                .addComponent(textBoxBatIdent, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(buttonDemAutEntree))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(buttonBatEntreRade)
                         .addGap(18, 18, 18)
-                        .addComponent(labelBatEntre, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(labelBatEntre, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonDemarServeur)
+                        .addGap(15, 15, 15))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(labelImage)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(21, 21, 21)
+                        .addComponent(labelHeure)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelBatEnAttente)
                             .addComponent(buttonConnexion))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(42, 42, 42)
-                                .addComponent(buttonSuivant)))
-                        .addGap(59, 59, 59)))
+                                .addComponent(buttonSuivant))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(64, 64, 64))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(labelImage)
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(checkMessAtt)
+                            .addComponent(buttonLire))
+                        .addGap(18, 18, 18)
+                        .addComponent(textBoxDepart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(buttonValidDep)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelBatIdentif)
                     .addComponent(textBoxBatIdent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -491,12 +670,21 @@ public class Applic_Phare extends javax.swing.JFrame
                     .addComponent(labelCap)
                     .addComponent(labelRepCap)
                     .addComponent(buttonRAZ))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonBatEntreRade)
-                    .addComponent(buttonDeconexion)
-                    .addComponent(labelBatEntre))
-                .addGap(42, 42, 42))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonBatEntreRade)
+                            .addComponent(buttonDeconexion)
+                            .addComponent(labelBatEntre))
+                        .addGap(42, 42, 42))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(buttonDemarServeur)
+                        .addGap(40, 40, 40))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 6, Short.MAX_VALUE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         labelBatEnAttente.getAccessibleContext().setAccessibleName("");
@@ -513,7 +701,7 @@ public class Applic_Phare extends javax.swing.JFrame
     private void buttonConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConnexionActionPerformed
         getLog().ecritLigne("Connexion au serveur - dans Applic_Phare");
         
-        setClient(new NetworkBasicClient("localhost", Integer.parseInt(getParam().searchParam("portEcoute"))));
+        setClient(new NetworkBasicClient("localhost", Integer.parseInt(getParam().searchParam("portEcoute1"))));
         buttonConnexion.setEnabled(false);
     }//GEN-LAST:event_buttonConnexionActionPerformed
 
@@ -574,6 +762,22 @@ public class Applic_Phare extends javax.swing.JFrame
         buttonConnexion.setEnabled(true);
     }//GEN-LAST:event_buttonDeconexionActionPerformed
 
+    private void buttonLireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLireActionPerformed
+        if(checkMessAtt.isSelected())
+        {
+            textBoxDepart.setText("Départ du bateau "+getServeur().getMessage());
+        }
+    }//GEN-LAST:event_buttonLireActionPerformed
+
+    private void buttonValidDepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValidDepActionPerformed
+        getServeur().sendMessage(getServeur().getMessage());
+    }//GEN-LAST:event_buttonValidDepActionPerformed
+
+    private void buttonDemarServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemarServeurActionPerformed
+        setServeur(new NetworkBasicServer(Integer.parseInt(getParam().searchParam("portEcoute2")),checkMessAtt));
+        buttonDemarServeur.setEnabled(false);
+    }//GEN-LAST:event_buttonDemarServeurActionPerformed
+
 
     /**************************/
     /*                        */
@@ -621,16 +825,25 @@ public class Applic_Phare extends javax.swing.JFrame
     private javax.swing.JButton buttonConnexion;
     private javax.swing.JButton buttonDeconexion;
     private javax.swing.JButton buttonDemAutEntree;
+    private javax.swing.JButton buttonDemarServeur;
+    private javax.swing.JButton buttonLire;
     private javax.swing.JButton buttonRAZ;
     private javax.swing.JButton buttonSuivant;
+    private javax.swing.JButton buttonValidDep;
+    private javax.swing.JCheckBox checkMessAtt;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel labelBatEnAttente;
     private javax.swing.JLabel labelBatEntre;
     private javax.swing.JLabel labelBatIdentif;
     private javax.swing.JLabel labelCap;
+    private javax.swing.JLabel labelHeure;
     private javax.swing.JLabel labelImage;
     private javax.swing.JLabel labelRepCap;
     private javax.swing.JList listBatEnAttente;
     private javax.swing.JTextField textBoxBatIdent;
+    private javax.swing.JTextField textBoxDepart;
     // End of variables declaration//GEN-END:variables
 }

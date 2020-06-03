@@ -16,11 +16,15 @@ import add.DialogErreur;
 import java.util.Locale;
 import java.util.Vector;
 import amarrages.Ponton;
+import beans.ThreadBean;
 import vehicules.Bateau;
+import beans.DepartEvent;
 import amarrages.Amarrage;
 import java.io.IOException;
 import java.util.TimerTask;
+import beans.DepartListener;
 import java.text.DateFormat;
+import beans.ReponseListener;
 import vehicules.BateauPeche;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,12 +35,14 @@ import network.NetworkBasicServer;
 import javax.swing.DefaultListModel;
 import java.io.FileNotFoundException;
 import amarrages.OddPontoonException;
+import beans.ReponseEvent;
 
 
 
-public class Applic_Capitainerie extends javax.swing.JFrame 
+public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseListener
 {
-  
+    // <editor-fold defaultstate="collapsed" desc="Variables membres">
+    
     /**************************/
     /*                        */
     /*   VARIABLES MEMBRES    */
@@ -48,6 +54,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     private Parametres _parametres;
     private NetworkBasicServer _serveur;
     
+    private Vector _departListeners;
     private Vector<Amarrage> _amarrage;
     private DefaultListModel _bateauEntrant;
     
@@ -59,8 +66,10 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     private int _formatDate;
     private int _formatHeure;
     
+    //</editor-fold>
 
-
+    // <editor-fold defaultstate="collapsed" desc="Constructeurs">
+    
     /**************************/
     /*                        */
     /*      CONSTRUCTEURS     */
@@ -78,9 +87,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         
         fctLogin();
         
-        formatageDate(DateFormat.MEDIUM , DateFormat.MEDIUM ,Locale.FRANCE);
+        formatageDate(Integer.parseInt(getParam().searchParam("formatDate")) , Integer.parseInt(getParam().searchParam("formatHeure")) ,getParam().stringToLocale(getParam().searchParam("fuseauHoraire")));
         InitTimer();
         InitList();
+        
+        setDepartListeners(new Vector());
         
         if(LoadAmarrage() == 0)
         {
@@ -89,6 +100,8 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         
     }
 
+    //</editor-fold>
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -111,6 +124,18 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         labelHeure = new javax.swing.JLabel();
         scrollPanelBateaux = new javax.swing.JScrollPane();
         listeBateaux = new javax.swing.JList();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel5 = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        buttonConnexion = new javax.swing.JButton();
+        textBoxDepart = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        labelDepart = new javax.swing.JLabel();
+        buttonChoixBateau = new javax.swing.JButton();
+        buttonSignalDepart = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        textBoxRepPhare = new javax.swing.JTextField();
+        buttonRAZ = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         menuUtil = new javax.swing.JMenu();
         menuItemLogin = new javax.swing.JMenuItem();
@@ -211,6 +236,49 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         labelHeure.setToolTipText("");
 
         scrollPanelBateaux.setViewportView(listeBateaux);
+
+        jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel5.setText("Départ des bateaux");
+
+        buttonConnexion.setText("Connexion");
+        buttonConnexion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonConnexionActionPerformed(evt);
+            }
+        });
+
+        textBoxDepart.setEditable(false);
+
+        jLabel6.setText("Bateau en partance :");
+
+        labelDepart.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
+        buttonChoixBateau.setText("Choisir bateau");
+        buttonChoixBateau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonChoixBateauActionPerformed(evt);
+            }
+        });
+
+        buttonSignalDepart.setText("Signaler départ");
+        buttonSignalDepart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSignalDepartActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setText("Réponse du phare :");
+
+        textBoxRepPhare.setEditable(false);
+
+        buttonRAZ.setText("RAZ");
+        buttonRAZ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonRAZActionPerformed(evt);
+            }
+        });
 
         menuUtil.setText("Utilisateurs");
 
@@ -358,65 +426,96 @@ public class Applic_Capitainerie extends javax.swing.JFrame
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(checkRequeteEnAtt)
-                                .addGap(38, 38, 38)
-                                .addComponent(buttonLire)
-                                .addGap(28, 28, 28)
-                                .addComponent(textBoxLecture))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(buttonChoisir)
-                                .addGap(12, 12, 12)
-                                .addComponent(textBoxChoix, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(buttonEnvChoix)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
                                 .addComponent(buttonDemarServ)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(labelHeure, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(labelHeure, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(54, 54, 54)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel3))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(scrollPanelBateaux, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(buttonBateauAmar)
+                                                .addGap(176, 176, 176))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(buttonArretServeur, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(162, 162, 162))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(15, 15, 15)
+                                                .addComponent(buttonEnvChoix)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(textBoxConfChoix, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(buttonEnvConf))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(buttonChoisir)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(textBoxChoix, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(14, 14, 14)
+                                        .addComponent(checkRequeteEnAtt)
+                                        .addGap(38, 38, 38)
+                                        .addComponent(buttonLire)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(textBoxLecture)))))
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(192, 192, 192)))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelDepart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(textBoxDepart)
+                                    .addComponent(textBoxRepPhare)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(textBoxConfChoix, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(buttonEnvConf))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(scrollPanelBateaux, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(62, 62, 62))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(buttonBateauAmar)
-                                .addGap(220, 220, 220))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(buttonArretServeur, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(206, 206, 206)))))
-                .addGap(26, 26, 26))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(269, 269, 269))
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(buttonChoixBateau, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(buttonSignalDepart, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(buttonConnexion, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(buttonRAZ, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(134, 134, 134)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jSeparator2)
+                            .addComponent(jLabel5))
+                        .addGap(140, 140, 140))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(buttonDemarServ))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(labelHeure)))
-                .addGap(18, 18, 18)
+                        .addGap(14, 14, 14)
+                        .addComponent(buttonDemarServ)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(22, Short.MAX_VALUE)
+                        .addComponent(labelHeure)
+                        .addGap(62, 62, 62)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkRequeteEnAtt)
                     .addComponent(buttonLire)
@@ -443,12 +542,43 @@ public class Applic_Capitainerie extends javax.swing.JFrame
                         .addComponent(buttonBateauAmar)
                         .addGap(18, 18, 18)
                         .addComponent(buttonArretServeur)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addGap(22, 22, 22))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSeparator1)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(labelDepart)
+                .addGap(36, 36, 36)
+                .addComponent(buttonChoixBateau)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textBoxDepart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonSignalDepart)
+                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(textBoxRepPhare, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(buttonRAZ)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonConnexion)
+                .addGap(37, 37, 37))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    // <editor-fold defaultstate="collapsed" desc="Setters">
+    
     /**************************/
     /*                        */
     /*         SETTERS        */
@@ -527,6 +657,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         _parametres = param;
     }
     
+    public void setDepartListeners(Vector departListeners)
+    {
+        _departListeners = departListeners;
+    }
+    
     public void setEnableAll(boolean choice)
     {
         setEnableMenu(choice);
@@ -559,6 +694,10 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         textBoxConfChoix.setEnabled(choice);
         textBoxLecture.setEnabled(choice);
     }
+    
+    //</editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="Getters">
     
     /**************************/
     /*                        */
@@ -625,6 +764,15 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     {
         return _parametres;
     }
+    
+    public Vector getDepartListeners()
+    {
+        return _departListeners;
+    }
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Methodes">
     
     /**************************/
     /*                        */
@@ -788,6 +936,46 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         labelHeure.setText(getInfoDate());
     }
     
+    public void notifyDepartDetected()
+    {
+        DepartEvent e = new DepartEvent(this); //On génère l'événement
+        e.setDepart(textBoxDepart.getText());
+        
+        int n = getDepartListeners().size();
+        for(int i = 0 ; i < n ; i++)
+        {
+            DepartListener obj = (DepartListener) getDepartListeners().elementAt(i);
+            obj.DepartDetected(e);
+        }
+    }
+    
+    public void addDepartListener(DepartListener dl)
+    {
+        if(!getDepartListeners().contains(dl))
+        {
+            getDepartListeners().addElement(dl);
+        }
+    }
+    
+    public void removeBoatListener(DepartListener dl)
+    {
+        if(getDepartListeners().contains(dl))
+        {
+            getDepartListeners().removeElement(dl);
+        }        
+    }
+    
+    @Override
+    public void ReponseDetected(ReponseEvent e) 
+    {
+        textBoxRepPhare.setText(e.getReponse());
+        labelDepart.setText("Le dernier bateau est parti le : "+getInfoDate());
+    }
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Boutons 1">
+    
     /**************************/
     /*                        */
     /*         BOUTONS        */
@@ -797,7 +985,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     private void buttonDemarServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemarServActionPerformed
         getLog().ecritLigne("Démarrage du serveur - dans Applic_Capitainerie");
         
-        setServeur(new NetworkBasicServer(Integer.parseInt(getParam().searchParam("portEcoute")),checkRequeteEnAtt));
+        setServeur(new NetworkBasicServer(Integer.parseInt(getParam().searchParam("portEcoute1")),checkRequeteEnAtt));
         buttonDemarServ.setEnabled(false);
     }//GEN-LAST:event_buttonDemarServActionPerformed
 
@@ -903,6 +1091,10 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         getServeur().setEndReceiving();
     }//GEN-LAST:event_buttonArretServeurActionPerformed
 
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Menu Items">
+    
     /**************************/
     /*                        */
     /*       ITEMS MENU       */
@@ -946,31 +1138,26 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     private void menuItemPlaisanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPlaisanceActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue BATEAUX DE PLAISANCE - dans Applic_Capitainerie");
         DialogPlacesDispo dpd = new DialogPlacesDispo(this, true, getAmarrages(), new BateauPlaisance());
-        dpd.setVisible(true);
-        
-        
+        dpd.setVisible(true);  
     }//GEN-LAST:event_menuItemPlaisanceActionPerformed
 
     private void menuItemPecheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPecheActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue BATEAUX DE PECHE - dans Applic_Capitainerie");         
         DialogPlacesDispo dpd = new DialogPlacesDispo(this, true, getAmarrages(), new BateauPeche());
         dpd.setVisible(true);
-        
-        
     }//GEN-LAST:event_menuItemPecheActionPerformed
 
     private void menuItemListeCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemListeCompActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue LISTE BATEAUX - dans Applic_Capitainerie");
         
-        DialogListeCompleteBateaux d = new DialogListeCompleteBateaux(this, true, getAmarrages(), false);
+        DialogListeCompleteBateaux d = new DialogListeCompleteBateaux(this, true, getAmarrages(), 0);
         d.setVisible(true);
-        
     }//GEN-LAST:event_menuItemListeCompActionPerformed
 
     private void menuItemRechBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRechBateauActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue RECHERCHE BATEAUX - dans Applic_Capitainerie");
         
-        DialogListeCompleteBateaux d = new DialogListeCompleteBateaux(this, true, getAmarrages(), true);
+        DialogListeCompleteBateaux d = new DialogListeCompleteBateaux(this, true, getAmarrages(), 1);
         d.setVisible(true);
     }//GEN-LAST:event_menuItemRechBateauActionPerformed
 
@@ -984,7 +1171,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         getLog().ecritLigne("Creation de la boite de dialogue RECHERCHE MARIN - dans Applic_Capitainerie");
         DialogPersonnelBateau dpb = new DialogPersonnelBateau(this, true, getAmarrages(), true);
         dpb.setVisible(true);
-        
     }//GEN-LAST:event_menuItemRechMarinActionPerformed
 
     private void menuItemFormatDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemFormatDateActionPerformed
@@ -997,6 +1183,9 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         if(d.getValidation())
         {
             formatageDate(d.getFormatDate(), d.getFormatHeure(), d.getFuseauHoraire());
+            getParam().ChangeProperty("formatDate", Integer.toString(d.getFormatDate()));
+            getParam().ChangeProperty("formatHeure", Integer.toString(d.getFormatHeure()));
+            getParam().ChangeProperty("fuseauHoraire", getParam().localeToString(d.getFuseauHoraire()));
         }
 
         d.dispose();
@@ -1041,8 +1230,45 @@ public class Applic_Capitainerie extends javax.swing.JFrame
         d.dispose();    
     }//GEN-LAST:event_menuItemFichLogActionPerformed
 
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Boutons 2">
+    
+    /**************************/
+    /*                        */
+    /*         BOUTONS        */
+    /*                        */
+    /**************************/
+    
+    private void buttonConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConnexionActionPerformed
+        //Creation du thread qui va ce connecté au serveur      
+        ThreadBean thread = new ThreadBean(Integer.parseInt(getParam().searchParam("portEcoute2")));
+        thread.init();
+        thread.start();
+        
+        buttonConnexion.setEnabled(false);
+    }//GEN-LAST:event_buttonConnexionActionPerformed
 
+    private void buttonSignalDepartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSignalDepartActionPerformed
+        notifyDepartDetected();
+    }//GEN-LAST:event_buttonSignalDepartActionPerformed
 
+    private void buttonChoixBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChoixBateauActionPerformed
+        getLog().ecritLigne("Creation de la boite de dialogue LISTE BATEAUX - dans Applic_Capitainerie");
+        
+        DialogListeCompleteBateaux d = new DialogListeCompleteBateaux(this, true, getAmarrages(), 2);
+        d.setVisible(true);
+    }//GEN-LAST:event_buttonChoixBateauActionPerformed
+
+    private void buttonRAZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRAZActionPerformed
+        textBoxDepart.setText("");
+        textBoxRepPhare.setText("");
+    }//GEN-LAST:event_buttonRAZActionPerformed
+
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Main">
+    
     /**************************/
     /*                        */
     /*          MAIN          */
@@ -1073,7 +1299,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame
             java.util.logging.Logger.getLogger(Applic_Capitainerie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
+        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() 
@@ -1089,15 +1315,25 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     private javax.swing.JButton buttonArretServeur;
     private javax.swing.JButton buttonBateauAmar;
     private javax.swing.JButton buttonChoisir;
+    private javax.swing.JButton buttonChoixBateau;
+    private javax.swing.JButton buttonConnexion;
     private javax.swing.JButton buttonDemarServ;
     private javax.swing.JButton buttonEnvChoix;
     private javax.swing.JButton buttonEnvConf;
     private javax.swing.JButton buttonLire;
+    private javax.swing.JButton buttonRAZ;
+    private javax.swing.JButton buttonSignalDepart;
     private javax.swing.JCheckBox checkRequeteEnAtt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel labelDepart;
     private javax.swing.JLabel labelHeure;
     private javax.swing.JList listeBateaux;
     private javax.swing.JMenu menuAPropos;
@@ -1124,6 +1360,9 @@ public class Applic_Capitainerie extends javax.swing.JFrame
     private javax.swing.JScrollPane scrollPanelBateaux;
     private javax.swing.JTextField textBoxChoix;
     private javax.swing.JTextField textBoxConfChoix;
+    private javax.swing.JTextField textBoxDepart;
     private javax.swing.JTextField textBoxLecture;
+    private javax.swing.JTextField textBoxRepPhare;
     // End of variables declaration//GEN-END:variables
+    //</editor-fold>
 }
