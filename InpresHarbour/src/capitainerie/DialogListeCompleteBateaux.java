@@ -306,7 +306,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                 .addGap(43, 43, 43))
         );
 
-        TableListeBateaux.setAutoCreateColumnsFromModel(false);
+        TableListeBateaux.setAutoCreateRowSorter(true);
         TableListeBateaux.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -323,6 +323,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                 return types [columnIndex];
             }
         });
+        TableListeBateaux.setToolTipText("");
         jScrollPane2.setViewportView(TableListeBateaux);
 
         LabelTitle.setFont(new java.awt.Font("Dialog", 3, 18)); // NOI18N
