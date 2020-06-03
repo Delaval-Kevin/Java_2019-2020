@@ -1,8 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/***********************************************************/
+/*Auteurs : DELAVAL Kevin & COLLETTE Loïc                  */
+/*Groupe : 2203                                            */
+/*Application : InpresHarbour                              */
+/*Date de la dernière mise à jour : 11/04/2020             */
+/***********************************************************/
+
 package capitainerie;
 
 import amarrages.Amarrage;
@@ -16,23 +18,26 @@ import javax.swing.table.DefaultTableModel;
 import vehicules.Bateau;
 
 
-/**
- *
- * @author collloi
- */
-public class DialogPersonnelBateau extends javax.swing.JDialog {
-
-    /**
-     * Creates new form DialogPersonnelBateau
-     */
+public class DialogPersonnelBateau extends javax.swing.JDialog 
+{
+    /**************************/
+    /*                        */
+    /*   VARIABLES MEMBRES    */
+    /*                        */
+    /**************************/
     
     public Vector<Amarrage> _amarrages;
     
-    public DialogPersonnelBateau(java.awt.Frame parent, boolean modal) {
+    /**************************/
+    /*                        */
+    /*      CONSTRUCTEURS     */
+    /*                        */
+    /**************************/
+    
+    public DialogPersonnelBateau(java.awt.Frame parent, boolean modal) 
+    {
         super(parent, modal);
         initComponents();
-        
-        
     }
     
     public DialogPersonnelBateau(Frame parent, boolean modal, Vector<Amarrage> amarrage, boolean search){
@@ -44,7 +49,34 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
         }
     }
     
+    /**************************/
+    /*                        */
+    /*         GETTERS        */
+    /*                        */
+    /**************************/
+    
+    public Vector getAmarrages()
+    {
+        return _amarrages;
+    }
+    
+    /**************************/
+    /*                        */
+    /*         SETTERS        */
+    /*                        */
+    /**************************/
 
+    public void setAmarrage(Vector<Amarrage> amarrages)
+    {
+        _amarrages = amarrages;
+    }
+        
+    /**************************/
+    /*                        */
+    /*        METHODES        */
+    /*                        */
+    /**************************/
+    
     private void InitTable()
     {
         
@@ -74,16 +106,17 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
         Vector ligne;
         
         
-        for(int i = 1; i <= 2; i++){
-            
-            for(int j = 0; j < ponton.getListe(i).length; j++){
-            
+        for(int i = 1; i <= 2; i++)
+        {
+            for(int j = 0; j < ponton.getListe(i).length; j++)
+            {
                 b = (Bateau) ponton.getListe(i)[j];
                 ligne = new Vector();
-                if(b != null){
-
+                if(b != null)
+                {
                     // capitaine
-                    if(b.getEquipage().getCapitaine() != null){
+                    if(b.getEquipage().getCapitaine() != null)
+                    {
                         capitaine = b.getEquipage().getCapitaine();
                         ligne.addElement("P" + iAm +ponton.getIdentifiant()+"*"+i);
                         ligne.addElement(b.getNom());
@@ -94,12 +127,16 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
 
                     // second
                     ligne = new Vector();
-                    if(b.getEquipage().getSecond() != null){
+                    if(b.getEquipage().getSecond() != null)
+                    {
                         second = b.getEquipage().getSecond();
-                        if(b.getEquipage().getCapitaine() == null){
+                        if(b.getEquipage().getCapitaine() == null)
+                        {
                             ligne.addElement("P" + iAm +ponton.getIdentifiant()+"*"+i);
                             ligne.addElement(b.getNom());
-                        }else{
+                        }
+                        else
+                        {
                             ligne.addElement("");
                             ligne.addElement("");
                         }
@@ -108,32 +145,32 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
                         dtm.addRow(ligne);
                     }
 
-
                     int taille  = b.getEquipage().getMarins().size();
 
-                    for(int k = 0; k < taille; k++){
-
-
+                    for(int k = 0; k < taille; k++)
+                    {
                         ligne = new Vector();
                         // marin
                         marin = b.getEquipage().getMarins().elementAt(k);
 
-                        if(b.getEquipage().getCapitaine() == null && b.getEquipage().getCapitaine() == null){
+                        if(b.getEquipage().getCapitaine() == null && b.getEquipage().getCapitaine() == null)
+                        {
                             ligne.addElement("P" + iAm +ponton.getIdentifiant()+"*"+i);
                             ligne.addElement(b.getNom());
-                        }else{
+                        }
+                        else
+                        {
                             ligne.addElement("");
                             ligne.addElement("");
                         }
 
                         ligne.addElement(marin);
                         dtm.addRow(ligne);
-
                     }
-                    
-                    
+                           
                     ligne = new Vector();
-                    if(b.getEquipage().getCapitaine() != null || b.getEquipage().getSecond() != null || !b.getEquipage().getMarins().isEmpty()){
+                    if(b.getEquipage().getCapitaine() != null || b.getEquipage().getSecond() != null || !b.getEquipage().getMarins().isEmpty())
+                    {
                         ligne.addElement("");
                         ligne.addElement("");
                         ligne.addElement("");
@@ -141,15 +178,12 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
                     }
                 }
             }
-            
-        }
-        
+        }    
     }
     
     
     public void AddPersonnelPonton(Ponton ponton, int iAm, boolean search)
     {
-    
         DefaultTableModel dtm = (DefaultTableModel) this.TableListeMarin.getModel();
         Marin capitaine;
         Marin second;
@@ -159,18 +193,20 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
         
         String toSearch = SearchTextBox.getText();
         
-        for(int i = 1; i <= 2; i++){
-            
-            for(int j = 0; j < ponton.getListe(i).length; j++){
-            
+        for(int i = 1; i <= 2; i++)
+        {
+            for(int j = 0; j < ponton.getListe(i).length; j++)
+            {
                 b = (Bateau) ponton.getListe(i)[j];
                 ligne = new Vector();
-                if(b != null){
-
+                if(b != null)
+                {
                     // capitaine
-                    if(b.getEquipage().getCapitaine() != null){
+                    if(b.getEquipage().getCapitaine() != null)
+                    {
                         capitaine = b.getEquipage().getCapitaine();
-                        if(capitaine.getNom().contains(toSearch) || capitaine.getPrenom().contains(toSearch)){
+                        if(capitaine.getNom().contains(toSearch) || capitaine.getPrenom().contains(toSearch))
+                        {
                             ligne.addElement("P" + iAm +ponton.getIdentifiant()+"*"+i);
                             ligne.addElement(b.getNom());
                             ligne.addElement(capitaine);
@@ -178,13 +214,14 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
                         }
                     }
 
-
                     // second
                     ligne = new Vector();
-                    if(b.getEquipage().getSecond() != null){
+                    if(b.getEquipage().getSecond() != null)
+                    {
                         second = b.getEquipage().getSecond();
                         
-                        if(second.getNom().contains(toSearch) || second.getPrenom().contains(toSearch)){
+                        if(second.getNom().contains(toSearch) || second.getPrenom().contains(toSearch))
+                        {
                             ligne.addElement("P" + iAm +ponton.getIdentifiant()+"*"+i);
                             ligne.addElement(b.getNom());
                             ligne.addElement(second);
@@ -195,26 +232,22 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
 
                     int taille  = b.getEquipage().getMarins().size();
 
-                    for(int k = 0; k < taille; k++){
-
-
+                    for(int k = 0; k < taille; k++)
+                    {
                         ligne = new Vector();
                         // marin
                         marin = b.getEquipage().getMarins().elementAt(k);
-                        if(marin.getNom().contains(toSearch) || marin.getPrenom().contains(toSearch)){
+                        if(marin.getNom().contains(toSearch) || marin.getPrenom().contains(toSearch))
+                        {
                             ligne.addElement("P" + iAm +ponton.getIdentifiant()+"*"+i);
                             ligne.addElement(b.getNom());
                             ligne.addElement(marin);
                             dtm.addRow(ligne);
                         }
-                        
-                    }
-                    
+                    } 
                 }
             }
-            
         }
-        
     }
     
     
@@ -227,18 +260,17 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
         Marin marin;
         Bateau b;
         Vector ligne;
-        
 
-        for(int j = 0; j < quai.getListe().length; j++){
-
+        for(int j = 0; j < quai.getListe().length; j++)
+        {
             b = (Bateau) quai.getListe()[j];
             ligne = new Vector();
 
             // capitaine
-            if(b != null){
-            
-            
-                if(b.getEquipage().getCapitaine() == null){
+            if(b != null)
+            {    
+                if(b.getEquipage().getCapitaine() == null)
+                {
                     capitaine = b.getEquipage().getCapitaine();
                     ligne.addElement("Q" + iAm +quai.getIdentifiant()+"*"+j);
                     ligne.addElement(b.getNom());
@@ -246,16 +278,19 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
                     dtm.addRow(ligne);
                 }
 
-
                 ligne = new Vector();
                 // second
-                if(b.getEquipage().getSecond()== null){
+                if(b.getEquipage().getSecond()== null)
+                {
                     second = b.getEquipage().getSecond();
 
-                    if(b.getEquipage().getCapitaine() == null){
+                    if(b.getEquipage().getCapitaine() == null)
+                    {
                         ligne.addElement("Q" + iAm +quai.getIdentifiant()+"*"+j);
                         ligne.addElement(b.getNom());
-                    }else{
+                    }
+                    else
+                    {
                         ligne.addElement("");
                         ligne.addElement("");
                     }
@@ -264,38 +299,35 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
                     dtm.addRow(ligne);
                 }
 
-
                 int taille  = b.getEquipage().getMarins().size();
 
-                for(int k = 0; k < taille; k++){
-
-
+                for(int k = 0; k < taille; k++)
+                {
                     ligne = new Vector();
                     // marin
                     marin = b.getEquipage().getMarins().elementAt(k);
 
-                    if(b.getEquipage().getCapitaine() == null && b.getEquipage().getCapitaine() == null){
+                    if(b.getEquipage().getCapitaine() == null && b.getEquipage().getCapitaine() == null)
+                    {
                         ligne.addElement("Q" + iAm +quai.getIdentifiant()+"*"+j);
                         ligne.addElement(b.getNom());
-                    }else{
+                    }
+                    else
+                    {
                         ligne.addElement("");
                         ligne.addElement("");
                     }
 
                     ligne.addElement(marin);
                     dtm.addRow(ligne);
-
                 }
             }
-        }
-
-        
+        }  
     }
     
     
     public void AddPersonnelQuai(Quai quai, int iAm, boolean search)
     {
-    
         DefaultTableModel dtm = (DefaultTableModel) TableListeMarin.getModel();
         Marin capitaine;
         Marin second;
@@ -305,16 +337,16 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
         
         String toSearch = SearchTextBox.getText();
 
-        for(int j = 0; j < quai.getListe().length; j++){
-
+        for(int j = 0; j < quai.getListe().length; j++)
+        {
             b = (Bateau) quai.getListe()[j];
             ligne = new Vector();
 
             // capitaine
-            if(b != null){
-            
-            
-                if(b.getEquipage().getCapitaine() != null && (b.getEquipage().getCapitaine().getNom().contains(toSearch) || b.getEquipage().getCapitaine().getPrenom().contains(toSearch))){
+            if(b != null)
+            {
+                if(b.getEquipage().getCapitaine() != null && (b.getEquipage().getCapitaine().getNom().contains(toSearch) || b.getEquipage().getCapitaine().getPrenom().contains(toSearch)))
+                {
                     capitaine = b.getEquipage().getCapitaine();
                     ligne.addElement("Q" + iAm +quai.getIdentifiant()+"*"+j);
                     ligne.addElement(b.getNom());
@@ -322,10 +354,10 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
                     dtm.addRow(ligne);
                 }
 
-
                 ligne = new Vector();
                 // second
-                if(b.getEquipage().getSecond() != null && (b.getEquipage().getSecond().getNom().contains(toSearch) || b.getEquipage().getSecond().getPrenom().contains(toSearch))){
+                if(b.getEquipage().getSecond() != null && (b.getEquipage().getSecond().getNom().contains(toSearch) || b.getEquipage().getSecond().getPrenom().contains(toSearch)))
+                {
                     second = b.getEquipage().getSecond();
 
                     ligne.addElement("Q" + iAm +quai.getIdentifiant()+"*"+j);
@@ -338,42 +370,23 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
 
                 int taille  = b.getEquipage().getMarins().size();
 
-                for(int k = 0; k < taille; k++){
-
-
+                for(int k = 0; k < taille; k++)
+                {
                     ligne = new Vector();
                     // marin
                     marin = b.getEquipage().getMarins().elementAt(k);
-                    if(marin.getNom().contains(toSearch) || marin.getPrenom().contains(toSearch)){
+                    if(marin.getNom().contains(toSearch) || marin.getPrenom().contains(toSearch))
+                    {
                         ligne.addElement("Q" + iAm +quai.getIdentifiant()+"*"+j);
                         ligne.addElement(b.getNom());
                         ligne.addElement(marin);
                         dtm.addRow(ligne);
                     }
-                    
                 }
             }
         }
+    } 
 
-        
-    }
-    
-    
-    
-    
-    public void setAmarrage(Vector<Amarrage> amarrages){
-        _amarrages = amarrages;
-    }
-    
-    public Vector getAmarrages(){
-        return _amarrages;
-    }
-    
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -475,8 +488,13 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**************************/
+    /*                        */
+    /*         BOUTONS        */
+    /*                        */
+    /**************************/
+    
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
-        // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) this.TableListeMarin.getModel();
         while(dtm.getRowCount() > 0)
         {
@@ -500,12 +518,14 @@ public class DialogPersonnelBateau extends javax.swing.JDialog {
                 AddPersonnelQuai((Quai) am, iAm, true);
             }    
         }
-        
     }//GEN-LAST:event_SearchButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    /**************************/
+    /*                        */
+    /*          MAIN          */
+    /*                        */
+    /**************************/
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -135,7 +135,6 @@ public class ThreadBean extends java.lang.Thread implements DepartListener
             
             while(true) 
             { 
-                System.out.println(getMessage());
                 if(getMessage() != null)
                 {
                     setReponse(getClient().sendString(getMessage()));
@@ -166,7 +165,7 @@ public class ThreadBean extends java.lang.Thread implements DepartListener
     public void notifyReponseDetected()
     {
         ReponseEvent e = new ReponseEvent(this); //On génère l'événement
-        e.setReponse("Le bateau "+getReponse()+" est bien parti");
+        e.setReponse("Le bateau "+getReponse()+" a bien quitté le port");
 
         
         int n = getReponseListeners().size();

@@ -20,10 +20,13 @@ import beans.ThreadBean;
 import vehicules.Bateau;
 import beans.DepartEvent;
 import amarrages.Amarrage;
+import beans.ReponseEvent;
 import java.io.IOException;
 import java.util.TimerTask;
+import java.io.EOFException;
 import beans.DepartListener;
 import java.text.DateFormat;
+import java.util.Enumeration;
 import beans.ReponseListener;
 import vehicules.BateauPeche;
 import java.io.FileInputStream;
@@ -35,9 +38,6 @@ import network.NetworkBasicServer;
 import javax.swing.DefaultListModel;
 import java.io.FileNotFoundException;
 import amarrages.OddPontoonException;
-import beans.ReponseEvent;
-import java.io.EOFException;
-import java.util.Enumeration;
 import vehicules.MoyenDeTransportSurEau;
 
 
@@ -91,7 +91,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         
         fctLogin();
         
-        formatageDate(Integer.parseInt(getParam().searchParam("formatDate")) , Integer.parseInt(getParam().searchParam("formatHeure")) ,getParam().stringToLocale(getParam().searchParam("fuseauHoraire")));
+        formatageDate(Integer.parseInt(getParam().searchParam("formatDate")), Integer.parseInt(getParam().searchParam("formatHeure")), getParam().stringToLocale(getParam().searchParam("fuseauHoraire")));
         InitTimer();
         InitList();
         
@@ -103,7 +103,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         }
         
         LoadEntree();
-        
     }
 
     //</editor-fold>
@@ -487,21 +486,22 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelDepart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(textBoxDepart)
-                                    .addComponent(textBoxRepPhare)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(buttonChoixBateau, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(buttonSignalDepart, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(buttonConnexion, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(buttonRAZ, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(buttonRAZ, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(textBoxRepPhare)
+                            .addComponent(textBoxDepart)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(buttonChoixBateau)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(134, 134, 134)
@@ -560,18 +560,18 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
                 .addComponent(labelDepart)
-                .addGap(36, 36, 36)
-                .addComponent(buttonChoixBateau)
-                .addGap(18, 18, 18)
+                .addGap(52, 52, 52)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textBoxDepart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(buttonChoixBateau))
+                .addGap(18, 18, 18)
+                .addComponent(textBoxDepart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonSignalDepart)
-                .addGap(51, 51, 51)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(textBoxRepPhare, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
+                .addComponent(jLabel7)
+                .addGap(7, 7, 7)
+                .addComponent(textBoxRepPhare, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(buttonRAZ)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -581,7 +581,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     
     // <editor-fold defaultstate="collapsed" desc="Setters">
     
@@ -873,11 +872,10 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         {
             System.out.println("iOException : "+iOException.getMessage());
         }
-        
     }
     
-    public void SaveEntree(){
-    
+    public void SaveEntree()
+    {
         String rep = System.getProperty("user.dir");
         String sep = System.getProperty("file.separator");
         
@@ -890,20 +888,17 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
             
             DefaultListModel elems = (DefaultListModel) listeBateaux.getModel();
             
-            
             Enumeration enu = elems.elements();
                 
-            while(enu.hasMoreElements()){
+            while(enu.hasMoreElements())
+            {
                 oos.writeObject(enu.nextElement());
-            }
-            
-            
+            }    
         }
         catch(IOException iOException)
         {
             System.out.println("iOException : "+iOException.getMessage());
         }
-    
     }
     
     private int LoadEntree()
@@ -918,21 +913,17 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
             
             DefaultListModel elems = getListeBateauEntrant();
                 
-            try{
-            
+            try
+            {
                 while(true)
                 {
                     elems.addElement(ois.readObject());
                 }
-            
             }
             catch(EOFException e)
             {
-            
                 listeBateaux.setModel(elems);
-            
             }
-            
             return 1; 
         }
         catch(FileNotFoundException fileNotFoundException)
@@ -947,7 +938,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         {
            getLog().ecritLigne("Erreur classes non trouvée");
         }
-        
         return 0;
     }
     
@@ -957,7 +947,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         {
             return false;
         }
-        
         return true;
     }
     
@@ -1031,55 +1020,51 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         labelHeure.setText(getInfoDate());
     }
     
-    private String getAmarrageBateau(Bateau bateau){
-    
+    private String getAmarrageBateau(Bateau bateau)
+    {
         Enumeration enu = _amarrage.elements();
         
         int iAm = 0;
-        while(enu.hasMoreElements()){
+        while(enu.hasMoreElements())
+        {
             Amarrage am = (Amarrage) enu.nextElement();
             iAm++;
             
-            if(am instanceof Ponton){
-                
-                for(int i = 1; i <= 2; i++){
-                
-                    
+            if(am instanceof Ponton)
+            {
+                for(int i = 1; i <= 2; i++)
+                {
                     MoyenDeTransportSurEau[] mte = ((Ponton) am).getListe(i);
                     
-                    for(int j = 0; j < mte.length; j++){
-                    
-                        if(bateau == mte[j]){
+                    for(int j = 0; j < mte.length; j++)
+                    {
+                        if(bateau == mte[j])
+                        {
                             return "P" + iAm + i + "*" + j;
                         }
-                        
                     }
-                    
-                    
-                }
-                
-            }else if(am instanceof Quai){
-                
+                }   
+            }
+            else if(am instanceof Quai)
+            {
                 MoyenDeTransportSurEau[] mte = ((Quai) am).getListe();
 
-                for(int j = 0; j < mte.length; j++){
-
-                    if(bateau == mte[j]){
+                for(int j = 0; j < mte.length; j++)
+                {
+                    if(bateau == mte[j])
+                    {
                         return "Q" + iAm + "0" + "*" + j;
                     }
-
                 }
-                
             }    
         }
-        
         return "???*?";
     }
     
     public void notifyDepartDetected()
     {
         DepartEvent e = new DepartEvent(this); //On génère l'événement
-        e.setDepart(textBoxDepart.getText());
+        e.setDepart(getBateauSortant().getNom());
         
         int n = getDepartListeners().size();
         for(int i = 0 ; i < n ; i++)
@@ -1111,50 +1096,46 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         textBoxRepPhare.setText(e.getReponse());
         labelDepart.setText("Le dernier bateau est parti le : "+getInfoDate());
         
-        /* le supprimer ici de la liste le bateau est dans getBateauSortant() */
+        getLog().ecritLigne("Bateau parti - dans Applic_Capitainerie");
         
         Bateau bateau = getBateauSortant();
         
         Enumeration enu = _amarrage.elements();
         
         int iAm = 0;
-        while(enu.hasMoreElements()){
+        while(enu.hasMoreElements())
+        {
             Amarrage am = (Amarrage) enu.nextElement();
             iAm++;
             
-            if(am instanceof Ponton){
-                
-                for(int i = 1; i <= 2; i++){
-                
-                    
+            if(am instanceof Ponton)
+            {
+                for(int i = 1; i <= 2; i++)
+                {
                     MoyenDeTransportSurEau[] mte = ((Ponton) am).getListe(i);
                     
-                    for(int j = 0; j < mte.length; j++){
-                    
-                        if(bateau == mte[j]){
+                    for(int j = 0; j < mte.length; j++)
+                    {
+                        if(bateau == mte[j])
+                        {
                             mte[j] = null;
                         }
-                        
-                    }
-                    
-                    
+                    } 
                 }
-                
-            }else if(am instanceof Quai){
-                
+            }
+            else if(am instanceof Quai)
+            {
                 MoyenDeTransportSurEau[] mte = ((Quai) am).getListe();
 
-                for(int j = 0; j < mte.length; j++){
-
-                    if(bateau == mte[j]){
+                for(int j = 0; j < mte.length; j++)
+                {
+                    if(bateau == mte[j])
+                    {
                         mte[j] = null;
                     }
-
                 }
-                
             }    
         }
-        
         SaveAmarrage();
         setBateauSortant(null);
     }
@@ -1243,7 +1224,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
 
             Ponton ponton = (Ponton) getAmarrages().elementAt(index-1);
             ponton.addMoyenDeTransportSurEau(getInfoBateauEntrant(), slot, slot_in-1);
-
         }
         else if(getInfoBateauEntrant() instanceof BateauPeche)
         {  
@@ -1265,20 +1245,16 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
             d.setEmplacemet(getAmarrageBateau(getInfoBateauEntrant()));
             d.setVisible(true);
             
-            if(d._confirme){
-                
+            if(d._confirme)
+            {
                 ((DefaultListModel) listeBateaux.getModel()).removeElementAt(0);
                 SaveEntree();
-                
             }
-            
-            
         }
         else
         {
             afficheErr("Les champs ne sont pas remplis");
         }
-        
     }//GEN-LAST:event_buttonBateauAmarActionPerformed
 
     private void buttonArretServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonArretServeurActionPerformed
@@ -1334,12 +1310,14 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
 
     private void menuItemPlaisanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPlaisanceActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue BATEAUX DE PLAISANCE - dans Applic_Capitainerie");
+      
         DialogPlacesDispo dpd = new DialogPlacesDispo(this, true, getAmarrages(), new BateauPlaisance());
         dpd.setVisible(true);  
     }//GEN-LAST:event_menuItemPlaisanceActionPerformed
 
     private void menuItemPecheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPecheActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue BATEAUX DE PECHE - dans Applic_Capitainerie");         
+       
         DialogPlacesDispo dpd = new DialogPlacesDispo(this, true, getAmarrages(), new BateauPeche());
         dpd.setVisible(true);
     }//GEN-LAST:event_menuItemPecheActionPerformed
@@ -1360,12 +1338,14 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
 
     private void menuItemEquipBateauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemEquipBateauActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue EQUIPAGE BATEAU - dans Applic_Capitainerie");
+       
         DialogPersonnelBateau dpb = new DialogPersonnelBateau(this, true, getAmarrages(), false);
         dpb.setVisible(true);
     }//GEN-LAST:event_menuItemEquipBateauActionPerformed
 
     private void menuItemRechMarinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemRechMarinActionPerformed
         getLog().ecritLigne("Creation de la boite de dialogue RECHERCHE MARIN - dans Applic_Capitainerie");
+       
         DialogPersonnelBateau dpb = new DialogPersonnelBateau(this, true, getAmarrages(), true);
         dpb.setVisible(true);
     }//GEN-LAST:event_menuItemRechMarinActionPerformed
@@ -1384,7 +1364,6 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
             getParam().ChangeProperty("formatHeure", Integer.toString(d.getFormatHeure()));
             getParam().ChangeProperty("fuseauHoraire", getParam().localeToString(d.getFuseauHoraire()));
         }
-
         d.dispose();
     }//GEN-LAST:event_menuItemFormatDateActionPerformed
 

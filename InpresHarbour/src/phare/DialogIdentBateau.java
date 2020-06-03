@@ -6,6 +6,7 @@
 /***********************************************************/
 
 package phare;
+
 import add.DialogErreur;
 import java.awt.Frame;
 import javax.swing.ImageIcon;

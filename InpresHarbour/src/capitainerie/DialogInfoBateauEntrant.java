@@ -6,11 +6,10 @@
 /***********************************************************/
 
 package capitainerie;
+
 import add.DialogErreur;
-import humain.Equipage;
 import java.awt.Frame;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import vehicules.Bateau;
 
@@ -319,7 +318,6 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
             DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Veuillez mettre le port d'attache !");
             d.setVisible(true);            
         }
-        
     }//GEN-LAST:event_buttonOKActionPerformed
         
     private void buttonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnnulerActionPerformed

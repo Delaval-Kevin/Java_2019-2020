@@ -6,6 +6,7 @@
 /***********************************************************/
 
 package capitainerie;
+
 import add.DialogErreur;
 import humain.Marin;
 import java.awt.Frame;

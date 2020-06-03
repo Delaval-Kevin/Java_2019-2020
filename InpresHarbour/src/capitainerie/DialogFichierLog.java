@@ -194,7 +194,11 @@ public class DialogFichierLog extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    /**************************/
+    /*                        */
+    /*        BOUTONS         */
+    /*                        */
+    /**************************/
     
     private void radioCapitainerieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCapitainerieActionPerformed
         CompletArea(getLogCap());
