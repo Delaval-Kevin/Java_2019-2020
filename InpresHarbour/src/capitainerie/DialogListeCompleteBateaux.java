@@ -133,7 +133,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                     ligne.add(bp.getTonnage());
                     ligne.add(bp.getPavillon());
                     ligne.add(bp.getLongueur() + "m");
-                    ligne.add("P" + iAm +ponton.getIdentifiant()+"*"+i);
+                    ligne.add("P" + iAm +i+"*"+j);
                     ligne.add(bp);
                     
                     dtm.addRow(ligne);     
@@ -162,7 +162,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                     ligne.add(bp.getTonnage());
                     ligne.add(bp.getPavillon());
                     ligne.add(bp.getLongueur() + "m");
-                    ligne.add("P" + iAm +ponton.getIdentifiant()+"*"+i);
+                    ligne.add("P" + iAm +i+"*"+j);
                     ligne.add(bp);
                     
                     dtm.addRow(ligne);     
@@ -189,7 +189,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                 ligne.add(bp.getTonnage());
                 ligne.add(bp.getPavillon());
                 ligne.add(bp.getLongueur() + "m");
-                ligne.add("Q" + iAm +quai.getIdentifiant()+"*"+j);
+                ligne.add("Q" + iAm +"0"+"*"+j);
                 ligne.add(bp);
 
                 dtm.addRow(ligne);     
@@ -217,7 +217,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
                 ligne.add(bp.getTonnage());
                 ligne.add(bp.getPavillon());
                 ligne.add(bp.getLongueur() + "m");
-                ligne.add("Q" + iAm +quai.getIdentifiant()+"*"+j);
+                ligne.add("Q" + iAm +"0"+"*"+j);
                 ligne.add(bp);
 
                 dtm.addRow(ligne);     

@@ -916,7 +916,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
             FileInputStream file = new FileInputStream(rep+sep+getParam().searchParam("fichierEntreeAmarrage"));
             ObjectInputStream ois = new ObjectInputStream(file);
             
-            DefaultListModel elems = new DefaultListModel();
+            DefaultListModel elems = getListeBateauEntrant();
                 
             try{
             
@@ -1113,6 +1113,49 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         
         /* le supprimer ici de la liste le bateau est dans getBateauSortant() */
         
+        Bateau bateau = getBateauSortant();
+        
+        Enumeration enu = _amarrage.elements();
+        
+        int iAm = 0;
+        while(enu.hasMoreElements()){
+            Amarrage am = (Amarrage) enu.nextElement();
+            iAm++;
+            
+            if(am instanceof Ponton){
+                
+                for(int i = 1; i <= 2; i++){
+                
+                    
+                    MoyenDeTransportSurEau[] mte = ((Ponton) am).getListe(i);
+                    
+                    for(int j = 0; j < mte.length; j++){
+                    
+                        if(bateau == mte[j]){
+                            mte[j] = null;
+                        }
+                        
+                    }
+                    
+                    
+                }
+                
+            }else if(am instanceof Quai){
+                
+                MoyenDeTransportSurEau[] mte = ((Quai) am).getListe();
+
+                for(int j = 0; j < mte.length; j++){
+
+                    if(bateau == mte[j]){
+                        mte[j] = null;
+                    }
+
+                }
+                
+            }    
+        }
+        
+        SaveAmarrage();
         setBateauSortant(null);
     }
     
@@ -1225,7 +1268,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
             if(d._confirme){
                 
                 ((DefaultListModel) listeBateaux.getModel()).removeElementAt(0);
-            
+                SaveEntree();
                 
             }
             
