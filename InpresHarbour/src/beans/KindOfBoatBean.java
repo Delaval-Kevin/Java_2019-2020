@@ -39,14 +39,9 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     
     public KindOfBoatBean()
     {
-        //System.out.println("Création du bean KindOfBoat");
         setParametres(new Parametres());
         setBornInf(Integer.parseInt(getParametres().searchParam("nombreRef1")));
-        setBornSup(Integer.parseInt(getParametres().searchParam("nombreRef2")));
-        
-        
-        System.out.println("bonrne inf : "+getBornInf());
-        System.out.println("bonrne sup : "+getBornSup());
+        setBornSup(Integer.parseInt(getParametres().searchParam("nombreRef2")));  
     }
     
     /**************************/
@@ -136,8 +131,6 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
         if(isEnMarche())
         {
             int tempsPause = Integer.parseInt(getParametres().searchParam("tempsSommeil"));
-            
-            System.out.println("sommeil : "+tempsPause);
             
             ThreadRandomGenerator thread = new ThreadRandomGenerator(this, 0, tempsPause, 2, 2);  
             thread.start();

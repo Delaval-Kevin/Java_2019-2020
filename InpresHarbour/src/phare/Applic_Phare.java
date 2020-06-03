@@ -23,7 +23,8 @@ import network.NetworkBasicServer;
 
 public class Applic_Phare extends javax.swing.JFrame 
 {
-
+    // <editor-fold defaultstate="collapsed" desc="Variables membres">
+    
     /**************************/
     /*                        */
     /*   VARIABLES MEMBRES    */
@@ -35,6 +36,7 @@ public class Applic_Phare extends javax.swing.JFrame
     private String _tmpNom;
     private FichierLog _log;
     private String _reponse;
+    private String _batSort;
     private String _tmpType;
     private int _formatDate;
     private int _formatHeure;
@@ -49,7 +51,10 @@ public class Applic_Phare extends javax.swing.JFrame
     private KindOfBoatBean _beanKindOfBoat;
     private DefaultListModel _bateauxEntrant;
     
-
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Constructeurs">
+    
     /**************************/
     /*                        */
     /*      CONSTRUCTEURS     */
@@ -81,6 +86,9 @@ public class Applic_Phare extends javax.swing.JFrame
         }
     }
     
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Getters">
     
     /**************************/
     /*                        */
@@ -143,6 +151,11 @@ public class Applic_Phare extends javax.swing.JFrame
         return _reponse;
     }
     
+    private String getBatSort()
+    {
+        return _batSort;
+    }
+    
     public FichierLog getLog()
     {
         return _log;
@@ -177,6 +190,10 @@ public class Applic_Phare extends javax.swing.JFrame
     {
         return _serveur;
     }
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Setters">
     
     /**************************/
     /*                        */
@@ -244,6 +261,11 @@ public class Applic_Phare extends javax.swing.JFrame
         _reponse = reponse;
     }
     
+    private void setBatSort(String batSort)
+    {
+        _batSort = batSort;
+    }
+    
     public void setLog(FichierLog log)
     {
         _log = log;
@@ -278,6 +300,10 @@ public class Applic_Phare extends javax.swing.JFrame
     {
         _serveur = serveur;
     }
+    
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Methodes">
     
     /**************************/
     /*                        */
@@ -429,6 +455,8 @@ public class Applic_Phare extends javax.swing.JFrame
         labelHeure.setText(DateFormat.getDateTimeInstance(getFormatDate(), getFormatHeure(), getFuseaau()).format(maintenant));
     }
     
+    //</editor-fold>
+     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -692,6 +720,8 @@ public class Applic_Phare extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //<editor-fold defaultstate="collapsed" desc="Boutons">
+    
     /**************************/
     /*                        */
     /*         BOUTONS        */
@@ -765,12 +795,13 @@ public class Applic_Phare extends javax.swing.JFrame
     private void buttonLireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLireActionPerformed
         if(checkMessAtt.isSelected())
         {
-            textBoxDepart.setText("Départ du bateau "+getServeur().getMessage());
+            setBatSort(getServeur().getMessage());
+            textBoxDepart.setText("Départ du bateau "+getBatSort());
         }
     }//GEN-LAST:event_buttonLireActionPerformed
 
     private void buttonValidDepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValidDepActionPerformed
-        getServeur().sendMessage(getServeur().getMessage());
+        getServeur().sendMessage(getBatSort());
     }//GEN-LAST:event_buttonValidDepActionPerformed
 
     private void buttonDemarServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemarServeurActionPerformed
@@ -778,7 +809,10 @@ public class Applic_Phare extends javax.swing.JFrame
         buttonDemarServeur.setEnabled(false);
     }//GEN-LAST:event_buttonDemarServeurActionPerformed
 
-
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Main">
+    
     /**************************/
     /*                        */
     /*          MAIN          */
@@ -808,7 +842,7 @@ public class Applic_Phare extends javax.swing.JFrame
             java.util.logging.Logger.getLogger(Applic_Phare.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
+        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() 
@@ -846,4 +880,5 @@ public class Applic_Phare extends javax.swing.JFrame
     private javax.swing.JTextField textBoxBatIdent;
     private javax.swing.JTextField textBoxDepart;
     // End of variables declaration//GEN-END:variables
+    //</editor-fold>
 }

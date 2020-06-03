@@ -7,6 +7,7 @@
 
 package beans;
 
+import capitainerie.Applic_Capitainerie;
 import java.util.Vector;
 import network.NetworkBasicClient;
 
@@ -34,11 +35,13 @@ public class ThreadBean extends java.lang.Thread implements DepartListener
     /*                         */
     /***************************/
     
-    public ThreadBean(int portEcoute)
+    public ThreadBean(int portEcoute, Applic_Capitainerie cap)
     {         
         setPortEcoute(portEcoute);
         setMessage(null);
         setReponseListeners(new Vector());
+        
+        cap.addDepartListener(this);
     }
     
     /***************************/
@@ -132,6 +135,7 @@ public class ThreadBean extends java.lang.Thread implements DepartListener
             
             while(true) 
             { 
+                System.out.println(getMessage());
                 if(getMessage() != null)
                 {
                     setReponse(getClient().sendString(getMessage()));

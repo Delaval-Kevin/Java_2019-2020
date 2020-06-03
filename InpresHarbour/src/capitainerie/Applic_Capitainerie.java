@@ -62,6 +62,7 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
     private DefaultListModel _bateauEntrant;
     
     private String _infoDate;
+    private Bateau _bateauSortant;
     private Bateau _infoBateauEntrant;
     
     private Timer _timer;
@@ -627,6 +628,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         _infoBateauEntrant = infoBateauEntrant;
     }
     
+    public void setBateauSortant(Bateau bateauSortant)
+    {
+        _bateauSortant = bateauSortant;
+    }
+    
     public void setInfoDate(String infoDate)
     {
         _infoDate = infoDate;
@@ -723,6 +729,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
     public Bateau getInfoBateauEntrant()
     {
         return _infoBateauEntrant;
+    }
+    
+    public Bateau getBateauSortant()
+    {
+        return _bateauSortant;
     }
     
     public String getInfoDate()
@@ -1099,6 +1110,10 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
     {
         textBoxRepPhare.setText(e.getReponse());
         labelDepart.setText("Le dernier bateau est parti le : "+getInfoDate());
+        
+        /* le supprimer ici de la liste le bateau est dans getBateauSortant() */
+        
+        setBateauSortant(null);
     }
     
     //</editor-fold>
@@ -1381,8 +1396,11 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
     
     private void buttonConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConnexionActionPerformed
         //Creation du thread qui va ce connecté au serveur      
-        ThreadBean thread = new ThreadBean(Integer.parseInt(getParam().searchParam("portEcoute2")));
+        ThreadBean thread = new ThreadBean(Integer.parseInt(getParam().searchParam("portEcoute2")), this);
         thread.init();
+        
+        thread.addReponseListener(this);
+        
         thread.start();
         
         buttonConnexion.setEnabled(false);
@@ -1397,6 +1415,10 @@ public class Applic_Capitainerie extends javax.swing.JFrame implements ReponseLi
         
         DialogListeCompleteBateaux d = new DialogListeCompleteBateaux(this, true, getAmarrages(), 2);
         d.setVisible(true);
+        
+        setBateauSortant(d.getBateau());
+        
+        textBoxDepart.setText(getBateauSortant().getNom()+" à quitté sont emplacement");
     }//GEN-LAST:event_buttonChoixBateauActionPerformed
 
     private void buttonRAZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRAZActionPerformed

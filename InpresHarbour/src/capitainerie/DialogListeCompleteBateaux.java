@@ -285,14 +285,16 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
         PanelSearchLayout.setHorizontalGroup(
             PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelSearchLayout.createSequentialGroup()
-                .addGap(211, 211, 211)
                 .addGroup(PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
                     .addGroup(PanelSearchLayout.createSequentialGroup()
+                        .addGap(211, 211, 211)
+                        .addComponent(jLabel1))
+                    .addGroup(PanelSearchLayout.createSequentialGroup()
+                        .addGap(113, 113, 113)
                         .addComponent(SearchTextBox, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(SearchButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
         PanelSearchLayout.setVerticalGroup(
             PanelSearchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -423,7 +425,7 @@ public class DialogListeCompleteBateaux extends javax.swing.JDialog
     }//GEN-LAST:event_SearchButtonActionPerformed
 
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
-        //setBateau(TableListeBateaux.getSelectedRow());
+        setBateau((Bateau)TableListeBateaux.getValueAt(TableListeBateaux.getSelectedRow(),6));
         
         this.setVisible(false);
     }//GEN-LAST:event_buttonOKActionPerformed
