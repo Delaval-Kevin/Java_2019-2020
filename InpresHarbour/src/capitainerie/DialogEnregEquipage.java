@@ -8,6 +8,8 @@
 package capitainerie;
 
 import add.DialogErreur;
+import add.FichierLog;
+import add.Parametres;
 import humain.Marin;
 import java.awt.Frame;
 import humain.Equipage;
@@ -24,8 +26,9 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     /**************************/
     
     private Bateau _bateau;
-    private DefaultListModel _listeMarins;
+    private FichierLog _log;
     private Equipage _equipageDeBase;
+    private DefaultListModel _listeMarins;
     
     /**************************/
     /*                        */
@@ -45,10 +48,14 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     public DialogEnregEquipage(java.awt.Frame parent, boolean modal, Bateau bateau) 
     {
         this(parent, modal);
+        Parametres param = new Parametres();
+        setLog(new FichierLog(param.searchParam("capitainerieLog")));
+        
         setBateau(bateau);
         labelNomBateau.setText(getBateau().getNom() + " (" + getBateau().getPortAttache() + ")");
         InitList();
         InitEquipDeBase();
+        
     }
 
     /**************************/
@@ -70,6 +77,11 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     public void setEquipageDeBase(Equipage equipageDeBase)
     {
         _equipageDeBase = equipageDeBase;
+    }
+    
+    public void setLog(FichierLog log)
+    {
+        _log = log;
     }
     
     /**************************/
@@ -117,6 +129,11 @@ public class DialogEnregEquipage extends javax.swing.JDialog
         }
     }
     
+    public FichierLog getLog()
+    {
+        return _log;
+    }
+    
     /**************************/
     /*                        */
     /*        METHODES        */
@@ -125,7 +142,7 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     
     private void InitList()
     {
-        System.out.println("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans DialogEnregEquipage\n");
+        getLog().ecritLigne("DialogEnregEquipage", "Creation et initialisation de la liste de marins DEFAULTLISTMODEL");
         
         setListeMarins(new DefaultListModel());
         
@@ -145,19 +162,19 @@ public class DialogEnregEquipage extends javax.swing.JDialog
    
     private void InitEquipDeBase()
     {
-        System.out.println("Creation et initialisation de l'equipage de base EQUIPAGE - dans DialogEnregEquipage\n");
+        getLog().ecritLigne("DialogEnregEquipage", "Creation et initialisation de l'equipage de base EQUIPAGE");
  
         setEquipageDeBase(new Equipage());
         
         if(getBateau().getEquipage().getCapitaine() != null)
         {
-            System.out.println("Creation du capitaine de l'equipe de base MARIN - dans DialogEnregEquipage\n");
+            getLog().ecritLigne("DialogEnregEquipage", "Creation du capitaine de l'equipe de base MARIN");
             
             getEquipageDeBase().setCapitaine(getBateau().getEquipage().getCapitaine());
         }
         if(getBateau().getEquipage().getSecond() != null)
         {
-            System.out.println("Creation du second de l'equipe de base MARIN - dans DialogEnregEquipage\n");
+            getLog().ecritLigne("DialogEnregEquipage", "Creation du second de l'equipe de base MARIN");
             
             getEquipageDeBase().setSecond(getBateau().getEquipage().getSecond());
         }
@@ -345,7 +362,7 @@ public class DialogEnregEquipage extends javax.swing.JDialog
     private void buttonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOKActionPerformed
         try 
         {
-            System.out.println("Creation d'un nouveau MARIN - dans DialogEnregEquipage\n");
+            getLog().ecritLigne("DialogEnregEquipage", "Creation d'un nouveau MARIN");
             
             Marin marin = new Marin(this.textBoxNom.getText(), this.textBoxPrenom.getText(), this.textBoxDateNaiss.getText(), getSelection());
 
@@ -384,7 +401,7 @@ public class DialogEnregEquipage extends javax.swing.JDialog
         } 
         catch (SailorWithoutIdentificationException exc) 
         {
-            System.out.println("Creation de la boite de dialogue ERREUR - dans DialogEnregEquipage\n");
+            getLog().ecritLigne("DialogEnregEquipage", "Creation de la boite de dialogue ERREUR");
             
             DialogErreur d = new DialogErreur((Frame)this.getParent(), true, exc.getMessage());
             d.setVisible(true);

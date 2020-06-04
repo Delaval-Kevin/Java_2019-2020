@@ -7,6 +7,8 @@
 
 package beans;
 
+import add.FichierLog;
+import add.Parametres;
 import java.util.Date;
 import java.util.Vector;
 import java.io.Serializable;
@@ -24,6 +26,7 @@ public class BoatBean implements Serializable, PropertyChangeListener
     /**************************/
     
     private String _type;
+    private FichierLog _log;
     private Vector _boatListeners;
     
     /**************************/
@@ -36,6 +39,10 @@ public class BoatBean implements Serializable, PropertyChangeListener
     {     
         //System.out.println("Création du bean BoatBean");
         setBoatListeners(new Vector());
+        
+        Parametres param = new Parametres();
+        
+        setLog(new FichierLog(param.searchParam("phareLog")));
     }
 
     
@@ -54,6 +61,11 @@ public class BoatBean implements Serializable, PropertyChangeListener
     {
         _type = type;
     }
+    
+    public void setLog(FichierLog log)
+    {
+        _log = log;
+    }
 
     /**************************/
     /*                        */
@@ -70,6 +82,11 @@ public class BoatBean implements Serializable, PropertyChangeListener
     {
         return _type;
     }
+    
+    public FichierLog getLog()
+    {
+        return _log;
+    }
 
     /**************************/
     /*                        */
@@ -79,11 +96,13 @@ public class BoatBean implements Serializable, PropertyChangeListener
     
     public void notifyBoatDetected()
     {
+        getLog().ecritLigne("BoatBean", "notifyBoatDetected");
         BoatEvent e = new BoatEvent(this); //On génère l'événement
         e.setPavillon(assignPavillon());
         e.setType(getType());
         e.setDate(new Date());
         
+        getLog().ecritLigne("BoatBean", "envoie d'un BoatEvent");
         int n = getBoatListeners().size();
         for(int i = 0 ; i < n ; i++)
         {
@@ -94,6 +113,7 @@ public class BoatBean implements Serializable, PropertyChangeListener
     
     public void addBoatListener(BoatListener bl)
     {
+        getLog().ecritLigne("BoatBean", "addBoatListener");
         if(!getBoatListeners().contains(bl))
         {
             getBoatListeners().addElement(bl);
@@ -102,6 +122,7 @@ public class BoatBean implements Serializable, PropertyChangeListener
     
     public void removeBoatListener(BoatListener bl)
     {
+        getLog().ecritLigne("BoatBean", "removeBoatListener");
         if(getBoatListeners().contains(bl))
         {
             getBoatListeners().removeElement(bl);

@@ -85,12 +85,12 @@ public class FichierLog
     
     public void ecritLigne(String entete, String info)
     {
-        ecritLigne(entete + "> " + info);
+        ecritLigne(entete + " --> " + info);
     }
     
     public ArrayList lireFichier()
     {
-        ArrayList<String> tab = new ArrayList<String>();;
+        ArrayList<String> tab = new ArrayList<String>();
         try 
         { 
             FileReader r = new FileReader(getNomFichier());

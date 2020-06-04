@@ -8,6 +8,8 @@
 package capitainerie;
 
 import add.DialogErreur;
+import add.FichierLog;
+import add.Parametres;
 import java.awt.Frame;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -23,6 +25,7 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     /**************************/
     
     private Bateau _bateau;
+    private FichierLog _log;
     public boolean _confirme = false;
     
     /**************************/
@@ -43,6 +46,9 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     public DialogInfoBateauEntrant(java.awt.Frame parent, boolean modal, Bateau bateau) 
     {
         this(parent, modal);
+        Parametres param = new Parametres();
+        setLog(new FichierLog(param.searchParam("capitainerieLog")));
+
         setBateau(bateau);
         InitComboBox();
     }
@@ -67,6 +73,11 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     {
         return Integer.parseInt(this.textBoxTonnage.getText());
     }   
+    
+    public FichierLog getLog()
+    {
+        return _log;
+    }
     
     /**************************/
     /*                        */
@@ -107,6 +118,10 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
         this.textBoxTonnage.setText(Integer.toString(ton));
     }
     
+    public void setLog(FichierLog log)
+    {
+        _log = log;
+    }
     
     /**************************/
     /*                        */
@@ -116,6 +131,7 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
     
     private void InitComboBox()
     {
+        getLog().ecritLigne("DialogInfoBateauEntrant", "Initialisation de la combobox");
         DefaultComboBoxModel dcbmEquipage = (DefaultComboBoxModel) this.comboBoxEquipage.getModel();
         dcbmEquipage.removeAllElements();
         
@@ -287,7 +303,7 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
         {
             getBateau().setPortAttache(textBoxPortAttache.getText());
             
-            System.out.println("Creation de la boite de dialogue ENREG EQUIPAGE - dans DialogInfoBateauEntrant\n");
+            getLog().ecritLigne("DialogInfoBateauEntrant", "Creation de la boite de dialogue ENREG EQUIPAGE");
             
             DialogEnregEquipage d = new DialogEnregEquipage((Frame)this.getParent(), true, getBateau());
             d.setVisible(true);
@@ -296,7 +312,7 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
         }
         else
         {
-            System.out.println("Creation de la boite de dialogue ERREUR - dans DialogInfoBateauEntrant\n");
+            getLog().ecritLigne("DialogInfoBateauEntrant", "Creation de la boite de dialogue ERREUR");
             
             DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Veuillez mettre le port d'attache !");
             d.setVisible(true); 
@@ -313,7 +329,7 @@ public class DialogInfoBateauEntrant extends javax.swing.JDialog
         }
         else
         {
-            System.out.println("Creation de la boite de dialogue ERREUR - dans DialogInfoBateauEntrant\n");
+            getLog().ecritLigne("DialogInfoBateauEntrant", "Creation de la boite de dialogue ERREUR");
             
             DialogErreur d = new DialogErreur((Frame)this.getParent(), true, "Veuillez mettre le port d'attache !");
             d.setVisible(true);            

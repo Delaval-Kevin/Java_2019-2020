@@ -325,7 +325,7 @@ public class Applic_Phare extends javax.swing.JFrame
     {
         this.setVisible(false);
         
-        getLog().ecritLigne("Creation de la boite dialogue de LOGIN - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare" , "Creation de la boite dialogue de LOGIN");
         
         /*Je ne garde pas une référence de la fenêtre en global, car il n'y à lieu d'avoir de connecion et déconnexion intempestives*/
         DialogLogin login = new DialogLogin(this, true);
@@ -335,7 +335,7 @@ public class Applic_Phare extends javax.swing.JFrame
         {
             setUtilisateur(login.getUtilisateur());
             setTitre();
-            getLog().ecritLigne("LOGIN de "+getUtilisateur()+" - dans Applic_Phare");
+            getLog().ecritLigne("Applic_Phare", "LOGIN de "+getUtilisateur());
         }
         
         this.setVisible(true);
@@ -344,7 +344,7 @@ public class Applic_Phare extends javax.swing.JFrame
     
     private void InitList()
     {
-        getLog().ecritLigne("Creation et initialisation de la liste de marins DEFAULTLISTMODEL - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare", "Creation et initialisation de la liste de marins DEFAULTLISTMODEL");
         
         setBateauxEntrant(new DefaultListModel());
         listBatEnAttente.setModel(getBateauxEntrant());
@@ -368,16 +368,17 @@ public class Applic_Phare extends javax.swing.JFrame
     {
         try 
         {    
+            getLog().ecritLigne("Applic_Phare", "Creation de KindOfBoatBean");
             setBeanKindOfBoat((KindOfBoatBean)Beans.instantiate(null, "beans.KindOfBoatBean"));
         } 
         catch(ClassNotFoundException e) 
         {
-            getLog().ecritLigne("Classe KindOfBoatBean non trouvée - dans Applic_Phare");
+            getLog().ecritLigne("Applic_Phare", "Classe KindOfBoatBean non trouvée");
             System.exit(0);
         }
         catch(IOException e)
         {
-            getLog().ecritLigne("Erreur d'I/O : KindOfBoatBean !!! - dans Applic_Phare");
+            getLog().ecritLigne("Applic_Phare", "Erreur d'I/O : KindOfBoatBean !!!");
             System.exit(0);
         }
         
@@ -389,16 +390,17 @@ public class Applic_Phare extends javax.swing.JFrame
     {
         try 
         {    
+            getLog().ecritLigne("Applic_Phare", "Creation de BoatBean");
             setBeanBoat((BoatBean)Beans.instantiate(null, "beans.BoatBean"));
         } 
         catch(ClassNotFoundException e) 
         {
-            getLog().ecritLigne("Classe BoatBean non trouvée - dans Applic_Phare");
+            getLog().ecritLigne("Applic_Phare", "Classe BoatBean non trouvée");
             System.exit(0);
         }
         catch(IOException e)
         {
-            getLog().ecritLigne("Erreur d'I/O : KindOfBoatBean !!! - dans Applic_Phare");
+            getLog().ecritLigne("Applic_Phare", "Erreur d'I/O : KindOfBoatBean !!!");
             System.exit(0);
         }   
         
@@ -408,16 +410,17 @@ public class Applic_Phare extends javax.swing.JFrame
     {
         try 
         {    
+            getLog().ecritLigne("Applic_Phare", "Creation de NotifyBean");
             setBeanNotify((NotifyBean)Beans.instantiate(null, "beans.NotifyBean"));
         } 
         catch(ClassNotFoundException e) 
         {
-            getLog().ecritLigne("Classe NotifyBean non trouvée - dans Applic_Phare");
+            getLog().ecritLigne("Applic_Phare", "Classe NotifyBean non trouvée");
             System.exit(0);
         }
         catch(IOException e)
         {
-            getLog().ecritLigne("Erreur d'I/O : KindOfBoatBean !!! - dans Applic_Phare");
+            getLog().ecritLigne("Applic_Phare", "Erreur d'I/O : KindOfBoatBean !!!");
             System.exit(0);
         }    
         
@@ -730,7 +733,7 @@ public class Applic_Phare extends javax.swing.JFrame
     /**************************/
     
     private void buttonConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonConnexionActionPerformed
-        getLog().ecritLigne("Connexion au serveur - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare", "Connexion au serveur");
         
         setClient(new NetworkBasicClient("localhost", Integer.parseInt(getParam().searchParam("portEcoute1"))));
         buttonConnexion.setEnabled(false);
@@ -741,7 +744,7 @@ public class Applic_Phare extends javax.swing.JFrame
         setTmpType(parties[0]);
         setTmpPavillon(parties[1]);
         
-        getLog().ecritLigne("Creation de la boite de dialogue IDENT BATEAU - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare", "Creation de la boite de dialogue IDENT BATEAU");
         DialogIdentBateau d = new DialogIdentBateau(this, true);
         
         d.setLabelType(getTmpType());
@@ -758,14 +761,14 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonSuivantActionPerformed
 
     private void buttonDemAutEntreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemAutEntreeActionPerformed
-        getLog().ecritLigne("Demande autorisation d'entree a la capitainerie - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare", "Demande autorisation d'entree a la capitainerie");
         
         setReponse(getClient().sendString("1/"+getTmpType()+"/"+getTmpPavillon()+"/"+getTmpNom()+"/"+getTmpLongueur())); 
         labelRepCap.setText(getReponse());
     }//GEN-LAST:event_buttonDemAutEntreeActionPerformed
 
     private void buttonBatEntreRadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBatEntreRadeActionPerformed
-        getLog().ecritLigne("Validation d'entree dans la rade - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare", "Validation d'entree dans la rade");
         
         setReponse(getClient().sendString("2/Bateau "+getTmpNom()+" est bien entre dans la rade"));
         getBateauxEntrant().remove(0); 
@@ -773,7 +776,7 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonBatEntreRadeActionPerformed
 
     private void buttonRAZActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRAZActionPerformed
-        getLog().ecritLigne("Remise a zero des champs - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare", "Remise a zero des champs");
         
         labelBatEntre.setText("??");
         labelRepCap.setText("??");
@@ -787,14 +790,14 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonRAZActionPerformed
 
     private void buttonDeconexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeconexionActionPerformed
-        getLog().ecritLigne("Deconnexion du serveur - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare", "Deconnexion du serveur");
         
         getClient().setEndSending();
         buttonConnexion.setEnabled(true);
     }//GEN-LAST:event_buttonDeconexionActionPerformed
 
     private void buttonLireActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLireActionPerformed
-        getLog().ecritLigne("Lecture réception message ( départ d'un bateau ) - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare", "Lecture réception message ( départ d'un bateau )");
         
         if(checkMessAtt.isSelected())
         {
@@ -804,13 +807,13 @@ public class Applic_Phare extends javax.swing.JFrame
     }//GEN-LAST:event_buttonLireActionPerformed
 
     private void buttonValidDepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonValidDepActionPerformed
-        getLog().ecritLigne("Envoie du message validation départ bateau - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare", "Envoie du message validation départ bateau");
         
         getServeur().sendMessage(getBatSort());
     }//GEN-LAST:event_buttonValidDepActionPerformed
 
     private void buttonDemarServeurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDemarServeurActionPerformed
-        getLog().ecritLigne("Démarrage du serveur - dans Applic_Phare");
+        getLog().ecritLigne("Applic_Phare", "Démarrage du serveur");
         
         setServeur(new NetworkBasicServer(Integer.parseInt(getParam().searchParam("portEcoute2")),checkMessAtt));
         buttonDemarServeur.setEnabled(false);

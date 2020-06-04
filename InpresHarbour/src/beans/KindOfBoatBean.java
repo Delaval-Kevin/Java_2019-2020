@@ -7,12 +7,12 @@
 
 package beans;
 
+import add.FichierLog;
 import add.Parametres;
 import java.io.Serializable;
 import threadsutils.UtilisateurNombre;
 import java.beans.PropertyChangeSupport;
 import java.beans.PropertyChangeListener;
-import java.rmi.activation.ActivationSystem;
 import threadsutils.ThreadRandomGenerator;
 
 
@@ -27,6 +27,7 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     private int _bornInf;
     private int _bornSup;
     private String _info;
+    private FichierLog _log;
     private boolean _enMarche;
     private Parametres _parametres;
     private PropertyChangeSupport GestProp = new PropertyChangeSupport(this);
@@ -42,6 +43,8 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
         setParametres(new Parametres());
         setBornInf(Integer.parseInt(getParametres().searchParam("nombreRef1")));
         setBornSup(Integer.parseInt(getParametres().searchParam("nombreRef2")));  
+        
+        setLog(new FichierLog(getParametres().searchParam("phareLog")));
     }
     
     /**************************/
@@ -78,6 +81,11 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
         _bornSup = bornSup;
     }
     
+    public void setLog(FichierLog log)
+    {
+        _log = log;
+    }
+    
     /**************************/
     /*                        */
     /*         GETTERS        */
@@ -110,6 +118,11 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
         return _bornSup;
     }
     
+    public FichierLog getLog()
+    {
+        return _log;
+    }
+    
     /**************************/
     /*                        */
     /*        METHODES        */
@@ -118,20 +131,24 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     
     public void init()
     {
+        getLog().ecritLigne("KindOfBoatBean", "init");
         setEnMarche(true);
     }
     
     public void stop()
     {
+        getLog().ecritLigne("KindOfBoatBean", "stop");
         setEnMarche(false);
     }
     
     public void run()
     {
+        getLog().ecritLigne("KindOfBoatBean", "run");
         if(isEnMarche())
         {
             int tempsPause = Integer.parseInt(getParametres().searchParam("tempsSommeil"));
             
+            getLog().ecritLigne("KindOfBoatBean", "Creation de ThreadRandomGenerator");
             ThreadRandomGenerator thread = new ThreadRandomGenerator(this, 0, tempsPause, 2, 2);  
             thread.start();
         }
@@ -139,11 +156,13 @@ public class KindOfBoatBean implements UtilisateurNombre, Serializable
     
     public void addPropertyChangeListener(PropertyChangeListener l)
     {
+        getLog().ecritLigne("KindOfBoatBean", "addPropertyChangeListener");
         GestProp.addPropertyChangeListener(l);
     }
     
     public void removePropertyChangeListener(PropertyChangeListener l)
     {
+        getLog().ecritLigne("KindOfBoatBean", "removePropertyChangeListener");
         GestProp.removePropertyChangeListener(l);
     }
     
